@@ -1,0 +1,1217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<helpItems schema="maml">
+    <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" 
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" 
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" 
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+        <command:details>
+            <command:name>Send-sthMailMessage</command:name>
+            <command:verb>Send</command:verb>
+            <command:noun>sthMailMessage</command:noun>
+            <maml:description>
+                <maml:para>Sends mail message using profile specified.
+                </maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>The Send-sthMailMessage function sends mail message using settings from the profile specified.
+            </maml:para>
+            <maml:para>You can create profile by using the New-sthMailProfile function.
+            </maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:syntaxItem>
+                <maml:name>Send-sthMailMessage</maml:name>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+                    <maml:name>Message</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message body.
+                        </maml:para>
+                        <maml:para>You can pipe results of another function or cmdlet to this function.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>Object[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message subject.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+                    <maml:name>ProfileName</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies profile name.
+                        </maml:para>
+                        <maml:para>Profiles contain mail settings.
+You can create profile by using the New-sthMailProfile function.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                    <maml:name>Attachments</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies paths to mail message attachments, if any.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
+        </command:syntax>
+        <command:parameters>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+                <maml:name>Message</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies mail message body.
+                    </maml:para>
+                    <maml:para>You can pipe results of another function or cmdlet to this function.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+                <dev:type>
+                    <maml:name>Object[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                <maml:name>Subject</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies mail message subject.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+                <maml:name>ProfileName</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies profile name.
+                    </maml:para>
+                    <maml:para>Profiles contain mail settings.
+You can create profile by using the New-sthMailProfile function.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                <maml:name>Attachments</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies paths to mail message attachments, if any.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                <dev:type>
+                    <maml:name>String[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+        </command:parameters>
+        <maml:AlertSet>
+            <maml:Alert>
+                <para>Since SecureString uses DPAPI, if you create mail profile containing credential without -StorePasswordInPlainText parameter, it can only be used on the computer it was created on and by the user account that created it.</para>
+            </maml:Alert>
+        </maml:AlertSet>
+        <command:examples>
+            <command:example>
+                <maml:title>Example 1: Send mail message using previously created profile.</maml:title>
+                <dev:code>$ps = Get-Process
+Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfile"</dev:code>
+                <dev:remarks>
+                    <maml:para>The first command gets the result of the Get-Process cmdlet and assigns it to the $ps variable.
+The second command sends it using previously created profile "MailProfile".</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 2: Send mail message using pipeline and previously created profile.</maml:title>
+                <dev:code>Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile"</dev:code>
+                <dev:remarks>
+                    <maml:para>This command gets the result of the Get-Process cmdlet and sends it using previously created profile "MailProfile".
+It uses pipeline for sending message content to the function.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 3: Send mail message with attachments using pipeline and previously created profile.</maml:title>
+                <dev:code>Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile" -Attachments "file1.txt, file2.txt"</dev:code>
+                <dev:remarks>
+                    <maml:para>This command gets the result of the Get-Process cmdlet and sends it with specified files as attachments using previously created profile "MailProfile".
+It uses pipeline for sending message content to the function.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+        </command:examples>
+    </command:command>
+    <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" 
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" 
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" 
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+        <command:details>
+            <command:name>New-sthMailProfile</command:name>
+            <command:verb>New</command:verb>
+            <command:noun>sthMailProfile</command:noun>
+            <maml:description>
+                <maml:para>Creates mail profile.
+                </maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>The New-sthMailProfile function creates mail profile containing specified settings.
+            </maml:para>
+            <maml:para>Profile is an xml file, located in the "Profiles" directory in the module's folder and containing settings, such as: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            </maml:para>
+            <maml:para>Profile can be used by the Send-sthMailMessage function.
+            </maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:syntaxItem>
+                <maml:name>New-sthMailProfile</maml:name>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+                    <maml:name>ProfileName</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the name of the profile.
+                        </maml:para>
+                        <maml:para>The value will be used as a name of the profile file.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                    <maml:name>From</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the address from which the mail is sent. Enter a name (optional) and email address, such as Name &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+                    <maml:name>To</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the addresses to which the mail is sent. Enter names (optional) and the email address, such as Name &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>UserName</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies UserName of the account that have permission to send the message.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Password</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies password of the user account specified by -UserName parameter.
+                        </maml:para>
+                        <maml:para>The value can be the String or SecureString object.
+                        </maml:para>
+                        <maml:para>If the -UserName parameter is specified and the -Password parameter is not, you will be asked for password.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String or SecureString</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String or SecureString</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>StorePasswordInPlainText</maml:name>
+                    <maml:Description>
+                    <maml:para>Specifies that the password should be stored in plain text.</maml:para>
+<maml:para>By default password is encrypted by using DPAPI, which means that the profile can be used only on the computer it was created on, and under user account, that created it.</maml:para>
+<maml:para>If the StorePasswordInPlainText parameter is used, the password will be stored in plain text, that allows to use the profile on computers other than one it was created on, and under different user accounts, other than it was created by.</maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>SmtpServer</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the name of the SMTP server that sends the email message.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Port</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies an alternate port on the SMTP server. The default value is 25, which is the default SMTP port.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+                    <dev:type>
+                        <maml:name>Int32</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>UseSSL</maml:name>
+                    <maml:Description>
+                        <maml:para>Indicates that the cmdlet uses the Secure Sockets Layer (SSL) protocol to establish a connection to the remote computer to send mail. By default, SSL is not used.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Encoding</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the encoding used for the body and subject.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>BodyAsHTML</maml:name>
+                    <maml:Description>
+                        <maml:para>Indicates that the message content contains HTML.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>CC</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the email addresses to which a carbon copy (CC) of the email message is sent. Enter names (optional) and the email address, such as Name &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>BCC</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the email addresses that receive a copy of the mail but are not listed as recipients of the message. Enter names (optional) and the email address, such as Name &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>DeliveryNotificationOption</maml:name>
+                    <maml:Description>
+                    <maml:para>Specifies the delivery notification options for the email message. You can specify multiple values. None is the default value.
+
+The delivery notifications are sent in an email message to the address specified in the value of the To parameter.
+
+The acceptable values for this parameter are:
+- None. No notification.
+- OnSuccess. Notify if the delivery is successful.
+- OnFailure. Notify if the delivery is unsuccessful.
+- Delay. Notify if the delivery is delayed.
+- Never. Never notify.
+                    </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Priority</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the priority of the email message. Normal is the default value.
+
+The acceptable values for this parameter are:
+- Normal
+- High
+- Low
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
+            <command:syntaxItem>
+                <maml:name>New-sthMailProfile</maml:name>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+                    <maml:name>ProfileName</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the name of the profile.
+                        </maml:para>
+                        <maml:para>The value will be used as a name of the profile file.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                    <maml:name>From</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the address from which the mail is sent. Enter a name (optional) and email address, such as Name &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+                    <maml:name>To</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the addresses to which the mail is sent. Enter names (optional) and the email address, such as Name &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Credential</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies a credential of the user account that has permission to perform this action.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+                    <dev:type>
+                        <maml:name>PSCredential</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>StorePasswordInPlainText</maml:name>
+                    <maml:Description>
+                    <maml:para>Specifies that the password should be stored in plain text.</maml:para>
+<maml:para>By default password is encrypted by using DPAPI, which means that the profile can be used only on the computer it was created on, and under user account, that created it.</maml:para>
+<maml:para>If the StorePasswordInPlainText parameter is used, the password will be stored in plain text, that allows to use the profile on computers other than one it was created on, and under different user accounts, other than it was created by.</maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>SmtpServer</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the name of the SMTP server that sends the email message.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Port</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies an alternate port on the SMTP server. The default value is 25, which is the default SMTP port.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+                    <dev:type>
+                        <maml:name>Int32</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>UseSSL</maml:name>
+                    <maml:Description>
+                        <maml:para>Indicates that the cmdlet uses the Secure Sockets Layer (SSL) protocol to establish a connection to the remote computer to send mail. By default, SSL is not used.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Encoding</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the encoding used for the body and subject.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>BodyAsHTML</maml:name>
+                    <maml:Description>
+                        <maml:para>Indicates that the message content contains HTML.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>CC</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the email addresses to which a carbon copy (CC) of the email message is sent. Enter names (optional) and the email address, such as Name &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>BCC</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the email addresses that receive a copy of the mail but are not listed as recipients of the message. Enter names (optional) and the email address, such as Name &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>DeliveryNotificationOption</maml:name>
+                    <maml:Description>
+                    <maml:para>Specifies the delivery notification options for the email message. You can specify multiple values. None is the default value.
+
+The delivery notifications are sent in an email message to the address specified in the value of the To parameter.
+
+The acceptable values for this parameter are:
+- None. No notification.
+- OnSuccess. Notify if the delivery is successful.
+- OnFailure. Notify if the delivery is unsuccessful.
+- Delay. Notify if the delivery is delayed.
+- Never. Never notify.
+                    </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Priority</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the priority of the email message. Normal is the default value.
+
+The acceptable values for this parameter are:
+- Normal
+- High
+- Low
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
+        </command:syntax>
+        <command:parameters>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+                <maml:name>ProfileName</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the name of the profile.
+                    </maml:para>
+                    <maml:para>The value will be used as a name of the profile file.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                <maml:name>From</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the address from which the mail is sent. Enter a name (optional) and email address, such as Name &lt;someone@example.com&gt;.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+                <maml:name>To</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the addresses to which the mail is sent. Enter names (optional) and the email address, such as Name &lt;someone@example.com&gt;.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                <dev:type>
+                    <maml:name>String[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>UserName</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies UserName of the account that have permission to send the message.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>Password</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies password of the user account specified by -UserName parameter.
+                    </maml:para>
+                    <maml:para>The value can be the String or SecureString object.
+                    </maml:para>
+                    <maml:para>If the -UserName parameter is specified and the -Password parameter is not, you will be asked for password.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String or SecureString</command:parameterValue>
+                <dev:type>
+                    <maml:name>String or SecureString</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>Credential</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies a credential of the user account that has permission to perform this action.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+                <dev:type>
+                    <maml:name>PSCredential</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>StorePasswordInPlainText</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies that the password should be stored in plain text.</maml:para>
+<maml:para>By default password is encrypted by using DPAPI, which means that the profile can be used only on the computer it was created on, and under user account, that created it.</maml:para>
+<maml:para>If the StorePasswordInPlainText parameter is used, the password will be stored in plain text, that allows to use the profile on computers other than one it was created on, and under different user accounts, other than it was created by.</maml:para>
+                </maml:Description>
+                <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+                <dev:type>
+                    <maml:name>SwitchParameter</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>False</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>SmtpServer</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the name of the SMTP server that sends the email message.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>Port</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies an alternate port on the SMTP server. The default value is 25, which is the default SMTP port.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+                <dev:type>
+                    <maml:name>Int32</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>UseSSL</maml:name>
+                <maml:Description>
+                    <maml:para>Indicates that the cmdlet uses the Secure Sockets Layer (SSL) protocol to establish a connection to the remote computer to send mail. By default, SSL is not used.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+                <dev:type>
+                    <maml:name>SwitchParameter</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>False</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>Encoding</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the encoding used for the body and subject.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>BodyAsHTML</maml:name>
+                <maml:Description>
+                    <maml:para>Indicates that the message content contains HTML.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+                <dev:type>
+                    <maml:name>SwitchParameter</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>False</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>CC</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the email addresses to which a carbon copy (CC) of the email message is sent. Enter names (optional) and the email address, such as Name &lt;someone@example.com&gt;.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                <dev:type>
+                    <maml:name>String[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>BCC</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the email addresses that receive a copy of the mail but are not listed as recipients of the message. Enter names (optional) and the email address, such as Name &lt;someone@example.com&gt;.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                <dev:type>
+                    <maml:name>String[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>DeliveryNotificationOption</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the delivery notification options for the email message. You can specify multiple values. None is the default value.
+
+The delivery notifications are sent in an email message to the address specified in the value of the To parameter.
+
+The acceptable values for this parameter are:
+- None. No notification.
+- OnSuccess. Notify if the delivery is successful.
+- OnFailure. Notify if the delivery is unsuccessful.
+- Delay. Notify if the delivery is delayed.
+- Never. Never notify.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>Priority</maml:name>
+                <maml:Description>
+                        <maml:para>Specifies the priority of the email message. Normal is the default value.
+
+The acceptable values for this parameter are:
+- Normal
+- High
+- Low
+                        </maml:para>
+                </maml:Description>
+                <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+        </command:parameters>
+        <maml:AlertSet>
+            <maml:Alert>
+                <para>Since SecureString uses DPAPI, if you create mail profile containing credential without -StorePasswordInPlainText parameter, it can only be used on the computer it was created on and by the user account that created it.</para>
+            </maml:Alert>
+        </maml:AlertSet>
+        <command:examples>
+            <command:example>
+                <maml:title>Example 1: Create a new profile.</maml:title>
+                <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com</dev:code>
+                <dev:remarks>
+                    <maml:para>The command creates mail profile with name "MailProfile", which contains settings: From, To and SmtpServer.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 2: Create a new profile with credential.</maml:title>
+                <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com
+Type the password:</dev:code>
+                <dev:remarks>
+                    <maml:para>The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
+The -Password parameter is not used, so the command requests for it.</maml:para>
+                    <maml:para>Since SecureString uses DPAPI, if you create mail profile containing credential without -StorePasswordInPlainText parameter, it can only be used on the computer it was created on and by the user account that created it.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 3: Create a new profile by specifying the password as string.</maml:title>
+                <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password'</dev:code>
+                <dev:remarks>
+                    <maml:para>The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
+Password is specified as string.</maml:para>
+                    <maml:para>Since SecureString uses DPAPI, if you create mail profile containing credential without -StorePasswordInPlainText parameter, it can only be used on the computer it was created on and by the user account that created it.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 4: Create a new profile with credential by specifying password as secure string.</maml:title>
+                <dev:code>$Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password $Password</dev:code>
+                <dev:remarks>
+                    <maml:para>The first command creates secure string from plain text password and assigns it to the $Password variable.
+The second command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
+Password is specified as secure string.</maml:para>
+                    <maml:para>Since SecureString uses DPAPI, if you create mail profile containing credential without -StorePasswordInPlainText parameter, it can only be used on the computer it was created on and by the user account that created it.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 5: Create a new profile by specifying credential as PSCredential object.</maml:title>
+                <dev:code>$Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
+$Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'UserName', $Password
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential $Credential</dev:code>
+                <dev:remarks>
+                    <maml:para>The first command creates secure string from plain text password and assigns it to the $Password variable.
+The second command creates PSCredential object using 'UserName' and previously created password as arguments.
+The third command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer and Credential.</maml:para>
+                    <maml:para>Since SecureString uses DPAPI, if you create mail profile containing credential without -StorePasswordInPlainText parameter, it can only be used on the computer it was created on and by the user account that created it.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 6: Create a new profile object and store password in plain text.</maml:title>
+                <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText</dev:code>
+                <dev:remarks>
+                    <maml:para>The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
+Since the -StorePasswordInPlainText parameter is used, password will be stored in plain text.
+It allows you to use the profile on computers other than one it was created on, and under different user accounts, other than it was created by.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+        </command:examples>
+    </command:command>
+    <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" 
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" 
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" 
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+        <command:details>
+            <command:name>Get-sthMailProfile</command:name>
+            <command:verb>Get</command:verb>
+            <command:noun>sthMailProfile</command:noun>
+            <maml:description>
+                <maml:para>Gets mail profiles.
+                </maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>The Get-sthMailProfile function gets existing mail profiles and displays their settings.
+            </maml:para>
+            <maml:para>Profile is an xml file, located in the "Profiles" directory in the module's folder and containing settings, such as: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            </maml:para>
+            <maml:para>Profile can be created by the New-sthMailProfile function and used by the Send-sthMailMessage function.
+            </maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:syntaxItem>
+                <maml:name>Get-sthMailProfile</maml:name>
+                <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="0" aliases="none">
+                    <maml:name>ProfileName</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the names of the profiles.
+                        </maml:para>
+                        <maml:para>Wildcards are permitted.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>ShowPassword</maml:name>
+                    <maml:Description>
+                <maml:para>Specifies that the password should be displayed in the command output.
+By default passwords are not shown.</maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
+        </command:syntax>
+        <command:parameters>
+            <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="0" aliases="none">
+                <maml:name>ProfileName</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the names of the profiles.
+                    </maml:para>
+                    <maml:para>Wildcards are permitted.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                <dev:type>
+                    <maml:name>String[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>ShowPassword</maml:name>
+                <maml:Description>
+                <maml:para>Specifies that the password should be displayed in the command output.
+By default passwords are not shown.</maml:para>
+                </maml:Description>
+                <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+                <dev:type>
+                    <maml:name>SwitchParameter</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>False</dev:defaultValue>
+            </command:parameter>
+        </command:parameters>
+        <maml:AlertSet>
+            <maml:Alert>
+                <para>PasswordIs property can have one of three values: NotExist, PlainText and Secured.
+NotExist means, that the profile doesn't contain credential.
+PlaintText means that the profile stores the password in plain text.
+Secured means, that the password is stored in encrypted form.
+
+Since SecureString uses DPAPI, if you create mail profile containing credential without -StorePasswordInPlainText parameter, it can only be used on the computer it was created on and by the user account that created it.</para>
+            </maml:Alert>
+        </maml:AlertSet>
+        <command:examples>
+            <command:example>
+                <maml:title>Example 1: Get all profiles.</maml:title>
+                <dev:code>Get-sthMailProfile
+                
+ProfileName : MailProfile
+From        : source@domain.com
+To          : {destination@domain.com}
+PasswordIs  : NotExist
+SmtpServer  : smtp.domain.com
+
+ProfileName : MailProfile2
+From        : source@domain.com
+To          : {destination@domain.com}
+UserName    : user@domain.com
+PasswordIs  : PlainText
+SmtpServer  : smtp.domain.com
+
+ProfileName : MailProfile3
+From        : source@domain.com
+To          : {destination@domain.com}
+UserName    : user@domain.com
+PasswordIs  : Secured
+SmtpServer  : smtp.domain.com</dev:code>
+                <dev:remarks>
+                    <maml:para>The command gets all profiles and displays their settings.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 2: Get profile by name.</maml:title>
+                <dev:code>Get-sthMailProfile MailProfile
+
+ProfileName : MailProfile
+From        : source@domain.com
+To          : {destination@domain.com}
+PasswordIs  : NotExist
+SmtpServer  : smtp.domain.com</dev:code>
+                <dev:remarks>
+                    <maml:para>The command gets profile "MailProfile" and displays its settings.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 3: Get profiles by using wildcards.</maml:title>
+                <dev:code>Get-sthMailProfile -ProfileName Mail*
+                
+ProfileName : MailProfile
+From        : source@domain.com
+To          : {destination@domain.com}
+PasswordIs  : NotExist
+SmtpServer  : smtp.domain.com
+
+ProfileName : MailProfile2
+From        : source@domain.com
+To          : {destination@domain.com}
+UserName    : user@domain.com
+PasswordIs  : PlainText
+SmtpServer  : smtp.domain.com
+
+ProfileName : MailProfile3
+From        : source@domain.com
+To          : {destination@domain.com}
+UserName    : user@domain.com
+PasswordIs  : Secured
+SmtpServer  : smtp.domain.com</dev:code>
+                <dev:remarks>
+                    <maml:para>The command gets profiles which name starts with "Mail" and displays their settings.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 4: Get profiles and display their settings including password.</maml:title>
+                <dev:code>Get-sthMailProfile -ShowPassword
+                
+ProfileName : MailProfile
+From        : source@domain.com
+To          : {destination@domain.com}
+PasswordIs  : NotExist
+SmtpServer  : smtp.domain.com
+
+ProfileName : MailProfile2
+From        : source@domain.com
+To          : {destination@domain.com}
+UserName    : user@domain.com
+Password    : password
+PasswordIs  : PlainText
+SmtpServer  : smtp.domain.com
+
+ProfileName : MailProfile3
+From        : source@domain.com
+To          : {destination@domain.com}
+UserName    : user@domain.com
+Password    : password
+PasswordIs  : Secured
+SmtpServer  : smtp.domain.com</dev:code>
+                <dev:remarks>
+                    <maml:para>The command gets all profiles and displays their settings including password.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+        </command:examples>
+    </command:command>
+    <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" 
+        xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" 
+        xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" 
+        xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+        <command:details>
+            <command:name>Remove-sthMailProfile</command:name>
+            <command:verb>Remove</command:verb>
+            <command:noun>sthMailProfile</command:noun>
+            <maml:description>
+                <maml:para>Removes mail profiles.
+                </maml:para>
+            </maml:description>
+        </command:details>
+        <maml:description>
+            <maml:para>The Remove-sthMailProfile function removes specified profiles.
+            </maml:para>
+            <maml:para>Profile is an xml file, located in the "Profiles" directory in the module's folder and containing settings, such as: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            </maml:para>
+            <maml:para>Profile can be created by the New-sthMailProfile function and used by the Send-sthMailMessage function.
+            </maml:para>
+        </maml:description>
+        <command:syntax>
+            <command:syntaxItem>
+                <maml:name>Remove-sthMailProfile</maml:name>
+                <command:parameter required="true" variableLength="true" globbing="true" pipelineInput="False" position="0" aliases="none">
+                    <maml:name>ProfileName</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the names of the profiles to remove.
+                        </maml:para>
+                        <maml:para>Wildcards are permitted.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
+        </command:syntax>
+        <command:parameters>
+            <command:parameter required="true" variableLength="true" globbing="true" pipelineInput="False" position="0" aliases="none">
+                <maml:name>ProfileName</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the names of the profiles to remove.
+                    </maml:para>
+                    <maml:para>Wildcards are permitted.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                <dev:type>
+                    <maml:name>String[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+        </command:parameters>
+        <command:examples>
+            <command:example>
+                <maml:title>Example 1: Remove a profile.</maml:title>
+                <dev:code>Remove-sthMailProfile -ProfileName "MailProfile"</dev:code>
+                <dev:remarks>
+                    <maml:para>The command removes the profile "MailProfile".</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 2: Remove profiles by using wildcards.</maml:title>
+                <dev:code>Remove-sthMailProfile -ProfileName "Mail*"</dev:code>
+                <dev:remarks>
+                    <maml:para>The command removes the profiles which name starts with "Mail".</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 3: Remove all profiles.</maml:title>
+                <dev:code>Remove-sthMailProfile -ProfileName *</dev:code>
+                <dev:remarks>
+                    <maml:para>The command removes all profiles.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+        </command:examples>
+    </command:command>
+</helpItems>
