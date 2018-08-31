@@ -12,7 +12,7 @@
 
 [**Remove-sthMailProfile**](#remove-sthmailprofile) - Функция удаляет указанные профили электронной почты.
 
-Профиль - это файл xml, расположенный в каталоге "Profiles", находящемся в папке модуля и содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+Профиль - это файл xml, расположенный в каталоге "Profiles", находящемся в папке модуля и содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, и Priority.
 
 Вы можете установить модуль sthMailProfile из PowerShell Gallery:
 
