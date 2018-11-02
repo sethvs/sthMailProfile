@@ -38,6 +38,34 @@ Describe "sthMailProfile" {
         }
     }
 
+    function TestMailProfileContent
+    {
+        Param ($Name, $Value)
+
+        foreach ($Setting in $ContextSettings.Keys)
+        {
+            switch ($ContextSettings.$Setting.GetType().FullName)
+            {
+                'System.String'
+                {
+                    $MailProfile.$Setting | Should -BeExactly $ContextSettings.$Setting
+                }
+                'System.Object[]'
+                {
+                    $MailProfile.$Setting.Count | Should -BeExactly $ContextSettings.$Setting.Count
+                    for ($i = 0; $i -lt $ContextSettings.$Setting.Count; $i++)
+                    {
+                        $MailProfile.$Setting[$i] | Should -BeExactly $ContextSettings.$Setting[$i]
+                    }
+                }
+                'System.Boolean'
+                {
+                    $MailProfile.$Setting.IsPresent | Should -BeExactly $ContextSettings.$Setting
+                }
+            }
+        }
+    }
+
     Context "New-sthMailProfile" {
 
         Context "Profile without credential" {
@@ -65,29 +93,8 @@ Describe "sthMailProfile" {
             }
 
             It "Should contain property '<Name>' with value '<Value>'" -TestCases $($TestCases + @{Name = 'PasswordIs'; Value = 'NotExist'}) {
-                Param ($Name, $Value)
-                foreach ($Setting in $ContextSettings.Keys)
-                {
-                    switch ($ContextSettings.$Setting.GetType().FullName)
-                    {
-                        'System.String'
-                        {
-                            $MailProfile.$Setting | Should -BeExactly $ContextSettings.$Setting
-                        }
-                        'System.Object[]'
-                        {
-                            $MailProfile.$Setting.Count | Should -BeExactly $ContextSettings.$Setting.Count
-                            for ($i = 0; $i -lt $ContextSettings.$Setting.Count; $i++)
-                            {
-                                $MailProfile.$Setting[$i] | Should -BeExactly $ContextSettings.$Setting[$i]
-                            }
-                        }
-                        'System.Boolean'
-                        {
-                            $MailProfile.$Setting.IsPresent | Should -BeExactly $ContextSettings.$Setting
-                        }
-                    }
-                }
+                
+                TestMailProfileContent
             }
         }
     }
