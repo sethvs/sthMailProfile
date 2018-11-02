@@ -66,35 +66,6 @@ Describe "sthMailProfile" {
         }
     }
 
-    # remove
-    # function TestMailProfileContent_v1
-    # {
-    #     Param ($Name, $Value)
-
-    #     foreach ($Setting in $ContextSettings.Keys)
-    #     {
-    #         switch ($ContextSettings.$Setting.GetType().FullName)
-    #         {
-    #             'System.String'
-    #             {
-    #                 $MailProfile.$Setting | Should -BeExactly $ContextSettings.$Setting
-    #             }
-    #             'System.Object[]'
-    #             {
-    #                 $MailProfile.$Setting.Count | Should -BeExactly $ContextSettings.$Setting.Count
-    #                 for ($i = 0; $i -lt $ContextSettings.$Setting.Count; $i++)
-    #                 {
-    #                     $MailProfile.$Setting[$i] | Should -BeExactly $ContextSettings.$Setting[$i]
-    #                 }
-    #             }
-    #             'System.Boolean'
-    #             {
-    #                 $MailProfile.$Setting.IsPresent | Should -BeExactly $ContextSettings.$Setting
-    #             }
-    #         }
-    #     }
-    # }
-
     function DuplicateOrderedDictionary
     {
         Param (
@@ -114,18 +85,17 @@ Describe "sthMailProfile" {
 
     function ComposeTestCases
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingPlainTextForPassword","")]
         Param (
             [array]$TestCasesTemplate,
             [string[]]$Remove,
-            [hashtable[]]$Add
+            [ValidateSet('Secured','PlainText','NotExist')]
+            [string]$PasswordIs
         )
 
         $TestCases = $TestCasesTemplate | Where-Object {$_.Name -notin $Remove}
         
-        foreach ($a in $Add)
-        {
-            $TestCases += $a
-        }
+        $TestCases += @{Name = 'PasswordIs'; Value = $PasswordIs}
 
         return $TestCases
     }
@@ -140,13 +110,9 @@ Describe "sthMailProfile" {
                 $ContextSettings.Remove('Credential')
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
-                # $TestCases = @($ContextSettings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'PasswordIs'; Value = 'NotExist'}
-                # $TestCases = DuplicateOrderedDictionary $TestCasesTemplate
-                # $TestCases.Remove('UserName')
-                # $TestCases.Remove('Password')
 
-                $TestCases = ComposeTestCases $TestCasesTemplate 'UserName','Password','Credential' @{Name = 'PasswordIs'; Value = 'NotExist'}
-                
+                $TestCases = ComposeTestCases $TestCasesTemplate 'UserName','Password','Credential' 'NotExist'
+
                 It "Should create the profile" {
                     $MailProfile | Should -Not -BeNullOrEmpty
                 }
@@ -173,60 +139,106 @@ Describe "sthMailProfile" {
                 $ContextSettings = DuplicateOrderedDictionary $Settings
                 $ContextSettings.Remove('Credential')
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
-                
-                # $TestCases = @($ContextSettings.GetEnumerator() | Where-Object {$_.Name -ne 'Password'} | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'PasswordIs'; Value = 'Secured'}
-
-                $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' @{Name = 'PasswordIs'; Value = 'Secured'}
 
                 It "Should create the profile" {
-                    $MailProfile | Should -Not -BeNullOrEmpty
+                    Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
                 }
             }
-
+            
             AfterAll {
                 Remove-sthMailProfile -ProfileName $ProfileName
-
+                
                 It "Should remove the profile" {
                     Get-sthMailProfile | Should -BeNullOrEmpty
                 }
             }
+            
+            Context "Get-sthMailProfile" {
+                
+                BeforeAll {
+                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
+                    $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured'
+                }
+                
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
+            }
+            
+            Context "Get-sthMailProfile -ShowPassword" {
+                
+                BeforeAll {
+                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
+                    $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' 'Secured'
+                }
 
-            It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
-
-                Param ($Name, $Value)
-                TestMailProfileContent -Name $Name -Value $Value
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+        
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
             }
         }
 
-        Context "Profile with -UserName, -Password, and -ShowPassword parameters" {
+        Context "Profile with -UserName and -Password parameters with empty string password" {
 
             BeforeAll {
-                $ContextSettings = DuplicateOrderedDictionary $Settings
+                $SettingsEmptyPassword = DuplicateOrderedDictionary $Settings
+                # $Local:Settings = DuplicateOrderedDictionary $Settings
+                $SettingsEmptyPassword.Password = ''
+                # $Settings.Password = ''
+                # $ContextSettings = DuplicateOrderedDictionary $Settings
+                $ContextSettings = DuplicateOrderedDictionary $SettingsEmptyPassword
+
+                $TestCasesTemplateEmptyPassword = @($SettingsEmptyPassword.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
+                # $Local:TestCasesTemplate = @($Settings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
+
                 $ContextSettings.Remove('Credential')
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
-                
-                # $TestCases = @($ContextSettings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'PasswordIs'; Value = 'Secured'}
-                $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' @{Name = 'PasswordIs'; Value = 'Secured'}
 
                 It "Should create the profile" {
-                    $MailProfile | Should -Not -BeNullOrEmpty
+                    Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
                 }
             }
-
+            
             AfterAll {
                 Remove-sthMailProfile -ProfileName $ProfileName
-
+                
                 It "Should remove the profile" {
                     Get-sthMailProfile | Should -BeNullOrEmpty
                 }
             }
+            
+            Context "Get-sthMailProfile" {
+                
+                BeforeAll {
+                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
+                    # $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured'
+                    $TestCases = ComposeTestCases $TestCasesTemplateEmptyPassword 'Password','Credential' 'Secured'
+                }
+                
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
+            }
+            
+            Context "Get-sthMailProfile -ShowPassword" {
+                
+                BeforeAll {
+                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
+                    # $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' 'Secured'
+                    $TestCases = ComposeTestCases $TestCasesTemplateEmptyPassword 'Credential' 'Secured'
+                }
 
-            It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
-
-                Param ($Name, $Value)
-                TestMailProfileContent -Name $Name -Value $Value
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+        
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
             }
         }
 
@@ -237,13 +249,9 @@ Describe "sthMailProfile" {
                 $ContextSettings.Remove('UserName')
                 $ContextSettings.Remove('Password')
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
-
-                # $TestCases = @($ContextSettings.GetEnumerator() | Where-Object {$_.Name -ne 'Credential'} | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'UserName'; Value = 'TheUser'} + @{Name = 'PasswordIs'; Value = 'Secured'}
-                $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' @{Name = 'PasswordIs'; Value = 'Secured'}
 
                 It "Should create the profile" {
-                    $MailProfile | Should -Not -BeNullOrEmpty
+                    Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
                 }
             }
 
@@ -255,10 +263,32 @@ Describe "sthMailProfile" {
                 }
             }
 
-            It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+            Context "Get-sthMailProfile" {
+                
+                BeforeAll {
+                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
+                    $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured'
+                }
+                
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
+            }
+            
+            Context "Get-sthMailProfile -ShowPassword" {
+                
+                BeforeAll {
+                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
+                    $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' 'Secured'
+                }
 
-                Param ($Name, $Value)
-                TestMailProfileContent -Name $Name -Value $Value
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+        
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
             }
         }
     }
