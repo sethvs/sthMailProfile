@@ -20,8 +20,7 @@ Describe "sthMailProfile" {
             Priority = 'Normal'
         }
 
-        # $TestCases = DuplicateOrderedDictionary $Settings
-        # $TestCases.Remove('Credential')
+        $TestCasesTemplate = @($Settings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
 
         $ProfileName = '_Profile'
         $ProfileFilePath = 'TestDrive:\_Profile.xml'
@@ -67,33 +66,34 @@ Describe "sthMailProfile" {
         }
     }
 
-    function TestMailProfileContent_v1 # remove
-    {
-        Param ($Name, $Value)
+    # remove
+    # function TestMailProfileContent_v1
+    # {
+    #     Param ($Name, $Value)
 
-        foreach ($Setting in $ContextSettings.Keys)
-        {
-            switch ($ContextSettings.$Setting.GetType().FullName)
-            {
-                'System.String'
-                {
-                    $MailProfile.$Setting | Should -BeExactly $ContextSettings.$Setting
-                }
-                'System.Object[]'
-                {
-                    $MailProfile.$Setting.Count | Should -BeExactly $ContextSettings.$Setting.Count
-                    for ($i = 0; $i -lt $ContextSettings.$Setting.Count; $i++)
-                    {
-                        $MailProfile.$Setting[$i] | Should -BeExactly $ContextSettings.$Setting[$i]
-                    }
-                }
-                'System.Boolean'
-                {
-                    $MailProfile.$Setting.IsPresent | Should -BeExactly $ContextSettings.$Setting
-                }
-            }
-        }
-    }
+    #     foreach ($Setting in $ContextSettings.Keys)
+    #     {
+    #         switch ($ContextSettings.$Setting.GetType().FullName)
+    #         {
+    #             'System.String'
+    #             {
+    #                 $MailProfile.$Setting | Should -BeExactly $ContextSettings.$Setting
+    #             }
+    #             'System.Object[]'
+    #             {
+    #                 $MailProfile.$Setting.Count | Should -BeExactly $ContextSettings.$Setting.Count
+    #                 for ($i = 0; $i -lt $ContextSettings.$Setting.Count; $i++)
+    #                 {
+    #                     $MailProfile.$Setting[$i] | Should -BeExactly $ContextSettings.$Setting[$i]
+    #                 }
+    #             }
+    #             'System.Boolean'
+    #             {
+    #                 $MailProfile.$Setting.IsPresent | Should -BeExactly $ContextSettings.$Setting
+    #             }
+    #         }
+    #     }
+    # }
 
     function DuplicateOrderedDictionary
     {
@@ -112,6 +112,24 @@ Describe "sthMailProfile" {
         return $ContextSettings
     }
 
+    function ComposeTestCases
+    {
+        Param (
+            [array]$TestCasesTemplate,
+            [string[]]$Remove,
+            [hashtable[]]$Add
+        )
+
+        $TestCases = $TestCasesTemplate | Where-Object {$_.Name -notin $Remove}
+        
+        foreach ($a in $Add)
+        {
+            $TestCases += $a
+        }
+
+        return $TestCases
+    }
+
     Context "New-sthMailProfile" {
 
         Context "Profile without credential" {
@@ -122,7 +140,12 @@ Describe "sthMailProfile" {
                 $ContextSettings.Remove('Credential')
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
-                $TestCases = @($ContextSettings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'PasswordIs'; Value = 'NotExist'}
+                # $TestCases = @($ContextSettings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'PasswordIs'; Value = 'NotExist'}
+                # $TestCases = DuplicateOrderedDictionary $TestCasesTemplate
+                # $TestCases.Remove('UserName')
+                # $TestCases.Remove('Password')
+
+                $TestCases = ComposeTestCases $TestCasesTemplate 'UserName','Password','Credential' @{Name = 'PasswordIs'; Value = 'NotExist'}
                 
                 It "Should create the profile" {
                     $MailProfile | Should -Not -BeNullOrEmpty
@@ -152,7 +175,9 @@ Describe "sthMailProfile" {
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
                 
-                $TestCases = @($ContextSettings.GetEnumerator() | Where-Object {$_.Name -ne 'Password'} | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'PasswordIs'; Value = 'Secured'}
+                # $TestCases = @($ContextSettings.GetEnumerator() | Where-Object {$_.Name -ne 'Password'} | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'PasswordIs'; Value = 'Secured'}
+
+                $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' @{Name = 'PasswordIs'; Value = 'Secured'}
 
                 It "Should create the profile" {
                     $MailProfile | Should -Not -BeNullOrEmpty
@@ -182,7 +207,8 @@ Describe "sthMailProfile" {
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
                 
-                $TestCases = @($ContextSettings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'PasswordIs'; Value = 'Secured'}
+                # $TestCases = @($ContextSettings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'PasswordIs'; Value = 'Secured'}
+                $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' @{Name = 'PasswordIs'; Value = 'Secured'}
 
                 It "Should create the profile" {
                     $MailProfile | Should -Not -BeNullOrEmpty
@@ -213,7 +239,8 @@ Describe "sthMailProfile" {
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
 
-                $TestCases = @($ContextSettings.GetEnumerator() | Where-Object {$_.Name -ne 'Credential'} | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'UserName'; Value = 'TheUser'} + @{Name = 'PasswordIs'; Value = 'Secured'}
+                # $TestCases = @($ContextSettings.GetEnumerator() | Where-Object {$_.Name -ne 'Credential'} | ForEach-Object {@{Name = $_.Name; Value = $_.Value}}) + @{Name = 'UserName'; Value = 'TheUser'} + @{Name = 'PasswordIs'; Value = 'Secured'}
+                $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' @{Name = 'PasswordIs'; Value = 'Secured'}
 
                 It "Should create the profile" {
                     $MailProfile | Should -Not -BeNullOrEmpty
