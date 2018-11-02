@@ -180,6 +180,7 @@ Describe "sthMailProfile" {
     Context "New-sthMailProfile" {
 
         Context "Profile without credential" {
+
             BeforeAll {
                 $ContextSettings = DuplicateOrderedDictionary $Settings
                 $ContextSettings.Remove('UserName')
@@ -196,13 +197,13 @@ Describe "sthMailProfile" {
                 }
             }
 
-            AfterAll { RemoveProfile -ProfileName $ProfileName }
-
             It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
 
                 Param ($Name, $Value)
                 TestMailProfileContent -Name $Name -Value $Value
             }
+
+            RemoveProfile -ProfileName $ProfileName
         }
 
         Context "Profile with -UserName and -Password parameters" {
@@ -213,27 +214,22 @@ Describe "sthMailProfile" {
             }
 
             Context "New-sthMailProfile" {
-                BeforeAll {
-                    New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                    TestProfileExistence -ProfileName $ProfileName
-                }
-                
-                AfterAll { RemoveProfile -ProfileName $ProfileName }
-                
+
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
+                TestProfileExistence -ProfileName $ProfileName
+
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
+                RemoveProfile -ProfileName $ProfileName
             }
 
             Context "New-sthMailProfile -StorePasswordInPlainText" {
-                BeforeAll {
-                    New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
-                    TestProfileExistence -ProfileName $ProfileName
-                }
-                
-                AfterAll { RemoveProfile -ProfileName $ProfileName }
+
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
+                TestProfileExistence -ProfileName $ProfileName
 
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
+                RemoveProfile -ProfileName $ProfileName
             }
-
         }
 
         Context "Profile with -UserName and -Password parameters with empty string password" {
@@ -251,10 +247,9 @@ Describe "sthMailProfile" {
 
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
                 TestProfileExistence -ProfileName $ProfileName
-                
-                AfterAll { RemoveProfile -ProfileName $ProfileName }
 
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
+                RemoveProfile -ProfileName $ProfileName
             }
 
             Context "New-sthMailProfile -StorePasswordInPlainText" {
@@ -262,9 +257,8 @@ Describe "sthMailProfile" {
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
                 TestProfileExistence -ProfileName $ProfileName
                 
-                AfterAll { RemoveProfile -ProfileName $ProfileName }
-
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
+                RemoveProfile -ProfileName $ProfileName
             }
         }
 
@@ -280,29 +274,22 @@ Describe "sthMailProfile" {
 
             Context "New-sthMailProfile" {
 
-                BeforeAll {
-                    New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                    TestProfileExistence -ProfileName $ProfileName
-                }
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
+                TestProfileExistence -ProfileName $ProfileName
                 
-                AfterAll { RemoveProfile -ProfileName $ProfileName }
-
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
+                RemoveProfile -ProfileName $ProfileName
             }
 
             Context "New-sthMailProfile -StorePasswordInPlainText" {
 
-                BeforeAll {
-                    New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
-                    TestProfileExistence -ProfileName $ProfileName
-                }
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
+                TestProfileExistence -ProfileName $ProfileName
                 
-                AfterAll { RemoveProfile -ProfileName $ProfileName }
-
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
+                RemoveProfile -ProfileName $ProfileName
             }
         }
-
 
         Context "Profile with -Credentialparameter" {
 
@@ -310,28 +297,24 @@ Describe "sthMailProfile" {
                 $ContextSettings = DuplicateOrderedDictionary $Settings
                 $ContextSettings.Remove('UserName')
                 $ContextSettings.Remove('Password')
-
             }
-            Context "New-sthMailProfile" {
-                BeforeAll {
-                    New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                    TestProfileExistence -ProfileName $ProfileName
-                }
 
-                AfterAll { RemoveProfile -ProfileName $ProfileName }
+            Context "New-sthMailProfile" {
+
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
+                TestProfileExistence -ProfileName $ProfileName
 
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
+                RemoveProfile -ProfileName $ProfileName
             }
 
             Context "New-sthMailProfile -StorePasswordInPlainText" {
-                BeforeAll {
-                    New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
-                    TestProfileExistence -ProfileName $ProfileName
-                }
 
-                AfterAll { RemoveProfile -ProfileName $ProfileName }
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
+                TestProfileExistence -ProfileName $ProfileName
 
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
+                RemoveProfile -ProfileName $ProfileName
             }
         }
     }
