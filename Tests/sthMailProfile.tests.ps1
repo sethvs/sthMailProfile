@@ -115,10 +115,8 @@ Describe "sthMailProfile" {
         {
             Context "Get-sthMailProfile" {
                     
-                BeforeAll {
-                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
-                    $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' $PasswordIs
-                }
+                $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
+                $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' $PasswordIs
 
                 It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
                     
@@ -126,16 +124,14 @@ Describe "sthMailProfile" {
                     TestMailProfileContent -Name $Name -Value $Value
                 }
             }
-            
+
             Context "Get-sthMailProfile -ShowPassword" {
                 
-                BeforeAll {
-                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
-                    $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' $PasswordIs
-                }
+                $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
+                $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' $PasswordIs
     
                 It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
-        
+
                     Param ($Name, $Value)
                     TestMailProfileContent -Name $Name -Value $Value
                 }
@@ -186,15 +182,12 @@ Describe "sthMailProfile" {
                 $ContextSettings.Remove('UserName')
                 $ContextSettings.Remove('Password')
                 $ContextSettings.Remove('Credential')
+                
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
                 TestProfileExistence -ProfileName $ProfileName
 
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
                 $TestCases = ComposeTestCases $TestCasesTemplate 'UserName','Password','Credential' 'NotExist'
-
-                It "Should create the profile" {
-                    $MailProfile | Should -Not -BeNullOrEmpty
-                }
             }
 
             It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
@@ -208,10 +201,8 @@ Describe "sthMailProfile" {
 
         Context "Profile with -UserName and -Password parameters" {
 
-            BeforeAll {
-                $ContextSettings = DuplicateOrderedDictionary $Settings
-                $ContextSettings.Remove('Credential')
-            }
+            $ContextSettings = DuplicateOrderedDictionary $Settings
+            $ContextSettings.Remove('Credential')
 
             Context "New-sthMailProfile" {
 
@@ -234,7 +225,7 @@ Describe "sthMailProfile" {
 
         Context "Profile with -UserName and -Password parameters with empty string password" {
 
-            # BeforeAll executes in upper scope and not in context one, but we need this to execute in the context scope.
+            # BeforeAll executes in upper scope and not in the context one, but we need this to execute in the context scope.
             $Settings = DuplicateOrderedDictionary $Settings
             $Settings.Password = ''
             $ContextSettings = DuplicateOrderedDictionary $Settings
@@ -264,13 +255,11 @@ Describe "sthMailProfile" {
 
         Context "Profile with -UserName parameter and -Password parameter value from Read-Host" {
 
-            BeforeAll {
-                Mock "Read-Host" $([scriptblock]::Create("ConvertTo-SecureString -String $($Settings.Password) -AsPlainText -Force")) -ModuleName sthMailProfile
+            Mock "Read-Host" $([scriptblock]::Create("ConvertTo-SecureString -String $($Settings.Password) -AsPlainText -Force")) -ModuleName sthMailProfile
 
-                $ContextSettings = DuplicateOrderedDictionary $Settings
-                $ContextSettings.Remove('Credential')
-                $ContextSettings.Remove('Password')
-            }
+            $ContextSettings = DuplicateOrderedDictionary $Settings
+            $ContextSettings.Remove('Credential')
+            $ContextSettings.Remove('Password')
 
             Context "New-sthMailProfile" {
 
@@ -293,11 +282,9 @@ Describe "sthMailProfile" {
 
         Context "Profile with -Credentialparameter" {
 
-            BeforeAll {
-                $ContextSettings = DuplicateOrderedDictionary $Settings
-                $ContextSettings.Remove('UserName')
-                $ContextSettings.Remove('Password')
-            }
+            $ContextSettings = DuplicateOrderedDictionary $Settings
+            $ContextSettings.Remove('UserName')
+            $ContextSettings.Remove('Password')
 
             Context "New-sthMailProfile" {
 
