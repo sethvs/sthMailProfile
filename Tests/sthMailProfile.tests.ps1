@@ -79,8 +79,8 @@ Describe "sthMailProfile" {
                 $TestCases = @($ContextSettings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
                 
                 It "Should create the profile" {
-                    # Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
                     $MailProfile | Should -Not -BeNullOrEmpty
+                    # Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
                 }
             }
 
