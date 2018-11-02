@@ -100,6 +100,37 @@ Describe "sthMailProfile" {
         return $TestCases
     }
 
+    function TestMailProfile
+    {
+        Context "Get-sthMailProfile" {
+                
+            BeforeAll {
+                $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
+                $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured'
+            }
+            
+            It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                
+                Param ($Name, $Value)
+                TestMailProfileContent -Name $Name -Value $Value
+            }
+        }
+        
+        Context "Get-sthMailProfile -ShowPassword" {
+            
+            BeforeAll {
+                $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
+                $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' 'Secured'
+            }
+
+            It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+    
+                Param ($Name, $Value)
+                TestMailProfileContent -Name $Name -Value $Value
+            }
+        }
+    }
+
     Context "New-sthMailProfile" {
 
         Context "Profile without credential" {
@@ -152,8 +183,9 @@ Describe "sthMailProfile" {
                     Get-sthMailProfile | Should -BeNullOrEmpty
                 }
             }
-            
-            Context "Get-sthMailProfile" {
+            TestMailProfile
+
+            <#             Context "Get-sthMailProfile" {
                 
                 BeforeAll {
                     $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
@@ -179,7 +211,7 @@ Describe "sthMailProfile" {
                     Param ($Name, $Value)
                     TestMailProfileContent -Name $Name -Value $Value
                 }
-            }
+            } #>
         }
 
         Context "Profile with -UserName and -Password parameters with empty string password" {
@@ -211,6 +243,8 @@ Describe "sthMailProfile" {
                 }
             }
             
+            # TestMailProfile 
+
             Context "Get-sthMailProfile" {
                 
                 BeforeAll {
@@ -240,13 +274,39 @@ Describe "sthMailProfile" {
                     TestMailProfileContent -Name $Name -Value $Value
                 }
             }
+
+            
         }
 
-        Context "Profile with -Credentialparameter" {
+        Context "Profile with -UserName parameter and -Password parameter value from Read-Host" {
+
+            # Mock "Read-Host" { ConvertTo-SecureString -String $Settings.Password -AsPlainText -Force }
 
             BeforeAll {
+                # Mock "Read-Host" { ConvertTo-SecureString -String $Settings.Password -AsPlainText -Force }
+                # Mock "Read-Host" { ConvertTo-SecureString -String $Settings.Password -AsPlainText -Force } -ModuleName sthMailProfile
+                # Mock "Read-Host" { ConvertTo-SecureString -String 'ThePassword' -AsPlainText -Force } -ModuleName sthMailProfile
+                # Mock "Read-Host" { ConvertTo-SecureString -String $Using:Settings.Password -AsPlainText -Force } -ModuleName sthMailProfile
+                # $ScriptBlock = { ConvertTo-SecureString -String 'ThePassword' -AsPlainText -Force }
+                # $ScriptBlock = { ConvertTo-SecureString -String $Settings.Password -AsPlainText -Force }
+                # $ScriptBlock = { ConvertTo-SecureString -String $Settings.Password -AsPlainText -Force }.GetNewClosure()
+                # Mock "Read-Host" $ScriptBlock -ModuleName sthMailProfile
+                
+                # $ScriptBlockString = "ConvertTo-SecureString -String $Settings.Password -AsPlainText -Force"
+                # $ScriptBlock = { ConvertTo-SecureString -String 'ThePassword' -AsPlainText -Force }
+
+                # $ScriptBlockString = "ConvertTo-SecureString -String $($Settings.Password) -AsPlainText -Force"
+                # $ScriptBlock = [scriptblock]::Create($ScriptBlockString)
+                # Mock "Read-Host" $ScriptBlock -ModuleName sthMailProfile
+                
+                # $ScriptBlock = [scriptblock]::Create("ConvertTo-SecureString -String $($Settings.Password) -AsPlainText -Force")
+                # Mock "Read-Host" $ScriptBlock -ModuleName sthMailProfile
+
+                Mock "Read-Host" $([scriptblock]::Create("ConvertTo-SecureString -String $($Settings.Password) -AsPlainText -Force")) -ModuleName sthMailProfile
+
+                # Mock "Read-Host" { ConvertTo-SecureString -String $Settings.Password -AsPlainText -Force }
                 $ContextSettings = DuplicateOrderedDictionary $Settings
-                $ContextSettings.Remove('UserName')
+                $ContextSettings.Remove('Credential')
                 $ContextSettings.Remove('Password')
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings
 
@@ -254,15 +314,17 @@ Describe "sthMailProfile" {
                     Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
                 }
             }
-
+            
             AfterAll {
                 Remove-sthMailProfile -ProfileName $ProfileName
-
+                
                 It "Should remove the profile" {
                     Get-sthMailProfile | Should -BeNullOrEmpty
                 }
             }
-
+            
+            TestMailProfile
+<# 
             Context "Get-sthMailProfile" {
                 
                 BeforeAll {
@@ -290,6 +352,60 @@ Describe "sthMailProfile" {
                     TestMailProfileContent -Name $Name -Value $Value
                 }
             }
+ #>
+        }
+
+        Context "Profile with -Credentialparameter" {
+
+            BeforeAll {
+                $ContextSettings = DuplicateOrderedDictionary $Settings
+                $ContextSettings.Remove('UserName')
+                $ContextSettings.Remove('Password')
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
+
+                It "Should create the profile" {
+                    Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
+                }
+            }
+
+            AfterAll {
+                Remove-sthMailProfile -ProfileName $ProfileName
+
+                It "Should remove the profile" {
+                    Get-sthMailProfile | Should -BeNullOrEmpty
+                }
+            }
+
+            TestMailProfile
+<# 
+            Context "Get-sthMailProfile" {
+                
+                BeforeAll {
+                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
+                    $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured'
+                }
+                
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
+            }
+            
+            Context "Get-sthMailProfile -ShowPassword" {
+                
+                BeforeAll {
+                    $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
+                    $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' 'Secured'
+                }
+
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+        
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
+            }
+ #>
         }
     }
 }
