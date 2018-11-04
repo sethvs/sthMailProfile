@@ -151,7 +151,22 @@ function New-sthMailProfile
     {
         if ($PSBoundParameter.Key -notin 'From','To','SmtpServer','UserName','Password','ProfileName','StorePasswordInPlainText')
         {
-            $MailParameters.$($PSBoundParameter.Key) = $PSBoundParameter.Value
+            if ($PSBoundParameter.Key -eq 'Encoding')
+            {
+                [int]$CodePage = 0
+                if ([System.Int32]::TryParse($PSBoundParameter.Value, [ref]$CodePage))
+                {
+                    $MailParameters.$($PSBoundParameter.Key) = [System.Text.Encoding]::GetEncoding($CodePage)
+                }
+                else
+                {
+                    $MailParameters.$($PSBoundParameter.Key) = [System.Text.Encoding]::GetEncoding($PSBoundParameter.Value)
+                }
+            }
+            else
+            {
+                $MailParameters.$($PSBoundParameter.Key) = $PSBoundParameter.Value
+            }
         }
     }
 
@@ -182,6 +197,7 @@ function Get-sthMailProfile
         foreach ($ProfilePath in (Get-ChildItem -Path $("$FolderPath\$PName.xml") | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
         {
             $xml = Import-Clixml -Path $ProfilePath.FullName
+            $xml.Encoding = [System.Text.Encoding]::GetEncoding($xml.Encoding.CodePage)
             
             $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority)
             $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfilePath.Name.Substring(0,$ProfilePath.Name.Length - 4)

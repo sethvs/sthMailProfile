@@ -328,6 +328,8 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                     <maml:Description>
                         <maml:para>Указывает кодировку сообщения электронной почты.
                         </maml:para>
+                        <maml:para>Вы можете указать как имя кодовой страницы, например 'unicode', так и ее числовое значение, например '1200'.
+                        </maml:para>
                     </maml:Description>
                     <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
                     <dev:type>
@@ -529,6 +531,8 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                     <maml:name>Encoding</maml:name>
                     <maml:Description>
                         <maml:para>Указывает кодировку сообщения электронной почты.
+                        </maml:para>
+                        <maml:para>Вы можете указать как имя кодовой страницы, например 'unicode', так и ее числовое значение, например '1200'.
                         </maml:para>
                     </maml:Description>
                     <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
@@ -763,6 +767,8 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                 <maml:name>Encoding</maml:name>
                 <maml:Description>
                     <maml:para>Указывает кодировку сообщения электронной почты.
+                    </maml:para>
+                    <maml:para>Вы можете указать как имя кодовой страницы, например 'unicode', так и ее числовое значение, например '1200'.
                     </maml:para>
                 </maml:Description>
                 <command:parameterValue required="false" variableLength="false">String</command:parameterValue>

@@ -12,7 +12,7 @@
 RootModule = 'sthMailProfile.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0'
+ModuleVersion = '1.0.1'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -110,7 +110,11 @@ PrivateData = @{
         # IconUri = ''
 
         # ReleaseNotes of this module
-        # ReleaseNotes = ''
+        ReleaseNotes = @'
+## 1.0.1
+
+- New-sthMailProfile -Encoding parameter in addition to encoding name, for example 'unicode', now also supports numerical code page value, for example '1200'.
+'@
 
     } # End of PSData hashtable
 
