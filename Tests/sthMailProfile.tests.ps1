@@ -125,6 +125,93 @@ Describe "sthMailProfile" {
         return $TestCases
     }
 
+    $ScriptBlockText = '
+        $Body -eq "TheMessage`r`n" -and 
+        $Subject -eq "TheSubject" -and
+        $Attachments -eq "TestDrive:\TheAttachment.xml" -and
+        $From -eq $($Settings.From) -and 
+
+        $($To.Count) -eq $($Settings.To.Count) -and
+        $($Result = $true;
+        for ($i = 0; $i -lt $($To.Count); $i++)
+        {
+            if ($To[$i] -ne $($Settings.To[$i])) {$Result = $False; break}
+        }
+        $Result) -and
+
+        $Credential.UserName -eq $Settings.UserName -and 
+        [System.Net.NetworkCredential]::new("something",$Credential.Password).Password -eq $Settings.Password -and
+
+        $SmtpServer -eq $Settings.SmtpServer -and
+
+        $Port -eq $Settings.Port -and 
+        $UseSSL -eq $Settings.UseSSL -and
+        $Encoding.EncodingName -eq $Settings.Encoding -and
+        $BodyAsHtml -eq $Settings.BodyAsHtml -and
+        
+        $($CC.Count) -eq $($Settings.CC.Count) -and
+        $($Result = $true;
+        for ($i = 0; $i -lt $($CC.Count); $i++)
+        {
+            if ($CC[$i] -ne $($Settings.CC[$i])) {$Result = $False; break}
+        }
+        $Result) -and
+
+        $($BCC.Count) -eq $($Settings.BCC.Count) -and
+        $($Result = $true;
+        for ($i = 0; $i -lt $($BCC.Count); $i++)
+        {
+            if ($BCC[$i] -ne $($Settings.BCC[$i])) {$Result = $False; break}
+        }
+        $Result) -and 
+
+        $DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption -and
+        $Priority -eq $Settings.Priority
+    '
+    $ParameterFilter = [scriptblock]::Create($ScriptBlockText)
+
+    $ScriptBlockTextWithoutCredential = '
+        $Body -eq "TheMessage`r`n" -and 
+        $Subject -eq "TheSubject" -and
+        $Attachments -eq "TestDrive:\TheAttachment.xml" -and
+        $From -eq $($Settings.From) -and 
+
+        $($To.Count) -eq $($Settings.To.Count) -and
+        $($Result = $true;
+        for ($i = 0; $i -lt $($To.Count); $i++)
+        {
+            if ($To[$i] -ne $($Settings.To[$i])) {$Result = $False; break}
+        }
+        $Result) -and
+
+        $SmtpServer -eq $Settings.SmtpServer -and
+
+        $Port -eq $Settings.Port -and 
+        $UseSSL -eq $Settings.UseSSL -and
+        $Encoding.EncodingName -eq $Settings.Encoding -and
+        $BodyAsHtml -eq $Settings.BodyAsHtml -and
+        
+        $($CC.Count) -eq $($Settings.CC.Count) -and
+        $($Result = $true;
+        for ($i = 0; $i -lt $($CC.Count); $i++)
+        {
+            if ($CC[$i] -ne $($Settings.CC[$i])) {$Result = $False; break}
+        }
+        $Result) -and
+
+        $($BCC.Count) -eq $($Settings.BCC.Count) -and
+        $($Result = $true;
+        for ($i = 0; $i -lt $($BCC.Count); $i++)
+        {
+            if ($BCC[$i] -ne $($Settings.BCC[$i])) {$Result = $False; break}
+        }
+        $Result) -and 
+
+        $DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption -and
+        $Priority -eq $Settings.Priority
+    '
+    $ParameterFilterWithoutCredential = [scriptblock]::Create($ScriptBlockTextWithoutCredential)
+
     function TestMailProfile
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingPlainTextForPassword","")]
@@ -145,6 +232,7 @@ Describe "sthMailProfile" {
                     
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
                 $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' $PasswordIs
+                # $ParameterFilter = ComposeParameterFilter $TestCasesTemplate
 
                 It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
                     
@@ -153,10 +241,12 @@ Describe "sthMailProfile" {
                 }
 
                 It "Send-sthMailMessage" {
-                    Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDerive:\TheAttachment.xml'
+                    Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
+
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilter
                 }
             }
-
+            
             Context "Get-sthMailProfile -ShowPassword" {
                 
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName -ShowPassword
@@ -168,9 +258,10 @@ Describe "sthMailProfile" {
                     TestMailProfileContent -Name $Name -Value $Value
                 }
 
-                It "Send-sthMailMessage" {
-                    Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
-                }
+                # It "Send-sthMailMessage" {
+                #     Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
+                #     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly
+                # }
             }
         }
     }
@@ -226,10 +317,18 @@ Describe "sthMailProfile" {
                 $TestCases = ComposeTestCases $TestCasesTemplate 'UserName','Password','Credential' 'NotExist'
             }
 
+            mock "Send-MailMessage" -ModuleName sthMailProfile
+
             It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
 
                 Param ($Name, $Value)
                 TestMailProfileContent -Name $Name -Value $Value
+            }
+
+            It "Send-sthMailMessage" {
+                Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
+
+                Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
             }
 
             RemoveProfile -ProfileName $ProfileName
@@ -339,6 +438,39 @@ Describe "sthMailProfile" {
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
                 RemoveProfile -ProfileName $ProfileName
             }
+        }
+
+        Context "Profile with -Credentialparameter with encoding as CodePage" {
+
+            $ContextSettings = DuplicateOrderedDictionary $Settings
+            $ContextSettings.Remove('UserName')
+            $ContextSettings.Remove('Password')
+            $ContextSettings.Encoding = '1200'
+
+            Context "New-sthMailProfile" {
+
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
+                TestProfileExistence -ProfileName $ProfileName
+
+                TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
+                RemoveProfile -ProfileName $ProfileName
+            }
+
+            Context "New-sthMailProfile -StorePasswordInPlainText" {
+
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
+                TestProfileExistence -ProfileName $ProfileName
+
+                TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
+                RemoveProfile -ProfileName $ProfileName
+            }
+        }
+
+        Context "Send-sthMailMessage - non-existing profile" {
+            
+            # It "Should" {
+            #     Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
+            # }
         }
     }
 }

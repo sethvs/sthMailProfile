@@ -15,12 +15,17 @@ function Send-sthMailMessage
 
     Begin
     {
-        $Body = @()
+        # [string]$Body = ''
+        $Content = @()
     }
 
     Process
     {
-        $Body += $Message
+        # if ($Body)
+        # {
+            # $Body += "`n"
+        # }
+        $Content += $Message
     }
 
     End
@@ -53,9 +58,9 @@ function Send-sthMailMessage
 
             $Parameters.Add("Subject", $Subject)
 
-            if ($Body)
+            if ($Content)
             {
-                $Body = $Body | Out-String -Width 1000
+                $Body = $Content | Out-String -Width 1000
                 $Parameters.Add("Body", $Body)
             }
 
@@ -202,6 +207,7 @@ function Get-sthMailProfile
 
     foreach ($PName in $ProfileName)
     {
+        # Wait-Debugger
         foreach ($ProfilePath in (Get-ChildItem -Path $("$FolderPath\$PName.xml") | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
         {
             $xml = Import-Clixml -Path $ProfilePath.FullName
