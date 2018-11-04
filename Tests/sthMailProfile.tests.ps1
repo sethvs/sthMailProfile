@@ -1,10 +1,13 @@
 Remove-Module -Name sthMailProfile -Force -ErrorAction 'SilentlyContinue'
 Import-Module "$PSScriptRoot\..\sthMailProfile.psd1"
 
+Write-Host $PSVersionTable.PSVersion
+
 Describe "sthMailProfile" {
      BeforeAll {
         $Settings = [ordered]@{
             From = 'from@domain.com'
+            # From = 'fromdomain.com'
             To = 'to@domain.com','to2@domain.com'
             UserName = 'TheUser'
             Password = 'ThePassword'
@@ -13,6 +16,7 @@ Describe "sthMailProfile" {
             Port = '25'
             UseSSL = $true
             Encoding = 'unicode'
+            # Encoding = 'Unicode'
             BodyAsHtml = $true
             CC = 'cc@domain.com','cc2@domain.com'
             BCC = 'bcc@domain.com','bcc2@domain.com'
@@ -31,6 +35,9 @@ Describe "sthMailProfile" {
         {
             Rename-Item -Path "$PSScriptRoot\..\$ProfileDirectory" -NewName _OriginalProfileFolder
         }
+
+        $AttachmentPath = 'TestDrive:\TheAttachment.xml'
+        New-Item -Path $AttachmentPath -ItemType File
     }
 
     AfterAll {
@@ -39,6 +46,8 @@ Describe "sthMailProfile" {
         {
             Rename-Item -Path "$PSScriptRoot\..\_OriginalProfileFolder" -NewName $ProfileDirectory
         }
+
+        Remove-Item -Path $AttachmentPath
     }
 
     function TestMailProfileContent
@@ -122,6 +131,12 @@ Describe "sthMailProfile" {
                     
                     Param ($Name, $Value)
                     TestMailProfileContent -Name $Name -Value $Value
+                }
+
+                It "Should" {
+                    mock "Send-MailMessage" -ModuleName sthMailProfile -MockWith {Write-Host 'AAAAAAAAAAA'}
+                    Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'c:\TheAttachment.xml'
+                    # Send-sthMailMessage -ProfileName ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'c:\TheAttachment.xml'
                 }
             }
 
