@@ -15,14 +15,23 @@ Describe "sthMailProfile" {
             SmtpServer = 'smtp@domain.com'
             Port = '25'
             UseSSL = $true
-            Encoding = 'unicode'
-            # Encoding = 'Unicode'
+            # Encoding = 'unicode'
+            Encoding = 'Unicode'
+            # Encoding = [System.Text.Encoding]::GetEncoding('Unicode')
             BodyAsHtml = $true
             CC = 'cc@domain.com','cc2@domain.com'
             BCC = 'bcc@domain.com','bcc2@domain.com'
             DeliveryNotificationOption = 'OnSuccess','OnFailure','Delay'
             Priority = 'Normal'
         }
+
+        # $TestCasesTemplateScriptBlock = @{
+            # if ($_.GetType().BaseType.FullName -eq 'System.Text.Encoding')
+            # if ($_.Name -eq 'Encoding')
+            # {
+
+            # }
+        # }
 
         $TestCasesTemplate = @($Settings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
 
@@ -36,8 +45,8 @@ Describe "sthMailProfile" {
             Rename-Item -Path "$PSScriptRoot\..\$ProfileDirectory" -NewName _OriginalProfileFolder
         }
 
-        $AttachmentPath = 'TestDrive:\TheAttachment.xml'
-        New-Item -Path $AttachmentPath -ItemType File
+        # $AttachmentPath = 'TestDrive:\TheAttachment.xml'
+        # New-Item -Path $AttachmentPath -ItemType File
     }
 
     AfterAll {
@@ -47,7 +56,7 @@ Describe "sthMailProfile" {
             Rename-Item -Path "$PSScriptRoot\..\_OriginalProfileFolder" -NewName $ProfileDirectory
         }
 
-        Remove-Item -Path $AttachmentPath
+        # Remove-Item -Path $AttachmentPath
     }
 
     function TestMailProfileContent
@@ -58,7 +67,14 @@ Describe "sthMailProfile" {
         {
             'System.String'
             {
-                $MailProfile.$Name | Should -BeExactly $Value
+                if ($Name -eq 'Encoding')
+                {
+                    $MailProfile.$Name.EncodingName | Should -BeExactly $Value
+                }
+                else
+                {
+                    $MailProfile.$Name | Should -BeExactly $Value
+                }
             }
             'System.Object[]'
             {
@@ -122,6 +138,9 @@ Describe "sthMailProfile" {
 
         if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
         {
+            mock "Send-MailMessage" -ModuleName sthMailProfile
+            # mock "Send-MailMessage" -ModuleName sthMailProfile -MockWith {Write-Host 'AAAAAAAAAAA'}
+
             Context "Get-sthMailProfile" {
                     
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
@@ -133,10 +152,8 @@ Describe "sthMailProfile" {
                     TestMailProfileContent -Name $Name -Value $Value
                 }
 
-                It "Should" {
-                    mock "Send-MailMessage" -ModuleName sthMailProfile -MockWith {Write-Host 'AAAAAAAAAAA'}
-                    Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'c:\TheAttachment.xml'
-                    # Send-sthMailMessage -ProfileName ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'c:\TheAttachment.xml'
+                It "Send-sthMailMessage" {
+                    Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDerive:\TheAttachment.xml'
                 }
             }
 
@@ -149,6 +166,10 @@ Describe "sthMailProfile" {
 
                     Param ($Name, $Value)
                     TestMailProfileContent -Name $Name -Value $Value
+                }
+
+                It "Send-sthMailMessage" {
+                    Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
                 }
             }
         }

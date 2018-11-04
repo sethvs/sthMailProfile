@@ -29,7 +29,15 @@ function Send-sthMailMessage
         {
             if ($MailProfile.PasswordIs -eq 'PlainText')
             {
-                $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
+                try
+                {
+                    $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
+                }
+                catch [System.Management.Automation.ParameterBindingException]
+                {
+                    $Password = [System.Security.SecureString]::new()
+                }
+
                 $MailProfile.Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $MailProfile.Credential.UserName, $Password
             }
 
