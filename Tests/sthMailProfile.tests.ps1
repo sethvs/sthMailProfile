@@ -1,7 +1,7 @@
 Remove-Module -Name sthMailProfile -Force -ErrorAction 'SilentlyContinue'
 Import-Module "$PSScriptRoot\..\sthMailProfile.psd1"
 
-Write-Host $PSVersionTable.PSVersion
+# Write-Host $PSVersionTable.PSVersion
 
 Describe "sthMailProfile" {
      BeforeAll {
@@ -125,7 +125,7 @@ Describe "sthMailProfile" {
         return $TestCases
     }
 
-    $ScriptBlockText = '
+    $ScriptBlockText = @'
         $Body -eq "TheMessage`r`n" -and 
         $Subject -eq "TheSubject" -and
         $Attachments -eq "TestDrive:\TheAttachment.xml" -and
@@ -167,10 +167,10 @@ Describe "sthMailProfile" {
 
         $DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption -and
         $Priority -eq $Settings.Priority
-    '
+'@
     $ParameterFilter = [scriptblock]::Create($ScriptBlockText)
 
-    $ScriptBlockTextWithoutCredential = '
+    $ScriptBlockTextWithoutCredential = @'
         $Body -eq "TheMessage`r`n" -and 
         $Subject -eq "TheSubject" -and
         $Attachments -eq "TestDrive:\TheAttachment.xml" -and
@@ -209,7 +209,7 @@ Describe "sthMailProfile" {
 
         $DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption -and
         $Priority -eq $Settings.Priority
-    '
+'@
     $ParameterFilterWithoutCredential = [scriptblock]::Create($ScriptBlockTextWithoutCredential)
 
     function TestMailProfile
@@ -468,9 +468,10 @@ Describe "sthMailProfile" {
 
         Context "Send-sthMailMessage - non-existing profile" {
             
-            # It "Should" {
-            #     Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
-            # }
+            It "Should return 'Profile is not found'." {
+                Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml' | Should -BeExactly "`nProfile 'Non-Existent Profile' is not found.`n"
+            
+            }
         }
     }
 }

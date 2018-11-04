@@ -74,7 +74,8 @@ function Send-sthMailMessage
 
         else
         {
-            Write-Output -InputObject "`nProfile $ProfileName not found.`n"
+            # Write-Output -InputObject "`nProfile $ProfileName not found.`n"
+            Write-Output -InputObject "`nProfile '$ProfileName' is not found.`n"
         }
     }
 
@@ -207,8 +208,7 @@ function Get-sthMailProfile
 
     foreach ($PName in $ProfileName)
     {
-        # Wait-Debugger
-        foreach ($ProfilePath in (Get-ChildItem -Path $("$FolderPath\$PName.xml") | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
+        foreach ($ProfilePath in (Get-Item -Path $("$FolderPath\$PName.xml") -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
         {
             $xml = Import-Clixml -Path $ProfilePath.FullName
             $xml.Encoding = [System.Text.Encoding]::GetEncoding($xml.Encoding.CodePage)
