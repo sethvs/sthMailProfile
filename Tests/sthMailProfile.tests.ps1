@@ -403,15 +403,19 @@ Describe "sthMailProfile" {
                 
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
                 RemoveProfile -ProfileName $ProfileName
+
+                Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 1 -Exactly -Scope Context
             }
-
+            
             Context "New-sthMailProfile -StorePasswordInPlainText" {
-
+                
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
                 TestProfileExistence -ProfileName $ProfileName
                 
                 TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
                 RemoveProfile -ProfileName $ProfileName
+
+                Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 1 -Exactly -Scope Context
             }
         }
 
