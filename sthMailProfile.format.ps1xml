@@ -64,7 +64,11 @@
                                 </ItemSelectionCondition>
                             </ListItem>
                             <ListItem>
-                                <PropertyName>Encoding</PropertyName>
+                                <!-- <PropertyName>Encoding</PropertyName> -->
+                                <Label>Encoding</Label>
+                                <ScriptBlock>
+                                    $_.Encoding.EncodingName
+                                </ScriptBlock>
                                 <ItemSelectionCondition>
                                     <PropertyName>Encoding</PropertyName>
                                 </ItemSelectionCondition>
@@ -165,7 +169,11 @@
                                 </ItemSelectionCondition>
                             </ListItem>
                             <ListItem>
-                                <PropertyName>Encoding</PropertyName>
+                                <!-- <PropertyName>Encoding</PropertyName> -->
+                                <Label>Encoding</Label>
+                                <ScriptBlock>
+                                    $_.Encoding.EncodingName
+                                </ScriptBlock>
                                 <ItemSelectionCondition>
                                     <PropertyName>Encoding</PropertyName>
                                 </ItemSelectionCondition>

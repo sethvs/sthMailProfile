@@ -330,6 +330,8 @@ It uses pipeline for sending message content to the function.</maml:para>
                     <maml:Description>
                         <maml:para>Specifies the encoding used for the body and subject.
                         </maml:para>
+                        <maml:para>You can specify encoding name, like 'unicode', or code page, like '1200'.
+                        </maml:para>
                     </maml:Description>
                     <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
                     <dev:type>
@@ -528,6 +530,8 @@ The acceptable values for this parameter are:
                     <maml:name>Encoding</maml:name>
                     <maml:Description>
                         <maml:para>Specifies the encoding used for the body and subject.
+                        </maml:para>
+                        <maml:para>You can specify encoding name, like 'unicode', or code page, like '1200'.
                         </maml:para>
                     </maml:Description>
                     <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
@@ -759,6 +763,8 @@ The acceptable values for this parameter are:
                 <maml:name>Encoding</maml:name>
                 <maml:Description>
                     <maml:para>Specifies the encoding used for the body and subject.
+                    </maml:para>
+                    <maml:para>You can specify encoding name, like 'unicode', or code page, like '1200'.
                     </maml:para>
                 </maml:Description>
                 <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
