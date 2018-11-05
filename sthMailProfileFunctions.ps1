@@ -79,19 +79,23 @@ function Send-sthMailMessage
 function New-sthMailProfile
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingPlainTextForPassword","")]
-    [CmdletBinding(DefaultParameterSetName='Password')]
+    [CmdletBinding(DefaultParameterSetName='ProfileName-Password')]
     Param(
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,ParameterSetName='ProfileName-Password')]
+        [Parameter(Mandatory,ParameterSetName='ProfileName-Credential')]
         [string]$ProfileName,
         [Parameter(Mandatory)]
         [string]$From,
         [Parameter(Mandatory)]
         [string[]]$To,
-        [Parameter(ParameterSetName='Password')]
+        [Parameter(ParameterSetName='ProfileName-Password')]
+        [Parameter(ParameterSetName='ProfileFilePath-Password')]
         [string]$UserName,
-        [Parameter(ParameterSetName='Password')]
+        [Parameter(ParameterSetName='ProfileName-Password')]
+        [Parameter(ParameterSetName='ProfileFilePath-Password')]
         $Password,
-        [Parameter(ParameterSetName='Credential')]
+        [Parameter(ParameterSetName='ProfileName-Credential')]
+        [Parameter(ParameterSetName='ProfileFilePath-Credential')]
         [ValidateNotNullOrEmpty()]
         [PSCredential]$Credential,
         [Parameter(Mandatory)]
@@ -109,7 +113,7 @@ function New-sthMailProfile
         [switch]$StorePasswordInPlainText
     )
 
-    if ($PSCmdlet.ParameterSetName -eq 'Password')
+    if ($PSCmdlet.ParameterSetName -eq 'ProfileName-Password')
     {
         if ($PSBoundParameters.ContainsKey('UserName'))
         {
@@ -144,7 +148,7 @@ function New-sthMailProfile
         }
     }
 
-    if ($PSCmdlet.ParameterSetName -eq 'Credential')
+    if ($PSCmdlet.ParameterSetName -eq 'ProfileName-Credential')
     {
         $MailParameters = [sthMailProfile]::new($From, $To, $Credential, $SmtpServer)
     }
