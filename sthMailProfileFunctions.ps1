@@ -15,12 +15,12 @@ function Send-sthMailMessage
 
     Begin
     {
-        $Body = @()
+        $Content = @()
     }
 
     Process
     {
-        $Body += $Message
+        $Content += $Message
     }
 
     End
@@ -29,7 +29,15 @@ function Send-sthMailMessage
         {
             if ($MailProfile.PasswordIs -eq 'PlainText')
             {
-                $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
+                try
+                {
+                    $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
+                }
+                catch [System.Management.Automation.ParameterBindingException]
+                {
+                    $Password = [System.Security.SecureString]::new()
+                }
+
                 $MailProfile.Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $MailProfile.Credential.UserName, $Password
             }
 
@@ -45,9 +53,9 @@ function Send-sthMailMessage
 
             $Parameters.Add("Subject", $Subject)
 
-            if ($Body)
+            if ($Content)
             {
-                $Body = $Body | Out-String -Width 1000
+                $Body = $Content | Out-String -Width 1000
                 $Parameters.Add("Body", $Body)
             }
 
@@ -61,7 +69,7 @@ function Send-sthMailMessage
 
         else
         {
-            Write-Output -InputObject "`nProfile $ProfileName not found.`n"
+            Write-Output -InputObject "`nProfile '$ProfileName' is not found.`n"
         }
     }
 
@@ -194,7 +202,7 @@ function Get-sthMailProfile
 
     foreach ($PName in $ProfileName)
     {
-        foreach ($ProfilePath in (Get-ChildItem -Path $("$FolderPath\$PName.xml") | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
+        foreach ($ProfilePath in (Get-Item -Path $("$FolderPath\$PName.xml") -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
         {
             $xml = Import-Clixml -Path $ProfilePath.FullName
             $xml.Encoding = [System.Text.Encoding]::GetEncoding($xml.Encoding.CodePage)
