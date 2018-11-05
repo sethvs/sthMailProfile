@@ -47,6 +47,49 @@ Describe "sthMailProfile" {
         }
     }
 
+    $ParameterFilterConditionsWithoutCredential = @(
+        '$Body -eq "$theMessage`r`n"'
+        '$Subject -eq $theSubject'
+        '$Attachments -eq $theAttachment'
+        '$From -eq $($Settings.From)'
+        '$($To.Count) -eq $($Settings.To.Count)'
+        '$($Result = $true;
+        for ($i = 0; $i -lt $($To.Count); $i++)
+        {
+            if ($To[$i] -ne $($Settings.To[$i])) {$Result = $False; break}
+        }
+        $Result)'
+        '$SmtpServer -eq $Settings.SmtpServer'
+        '$Port -eq $Settings.Port'
+        '$UseSSL -eq $Settings.UseSSL'
+        '$Encoding.EncodingName -eq $Settings.Encoding'
+        '$BodyAsHtml -eq $Settings.BodyAsHtml'
+        '$($CC.Count) -eq $($Settings.CC.Count)'
+        '$($Result = $true;
+        for ($i = 0; $i -lt $($CC.Count); $i++)
+        {
+            if ($CC[$i] -ne $($Settings.CC[$i])) {$Result = $False; break}
+        }
+        $Result)'
+        '$($BCC.Count) -eq $($Settings.BCC.Count)'
+        '$($Result = $true;
+        for ($i = 0; $i -lt $($BCC.Count); $i++)
+        {
+            if ($BCC[$i] -ne $($Settings.BCC[$i])) {$Result = $False; break}
+        }
+        $Result)'
+        '$DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption'
+        '$Priority -eq $Settings.Priority'
+    )
+
+    $CredentialConditions = @(
+    '$Credential.UserName -eq $Settings.UserName'
+    '[System.Net.NetworkCredential]::new("something",$Credential.Password).Password -eq $Settings.Password'
+    )
+
+    $ParameterFilterWithoutCredential = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential -join " -and `n")
+    $ParameterFilter = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential + $CredentialConditions -join " -and `n")
+    
     function TestMailProfileContent
     {
         Param ($Name, $Value)
@@ -113,137 +156,6 @@ Describe "sthMailProfile" {
         return $TestCases
     }
 
-    $ParameterFilterConditionsWithoutCredential = @(
-        '$Body -eq "$theMessage`r`n"'
-        '$Subject -eq $theSubject'
-        '$Attachments -eq $theAttachment'
-        '$From -eq $($Settings.From)'
-        '$($To.Count) -eq $($Settings.To.Count)'
-        '$($Result = $true;
-        for ($i = 0; $i -lt $($To.Count); $i++)
-        {
-            if ($To[$i] -ne $($Settings.To[$i])) {$Result = $False; break}
-        }
-        $Result)'
-        '$SmtpServer -eq $Settings.SmtpServer'
-        '$Port -eq $Settings.Port'
-        '$UseSSL -eq $Settings.UseSSL'
-        '$Encoding.EncodingName -eq $Settings.Encoding'
-        '$BodyAsHtml -eq $Settings.BodyAsHtml'
-        '$($CC.Count) -eq $($Settings.CC.Count)'
-        '$($Result = $true;
-        for ($i = 0; $i -lt $($CC.Count); $i++)
-        {
-            if ($CC[$i] -ne $($Settings.CC[$i])) {$Result = $False; break}
-        }
-        $Result)'
-        '$($BCC.Count) -eq $($Settings.BCC.Count)'
-        '$($Result = $true;
-        for ($i = 0; $i -lt $($BCC.Count); $i++)
-        {
-            if ($BCC[$i] -ne $($Settings.BCC[$i])) {$Result = $False; break}
-        }
-        $Result)'
-        '$DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption'
-        '$Priority -eq $Settings.Priority'
-    )
-
-    $CredentialConditions = @(
-    '$Credential.UserName -eq $Settings.UserName'
-    '[System.Net.NetworkCredential]::new("something",$Credential.Password).Password -eq $Settings.Password'
-    )
-
-<#     $ScriptBlockText = @'
-        $Body -eq "$theMessage`r`n" -and 
-        $Subject -eq $theSubject -and
-        $Attachments -eq $theAttachment -and
-        $From -eq $($Settings.From) -and 
-
-        $($To.Count) -eq $($Settings.To.Count) -and
-        $($Result = $true;
-        for ($i = 0; $i -lt $($To.Count); $i++)
-        {
-            if ($To[$i] -ne $($Settings.To[$i])) {$Result = $False; break}
-        }
-        $Result) -and
-
-        $Credential.UserName -eq $Settings.UserName -and 
-        [System.Net.NetworkCredential]::new("something",$Credential.Password).Password -eq $Settings.Password -and
-
-        $SmtpServer -eq $Settings.SmtpServer -and
-
-        $Port -eq $Settings.Port -and 
-        $UseSSL -eq $Settings.UseSSL -and
-        $Encoding.EncodingName -eq $Settings.Encoding -and
-        $BodyAsHtml -eq $Settings.BodyAsHtml -and
-        
-        $($CC.Count) -eq $($Settings.CC.Count) -and
-        $($Result = $true;
-        for ($i = 0; $i -lt $($CC.Count); $i++)
-        {
-            if ($CC[$i] -ne $($Settings.CC[$i])) {$Result = $False; break}
-        }
-        $Result) -and
-
-        $($BCC.Count) -eq $($Settings.BCC.Count) -and
-        $($Result = $true;
-        for ($i = 0; $i -lt $($BCC.Count); $i++)
-        {
-            if ($BCC[$i] -ne $($Settings.BCC[$i])) {$Result = $False; break}
-        }
-        $Result) -and 
-
-        $DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption -and
-        $Priority -eq $Settings.Priority
-'@ #>
-    # $ParameterFilter = [scriptblock]::Create($ScriptBlockText)
-    # $ParameterFilter = [scriptblock]::Create($ScriptBlockText)
-
-<#     $ScriptBlockTextWithoutCredential = @'
-        $Body -eq "$theMessage`r`n" -and 
-        $Subject -eq $theSubject -and
-        $Attachments -eq $theAttachment -and
-            $From -eq $($Settings.From) -and 
-
-        $($To.Count) -eq $($Settings.To.Count) -and
-        $($Result = $true;
-        for ($i = 0; $i -lt $($To.Count); $i++)
-        {
-            if ($To[$i] -ne $($Settings.To[$i])) {$Result = $False; break}
-        }
-        $Result) -and
-
-        $SmtpServer -eq $Settings.SmtpServer -and
-
-        $Port -eq $Settings.Port -and 
-        $UseSSL -eq $Settings.UseSSL -and
-        $Encoding.EncodingName -eq $Settings.Encoding -and
-        $BodyAsHtml -eq $Settings.BodyAsHtml -and
-        
-        $($CC.Count) -eq $($Settings.CC.Count) -and
-        $($Result = $true;
-        for ($i = 0; $i -lt $($CC.Count); $i++)
-        {
-            if ($CC[$i] -ne $($Settings.CC[$i])) {$Result = $False; break}
-        }
-        $Result) -and
-
-        $($BCC.Count) -eq $($Settings.BCC.Count) -and
-        $($Result = $true;
-        for ($i = 0; $i -lt $($BCC.Count); $i++)
-        {
-            if ($BCC[$i] -ne $($Settings.BCC[$i])) {$Result = $False; break}
-        }
-        $Result) -and 
-
-        $DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption -and
-        $Priority -eq $Settings.Priority
-'@ #>
-    # $ParameterFilterWithoutCredential = [scriptblock]::Create($ScriptBlockTextWithoutCredential)
-    $ParameterFilterWithoutCredential = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential -join " -and `n")
-    $ParameterFilter = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential + $CredentialConditions -join " -and `n")
-
-
     function TestMailProfile
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingPlainTextForPassword","")]
@@ -258,13 +170,11 @@ Describe "sthMailProfile" {
         if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
         {
             mock "Send-MailMessage" -ModuleName sthMailProfile
-            # mock "Send-MailMessage" -ModuleName sthMailProfile -MockWith {Write-Host 'AAAAAAAAAAA'}
 
             Context "Get-sthMailProfile" {
                     
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
                 $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' $PasswordIs
-                # $ParameterFilter = ComposeParameterFilter $TestCasesTemplate
 
                 It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
                     
@@ -289,11 +199,6 @@ Describe "sthMailProfile" {
                     Param ($Name, $Value)
                     TestMailProfileContent -Name $Name -Value $Value
                 }
-
-                # It "Send-sthMailMessage" {
-                #     Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
-                #     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly
-                # }
             }
         }
     }
@@ -437,7 +342,7 @@ Describe "sthMailProfile" {
 
                 Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 1 -Exactly -Scope Context
             }
-            
+
             Context "New-sthMailProfile -StorePasswordInPlainText" {
                 
                 New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
