@@ -166,14 +166,16 @@ Describe "sthMailProfile" {
         Param (
             [Parameter(ParameterSetName='ProfileName')]
             $ProfileName,
+            [Parameter(ParameterSetName='ProfileFilePath')]
+            $ProfileFilePath,
             [ValidateSet('Secured','PlainText','NotExist')]
             $PasswordIs
         )
 
+        mock "Send-MailMessage" -ModuleName sthMailProfile
+
         if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
         {
-            mock "Send-MailMessage" -ModuleName sthMailProfile
-
             Context "Get-sthMailProfile" {
                     
                 $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
@@ -208,6 +210,46 @@ Describe "sthMailProfile" {
                 }
             }
         }
+
+        if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+        {
+            Context "Get-sthMailProfile" {
+                    
+                $MailProfile = Get-sthMailProfile -ProfileFilePath $ProfileFilePath
+                $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' $PasswordIs
+
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
+
+                It "Send-sthMailMessage" {
+                    Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Message $theMessage -Subject $theSubject -Attachments $theAttachment
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilter
+                    # Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly
+                }
+
+                It "Send-sthMailMessage using pipeline" {
+                    $theMessagee | Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Attachments $theAttachment
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessage
+                    # Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly
+                }
+            }
+            
+            Context "Get-sthMailProfile -ShowPassword" {
+                
+                $MailProfile = Get-sthMailProfile -ProfileFilePath $ProfileFilePath -ShowPassword
+                $TestCases = ComposeTestCases $TestCasesTemplate 'Credential' $PasswordIs
+    
+                It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+
+                    Param ($Name, $Value)
+                    TestMailProfileContent -Name $Name -Value $Value
+                }
+            }
+
+        }
     }
 
     function RemoveProfile
@@ -215,12 +257,22 @@ Describe "sthMailProfile" {
         [CmdletBinding(DefaultParameterSetName='ProfileName')]
         Param (
             [Parameter(ParameterSetName='ProfileName')]
-            $ProfileName
+            $ProfileName,
+            [Parameter(ParameterSetName='ProfileFilePath')]
+            $ProfileFilePath
         )
 
         if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
         {
             Remove-sthMailProfile -ProfileName $ProfileName
+    
+            It "Should remove the profile" {
+                Get-sthMailProfile | Should -BeNullOrEmpty
+            }
+        }
+        if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+        {
+            Remove-sthMailProfile -ProfileFile $ProfileFilePath
     
             It "Should remove the profile" {
                 Get-sthMailProfile | Should -BeNullOrEmpty
@@ -233,7 +285,9 @@ Describe "sthMailProfile" {
         [CmdletBinding(DefaultParameterSetName='ProfileName')]
         Param (
             [Parameter(ParameterSetName='ProfileName')]
-            $ProfileName
+            $ProfileName,
+            [Parameter(ParameterSetName='ProfileFilePath')]
+            $ProfileFilePath
         )
 
         if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
@@ -242,11 +296,18 @@ Describe "sthMailProfile" {
                 Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
             }
         }
+        
+        if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+        {
+            It "Should create the profile" {
+                Get-sthMailProfile -ProfileFilePath $ProfileFilePath | Should -Not -BeNullOrEmpty
+            }
+        }
     }
 
     function CreateAndTestProfile
     {
-        Context "New-sthMailProfile" {
+        Context "New-sthMailProfile -ProfileName" {
 
             New-sthMailProfile -ProfileName $ProfileName @ContextSettings
             TestProfileExistence -ProfileName $ProfileName
@@ -255,7 +316,7 @@ Describe "sthMailProfile" {
             RemoveProfile -ProfileName $ProfileName
         }
 
-        Context "New-sthMailProfile -StorePasswordInPlainText" {
+        Context "New-sthMailProfile -ProfileName -StorePasswordInPlainText" {
 
             New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
             TestProfileExistence -ProfileName $ProfileName
@@ -263,6 +324,26 @@ Describe "sthMailProfile" {
             TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
             RemoveProfile -ProfileName $ProfileName
         }
+
+        Context "New-sthMailProfile -ProfileFilePath" {
+
+            New-sthMailProfile -ProfileFilePath $ProfileFilePath @ContextSettings
+            TestProfileExistence -ProfileFilePath $ProfileFilePath
+
+            TestMailProfile -ProfileFilePath $ProfileFilePath -PasswordIs 'Secured'
+            RemoveProfile -ProfileFilePath $ProfileFilePath
+        }
+
+        Context "New-sthMailProfile -ProfileFilePath -StorePasswordInPlainText" {
+
+            New-sthMailProfile -ProfileFilePath $ProfileFilePath @ContextSettings -StorePasswordInPlainText
+            TestProfileExistence -ProfileFilePath $ProfileFilePath
+
+            TestMailProfile -ProfileFilePath $ProfileFilePath -PasswordIs 'PlainText'
+            RemoveProfile -ProfileFile $ProfileFilePath
+        }
+
+        
     }
     
     Context "New-sthMailProfile" {
@@ -333,7 +414,8 @@ Describe "sthMailProfile" {
             $ContextSettings.Remove('Password')
 
             CreateAndTestProfile
-            Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 2 -Exactly -Scope Context
+            # Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 2 -Exactly -Scope Context
+            Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 4 -Exactly -Scope Context
         }
 
         Context "Profile with -Credentialparameter" {
