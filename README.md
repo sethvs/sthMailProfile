@@ -1,4 +1,5 @@
 # sthMailProfile
+[![Build Status](https://dev.azure.com/sethv/seth/_apis/build/status/sthMailProfile)](https://dev.azure.com/sethv/seth/_build/latest?definitionId=6)
 
 **sthMailProfile** - is a module, containing four functions for creating mail profiles and using them to send mail messages.
 
