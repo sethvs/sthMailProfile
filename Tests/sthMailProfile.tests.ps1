@@ -358,7 +358,7 @@ Describe "sthMailProfile" {
         Context "Send-sthMailMessage - non-existing profile" {
             
             It "Should return 'Profile is not found'." {
-                Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Message $theMessage -Subject $theSubject -Attachments $theAttachment | Should -BeExactly "`nProfile 'Non-Existent Profile' is not found.`n"
+                { Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Message $theMessage -Subject $theSubject -Attachments $theAttachment -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
             }
         }
     }
