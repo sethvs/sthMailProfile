@@ -74,7 +74,6 @@ function Send-sthMailMessage
 
         else
         {
-            # Write-Output -InputObject "`nProfile $ProfileName not found.`n"
             Write-Output -InputObject "`nProfile '$ProfileName' is not found.`n"
         }
     }

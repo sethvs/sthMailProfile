@@ -47,8 +47,7 @@ Describe "sthMailProfile" {
         }
     }
 
-    $ParameterFilterConditionsWithoutCredential = @(
-        '$Body -eq "$theMessage`r`n"'
+    $ParameterFilterConditionsWithoutMessageAndCredential = @(
         '$Subject -eq $theSubject'
         '$Attachments -eq $theAttachment'
         '$From -eq $($Settings.From)'
@@ -87,8 +86,14 @@ Describe "sthMailProfile" {
     '[System.Net.NetworkCredential]::new("something",$Credential.Password).Password -eq $Settings.Password'
     )
 
-    $ParameterFilterWithoutCredential = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential -join " -and `n")
-    $ParameterFilter = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential + $CredentialConditions -join " -and `n")
+    $MessageCondition = @(
+        '$Body -eq "$theMessage`r`n"'
+    )
+
+    $ParameterFilterWithoutMessageAndCredential = [scriptblock]::Create($ParameterFilterConditionsWithoutMessageAndCredential -join " -and `n")
+    $ParameterFilterWithoutCredential = [scriptblock]::Create($MessageCondition + $ParameterFilterConditionsWithoutMessageAndCredential -join " -and `n")
+    $ParameterFilterWithoutMessage = [scriptblock]::Create($ParameterFilterConditionsWithoutMessageAndCredential + $CredentialConditions -join " -and `n")
+    $ParameterFilter = [scriptblock]::Create($MessageCondition + $ParameterFilterConditionsWithoutMessageAndCredential + $CredentialConditions -join " -and `n")
     
     function TestMailProfileContent
     {
@@ -184,8 +189,12 @@ Describe "sthMailProfile" {
 
                 It "Send-sthMailMessage" {
                     Send-sthMailMessage -ProfileName $ProfileName -Message $theMessage -Subject $theSubject -Attachments $theAttachment
-
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilter
+                }
+
+                It "Send-sthMailMessage using pipeline" {
+                    $theMessagee | Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Attachments $theAttachment
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessage
                 }
             }
             
@@ -285,8 +294,12 @@ Describe "sthMailProfile" {
 
             It "Send-sthMailMessage" {
                 Send-sthMailMessage -ProfileName $ProfileName -Message $theMessage -Subject $theSubject -Attachments $theAttachment
-
                 Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
+            }
+
+            It "Send-sthMailMessage using pipeline" {
+                $theMessagee | Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Attachments $theAttachment
+                Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessageAndCredential
             }
 
             RemoveProfile -ProfileName $ProfileName
@@ -298,23 +311,6 @@ Describe "sthMailProfile" {
             $ContextSettings.Remove('Credential')
 
             CreateAndTestProfile
-            # Context "New-sthMailProfile" {
-
-            #     New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-            #     TestProfileExistence -ProfileName $ProfileName
-
-            #     TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
-            #     RemoveProfile -ProfileName $ProfileName
-            # }
-
-            # Context "New-sthMailProfile -StorePasswordInPlainText" {
-
-            #     New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
-            #     TestProfileExistence -ProfileName $ProfileName
-
-            #     TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
-            #     RemoveProfile -ProfileName $ProfileName
-            # }
         }
 
         Context "Profile with -UserName and -Password parameters with empty string password" {
@@ -328,25 +324,6 @@ Describe "sthMailProfile" {
             $ContextSettings.Remove('Credential')
 
             CreateAndTestProfile
-<# 
-            Context "New-sthMailProfile" {
-
-                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                TestProfileExistence -ProfileName $ProfileName
-
-                TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
-                RemoveProfile -ProfileName $ProfileName
-            }
-
-            Context "New-sthMailProfile -StorePasswordInPlainText" {
-
-                New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
-                TestProfileExistence -ProfileName $ProfileName
-                
-                TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
-                RemoveProfile -ProfileName $ProfileName
-            }
- #>
         }
 
         Context "Profile with -UserName parameter and -Password parameter value from Read-Host" {
@@ -359,29 +336,6 @@ Describe "sthMailProfile" {
 
             CreateAndTestProfile
             Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 2 -Exactly -Scope Context
-<# 
-            Context "New-sthMailProfile" {
-
-                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                TestProfileExistence -ProfileName $ProfileName
-                
-                TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
-                RemoveProfile -ProfileName $ProfileName
-
-                Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 1 -Exactly -Scope Context
-            }
-
-            Context "New-sthMailProfile -StorePasswordInPlainText" {
-                
-                New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
-                TestProfileExistence -ProfileName $ProfileName
-                
-                TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
-                RemoveProfile -ProfileName $ProfileName
-
-                Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 1 -Exactly -Scope Context
-            }
- #>
         }
 
         Context "Profile with -Credentialparameter" {
@@ -391,25 +345,6 @@ Describe "sthMailProfile" {
             $ContextSettings.Remove('Password')
 
             CreateAndTestProfile
-<# 
-            Context "New-sthMailProfile" {
-
-                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                TestProfileExistence -ProfileName $ProfileName
-
-                TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
-                RemoveProfile -ProfileName $ProfileName
-            }
-
-            Context "New-sthMailProfile -StorePasswordInPlainText" {
-
-                New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
-                TestProfileExistence -ProfileName $ProfileName
-
-                TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
-                RemoveProfile -ProfileName $ProfileName
-            }
- #>
         }
 
         Context "Profile with -Credentialparameter with encoding as CodePage" {
@@ -420,25 +355,6 @@ Describe "sthMailProfile" {
             $ContextSettings.Encoding = '1200'
 
             CreateAndTestProfile
-<# 
-            Context "New-sthMailProfile" {
-
-                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
-                TestProfileExistence -ProfileName $ProfileName
-
-                TestMailProfile -ProfileName $ProfileName -PasswordIs 'Secured'
-                RemoveProfile -ProfileName $ProfileName
-            }
-
-            Context "New-sthMailProfile -StorePasswordInPlainText" {
-
-                New-sthMailProfile -ProfileName $ProfileName @ContextSettings -StorePasswordInPlainText
-                TestProfileExistence -ProfileName $ProfileName
-
-                TestMailProfile -ProfileName $ProfileName -PasswordIs 'PlainText'
-                RemoveProfile -ProfileName $ProfileName
-            }
-#>
         }
 
         Context "Send-sthMailMessage - non-existing profile" {
