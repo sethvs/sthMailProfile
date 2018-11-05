@@ -7,7 +7,6 @@ Describe "sthMailProfile" {
      BeforeAll {
         $Settings = [ordered]@{
             From = 'from@domain.com'
-            # From = 'fromdomain.com'
             To = 'to@domain.com','to2@domain.com'
             UserName = 'TheUser'
             Password = 'ThePassword'
@@ -15,9 +14,7 @@ Describe "sthMailProfile" {
             SmtpServer = 'smtp@domain.com'
             Port = '25'
             UseSSL = $true
-            # Encoding = 'unicode'
             Encoding = 'Unicode'
-            # Encoding = [System.Text.Encoding]::GetEncoding('Unicode')
             BodyAsHtml = $true
             CC = 'cc@domain.com','cc2@domain.com'
             BCC = 'bcc@domain.com','bcc2@domain.com'
@@ -25,18 +22,14 @@ Describe "sthMailProfile" {
             Priority = 'Normal'
         }
 
-        # $TestCasesTemplateScriptBlock = @{
-            # if ($_.GetType().BaseType.FullName -eq 'System.Text.Encoding')
-            # if ($_.Name -eq 'Encoding')
-            # {
-
-            # }
-        # }
-
         $TestCasesTemplate = @($Settings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
 
         $ProfileName = '_Profile'
         $ProfileFilePath = 'TestDrive:\_Profile.xml'
+
+        $theMessage = 'TheMessage' 
+        $theSubject = 'TheSubject' 
+        $theAttachment = 'TestDrive:\TheAttachment.xml'
 
         $ProfileDirectory = InModuleScope -ModuleName sthMailProfile -ScriptBlock {$ProfileDirectory}
         
@@ -44,9 +37,6 @@ Describe "sthMailProfile" {
         {
             Rename-Item -Path "$PSScriptRoot\..\$ProfileDirectory" -NewName _OriginalProfileFolder
         }
-
-        # $AttachmentPath = 'TestDrive:\TheAttachment.xml'
-        # New-Item -Path $AttachmentPath -ItemType File
     }
 
     AfterAll {
@@ -55,8 +45,6 @@ Describe "sthMailProfile" {
         {
             Rename-Item -Path "$PSScriptRoot\..\_OriginalProfileFolder" -NewName $ProfileDirectory
         }
-
-        # Remove-Item -Path $AttachmentPath
     }
 
     function TestMailProfileContent
@@ -125,10 +113,50 @@ Describe "sthMailProfile" {
         return $TestCases
     }
 
-    $ScriptBlockText = @'
-        $Body -eq "TheMessage`r`n" -and 
-        $Subject -eq "TheSubject" -and
-        $Attachments -eq "TestDrive:\TheAttachment.xml" -and
+    $ParameterFilterConditionsWithoutCredential = @(
+        '$Body -eq "$theMessage`r`n"'
+        '$Subject -eq $theSubject'
+        '$Attachments -eq $theAttachment'
+        '$From -eq $($Settings.From)'
+        '$($To.Count) -eq $($Settings.To.Count)'
+        '$($Result = $true;
+        for ($i = 0; $i -lt $($To.Count); $i++)
+        {
+            if ($To[$i] -ne $($Settings.To[$i])) {$Result = $False; break}
+        }
+        $Result)'
+        '$SmtpServer -eq $Settings.SmtpServer'
+        '$Port -eq $Settings.Port'
+        '$UseSSL -eq $Settings.UseSSL'
+        '$Encoding.EncodingName -eq $Settings.Encoding'
+        '$BodyAsHtml -eq $Settings.BodyAsHtml'
+        '$($CC.Count) -eq $($Settings.CC.Count)'
+        '$($Result = $true;
+        for ($i = 0; $i -lt $($CC.Count); $i++)
+        {
+            if ($CC[$i] -ne $($Settings.CC[$i])) {$Result = $False; break}
+        }
+        $Result)'
+        '$($BCC.Count) -eq $($Settings.BCC.Count)'
+        '$($Result = $true;
+        for ($i = 0; $i -lt $($BCC.Count); $i++)
+        {
+            if ($BCC[$i] -ne $($Settings.BCC[$i])) {$Result = $False; break}
+        }
+        $Result)'
+        '$DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption'
+        '$Priority -eq $Settings.Priority'
+    )
+
+    $CredentialConditions = @(
+    '$Credential.UserName -eq $Settings.UserName'
+    '[System.Net.NetworkCredential]::new("something",$Credential.Password).Password -eq $Settings.Password'
+    )
+
+<#     $ScriptBlockText = @'
+        $Body -eq "$theMessage`r`n" -and 
+        $Subject -eq $theSubject -and
+        $Attachments -eq $theAttachment -and
         $From -eq $($Settings.From) -and 
 
         $($To.Count) -eq $($Settings.To.Count) -and
@@ -167,14 +195,15 @@ Describe "sthMailProfile" {
 
         $DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption -and
         $Priority -eq $Settings.Priority
-'@
-    $ParameterFilter = [scriptblock]::Create($ScriptBlockText)
+'@ #>
+    # $ParameterFilter = [scriptblock]::Create($ScriptBlockText)
+    # $ParameterFilter = [scriptblock]::Create($ScriptBlockText)
 
-    $ScriptBlockTextWithoutCredential = @'
-        $Body -eq "TheMessage`r`n" -and 
-        $Subject -eq "TheSubject" -and
-        $Attachments -eq "TestDrive:\TheAttachment.xml" -and
-        $From -eq $($Settings.From) -and 
+<#     $ScriptBlockTextWithoutCredential = @'
+        $Body -eq "$theMessage`r`n" -and 
+        $Subject -eq $theSubject -and
+        $Attachments -eq $theAttachment -and
+            $From -eq $($Settings.From) -and 
 
         $($To.Count) -eq $($Settings.To.Count) -and
         $($Result = $true;
@@ -209,8 +238,11 @@ Describe "sthMailProfile" {
 
         $DeliveryNotificationOption -eq [System.Net.Mail.DeliveryNotificationOptions]$Settings.DeliveryNotificationOption -and
         $Priority -eq $Settings.Priority
-'@
-    $ParameterFilterWithoutCredential = [scriptblock]::Create($ScriptBlockTextWithoutCredential)
+'@ #>
+    # $ParameterFilterWithoutCredential = [scriptblock]::Create($ScriptBlockTextWithoutCredential)
+    $ParameterFilterWithoutCredential = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential -join " -and `n")
+    $ParameterFilter = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential + $CredentialConditions -join " -and `n")
+
 
     function TestMailProfile
     {
@@ -241,7 +273,7 @@ Describe "sthMailProfile" {
                 }
 
                 It "Send-sthMailMessage" {
-                    Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
+                    Send-sthMailMessage -ProfileName $ProfileName -Message $theMessage -Subject $theSubject -Attachments $theAttachment
 
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilter
                 }
@@ -326,7 +358,7 @@ Describe "sthMailProfile" {
             }
 
             It "Send-sthMailMessage" {
-                Send-sthMailMessage -ProfileName $ProfileName -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml'
+                Send-sthMailMessage -ProfileName $ProfileName -Message $theMessage -Subject $theSubject -Attachments $theAttachment
 
                 Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
             }
@@ -360,7 +392,6 @@ Describe "sthMailProfile" {
 
         Context "Profile with -UserName and -Password parameters with empty string password" {
 
-            # BeforeAll executes in upper scope and not in the context one, but we need this to execute in the context scope.
             $Settings = DuplicateOrderedDictionary $Settings
             $Settings.Password = ''
             $ContextSettings = DuplicateOrderedDictionary $Settings
@@ -473,8 +504,7 @@ Describe "sthMailProfile" {
         Context "Send-sthMailMessage - non-existing profile" {
             
             It "Should return 'Profile is not found'." {
-                Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Message 'TheMessage' -Subject 'TheSubject' -Attachments 'TestDrive:\TheAttachment.xml' | Should -BeExactly "`nProfile 'Non-Existent Profile' is not found.`n"
-            
+                Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Message $theMessage -Subject $theSubject -Attachments $theAttachment | Should -BeExactly "`nProfile 'Non-Existent Profile' is not found.`n"
             }
         }
     }
