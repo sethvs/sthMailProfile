@@ -15,16 +15,11 @@ function Send-sthMailMessage
 
     Begin
     {
-        # [string]$Body = ''
         $Content = @()
     }
 
     Process
     {
-        # if ($Body)
-        # {
-            # $Body += "`n"
-        # }
         $Content += $Message
     }
 

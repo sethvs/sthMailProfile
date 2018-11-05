@@ -1,8 +1,6 @@
 Remove-Module -Name sthMailProfile -Force -ErrorAction 'SilentlyContinue'
 Import-Module "$PSScriptRoot\..\sthMailProfile.psd1"
 
-# Write-Host $PSVersionTable.PSVersion
-
 Describe "sthMailProfile" {
      BeforeAll {
         $Settings = [ordered]@{
