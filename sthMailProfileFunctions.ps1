@@ -69,7 +69,7 @@ function Send-sthMailMessage
 
         else
         {
-            Write-Output -InputObject "`nProfile '$ProfileName' is not found.`n"
+            inProfileNameError -Value $ProfileName
         }
     }
 
@@ -239,4 +239,19 @@ function Remove-sthMailProfile
     $Path = Join-Path -Path $Path -ChildPath $($ProfileName + '.xml')
 
     Remove-Item -Path $Path
+}
+
+function inProfileNameError
+{
+    Param(
+        [string]$Value
+    )
+
+    $Exception = [System.ArgumentException]::new("`nProfile '$ProfileName' is not found.`n")
+    $ErrorId = 'ArgumentError'
+    $ErrorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
+
+    $ErrorRecord = [System.Management.Automation.ErrorRecord]::new($Exception, $ErrorId, $ErrorCategory, $null)
+
+    $PSCmdlet.WriteError($ErrorRecord)
 }
