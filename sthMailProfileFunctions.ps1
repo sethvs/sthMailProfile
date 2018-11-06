@@ -96,7 +96,6 @@ function Send-sthMailMessage
             }
         }
     }
-
 }
 
 # .ExternalHelp sthMailProfile.help.ps1xml
@@ -234,7 +233,7 @@ function Get-sthMailProfile
     if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
     {
         $FolderPath = Join-Path -Path $PSScriptRoot -ChildPath $ProfileDirectory
-        
+
         foreach ($PName in $ProfileName)
         {
             foreach ($ProfilePath in (Get-Item -Path $("$FolderPath\$PName.xml") -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
@@ -304,7 +303,7 @@ function inComposeMailProfile
     {
         $xml.Encoding = [System.Text.Encoding]::GetEncoding($xml.Encoding.CodePage)
     }
-                
+
     $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority)
     $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfileFileName.Substring(0,$ProfileFileName.Length - 4)
     $MailProfile | Add-Member -NotePropertyName UserName -NotePropertyValue $MailProfile.Credential.UserName
@@ -341,7 +340,7 @@ function inWriteProfile
         {
             New-Item -Path $Path -ItemType Directory | Out-Null
         }
-    
+
         $FilePath = Join-Path -Path $Path -ChildPath $($ProfileName + '.xml')
     }
 
