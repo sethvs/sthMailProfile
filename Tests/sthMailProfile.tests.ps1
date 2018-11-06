@@ -413,6 +413,47 @@ Describe "sthMailProfile" {
             
         }
 
+        Context "Profile without credential using positional -ProfileName parameter" {
+
+            BeforeAll {
+                $ContextSettings = DuplicateOrderedDictionary $Settings
+                $ContextSettings.Remove('UserName')
+                $ContextSettings.Remove('Password')
+                $ContextSettings.Remove('Credential')
+
+                $TestCases = ComposeTestCases $TestCasesTemplate 'UserName','Password','Credential' 'NotExist'
+            }
+
+            mock "Send-MailMessage" -ModuleName sthMailProfile
+
+            New-sthMailProfile $ProfileName @ContextSettings
+            TestProfileExistence -ProfileName $ProfileName
+
+            $MailProfile = Get-sthMailProfile $ProfileName
+
+            It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+
+                Param ($Name, $Value)
+                TestMailProfileContent -Name $Name -Value $Value
+            }
+
+            It "Send-sthMailMessage" {
+                Send-sthMailMessage $ProfileName -Message $theMessage -Subject $theSubject -Attachments $theAttachment
+                Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
+            }
+
+            It "Send-sthMailMessage using pipeline" {
+                $theMessagee | Send-sthMailMessage $ProfileName -Subject $theSubject -Attachments $theAttachment
+                Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessageAndCredential
+            }
+
+            Remove-sthMailProfile $ProfileName
+    
+            It "Should remove the profile" {
+                Get-sthMailProfile | Should -BeNullOrEmpty
+            }      
+        }
+
         Context "Profile with -UserName and -Password parameters" {
 
             $ContextSettings = DuplicateOrderedDictionary $Settings

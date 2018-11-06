@@ -26,35 +26,7 @@
         <command:syntax>
             <command:syntaxItem>
                 <maml:name>Send-sthMailMessage</maml:name>
-                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-                    <maml:name>Message</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies mail message body.
-                        </maml:para>
-                        <maml:para>You can pipe results of another function or cmdlet to this function.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
-                    <dev:type>
-                        <maml:name>Object[]</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
-                </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-                    <maml:name>Subject</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies mail message subject.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                    <dev:type>
-                        <maml:name>String</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
-                </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
                     <maml:name>ProfileName</maml:name>
                     <maml:Description>
                         <maml:para>Specifies profile name.
@@ -70,7 +42,35 @@ You can create profile by using the New-sthMailProfile function.
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
+                    <maml:name>Message</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message body.
+                        </maml:para>
+                        <maml:para>You can pipe results of another function or cmdlet to this function.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>Object[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message subject.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Attachments</maml:name>
                     <maml:Description>
                         <maml:para>Specifies paths to mail message attachments, if any.
@@ -86,34 +86,6 @@ You can create profile by using the New-sthMailProfile function.
             </command:syntaxItem>
             <command:syntaxItem>
                 <maml:name>Send-sthMailMessage</maml:name>
-                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-                    <maml:name>Message</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies mail message body.
-                        </maml:para>
-                        <maml:para>You can pipe results of another function or cmdlet to this function.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
-                    <dev:type>
-                        <maml:name>Object[]</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
-                </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-                    <maml:name>Subject</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies mail message subject.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                    <dev:type>
-                        <maml:name>String</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
-                </command:parameter>
                 <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>ProfileFilePath</maml:name>
                     <maml:Description>
@@ -129,7 +101,35 @@ You can create profile by using the New-sthMailProfile function.
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
+                    <maml:name>Message</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message body.
+                        </maml:para>
+                        <maml:para>You can pipe results of another function or cmdlet to this function.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>Object[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message subject.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Attachments</maml:name>
                     <maml:Description>
                         <maml:para>Specifies paths to mail message attachments, if any.
@@ -145,35 +145,7 @@ You can create profile by using the New-sthMailProfile function.
             </command:syntaxItem>
         </command:syntax>
         <command:parameters>
-            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-                <maml:name>Message</maml:name>
-                <maml:Description>
-                    <maml:para>Specifies mail message body.
-                    </maml:para>
-                    <maml:para>You can pipe results of another function or cmdlet to this function.
-                    </maml:para>
-                </maml:Description>
-                <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
-                <dev:type>
-                    <maml:name>Object[]</maml:name>
-                    <maml:uri />
-                </dev:type>
-                <dev:defaultValue>None</dev:defaultValue>
-            </command:parameter>
-            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-                <maml:name>Subject</maml:name>
-                <maml:Description>
-                    <maml:para>Specifies mail message subject.
-                    </maml:para>
-                </maml:Description>
-                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                <dev:type>
-                    <maml:name>String</maml:name>
-                    <maml:uri />
-                </dev:type>
-                <dev:defaultValue>None</dev:defaultValue>
-            </command:parameter>
-            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
                 <maml:name>ProfileName</maml:name>
                 <maml:Description>
                     <maml:para>Specifies profile name.
@@ -204,7 +176,35 @@ You can create profile by using the New-sthMailProfile function.
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
-            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
+                <maml:name>Message</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies mail message body.
+                    </maml:para>
+                    <maml:para>You can pipe results of another function or cmdlet to this function.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+                <dev:type>
+                    <maml:name>Object[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>Subject</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies mail message subject.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                 <maml:name>Attachments</maml:name>
                 <maml:Description>
                     <maml:para>Specifies paths to mail message attachments, if any.

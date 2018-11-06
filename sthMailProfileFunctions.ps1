@@ -4,14 +4,14 @@ $ProfileDirectory = 'Profiles'
 function Send-sthMailMessage
 {
     Param(
+        [Parameter(Mandatory,Position='0',ParameterSetName='ProfileName')]
+        [string]$ProfileName,
+        [Parameter(Mandatory,ParameterSetName='ProfileFilePath')]
+        [string]$ProfileFilePath,
         [Parameter(ValueFromPipeline)]
         $Message,
         [Parameter(Mandatory)]
         [string]$Subject,
-        [Parameter(Mandatory,ParameterSetName='ProfileName')]
-        [string]$ProfileName,
-        [Parameter(Mandatory,ParameterSetName='ProfileFilePath')]
-        [string]$ProfileFilePath,
         [string[]]$Attachments
     )
 
@@ -129,9 +129,9 @@ function New-sthMailProfile
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingPlainTextForPassword","")]
     [CmdletBinding(DefaultParameterSetName='ProfileName')]
     Param(
-        [Parameter(Mandatory,ParameterSetName='ProfileName')]
-        [Parameter(Mandatory,ParameterSetName='ProfileName-Password')]
-        [Parameter(Mandatory,ParameterSetName='ProfileName-Credential')]
+        [Parameter(Mandatory,Position='0',ParameterSetName='ProfileName')]
+        [Parameter(Mandatory,Position='0',ParameterSetName='ProfileName-Password')]
+        [Parameter(Mandatory,Position='0',ParameterSetName='ProfileName-Credential')]
         [string]$ProfileName,
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath')]
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath-Password')]
@@ -270,7 +270,7 @@ function Get-sthMailProfile
 {
     [CmdletBinding(DefaultParameterSetName='ProfileName')]
     Param(
-        [Parameter(ParameterSetName='ProfileName')]
+        [Parameter(Position='0',ParameterSetName='ProfileName')]
         [string[]]$ProfileName = "*",
         [Parameter(ParameterSetName='ProfileFilePath')]
         [string]$ProfileFilePath,
@@ -327,7 +327,7 @@ function Get-sthMailProfile
 function Remove-sthMailProfile
 {
     Param(
-        [Parameter(Mandatory,ParameterSetName='ProfileName')]
+        [Parameter(Mandatory,Position='0',ParameterSetName='ProfileName')]
         [string]$ProfileName,
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath')]
         [string]$ProfileFilePath
