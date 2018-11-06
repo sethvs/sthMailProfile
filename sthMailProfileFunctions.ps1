@@ -8,10 +8,10 @@ function Send-sthMailMessage
         [string]$ProfileName,
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath')]
         [string]$ProfileFilePath,
-        [Parameter(ValueFromPipeline)]
-        $Message,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position='1')]
         [string]$Subject,
+        [Parameter(Position='2',ValueFromPipeline)]
+        $Message,
         [string[]]$Attachments
     )
 
@@ -137,10 +137,12 @@ function New-sthMailProfile
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath-Password')]
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath-Credential')]
         [string]$ProfileFilePath,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position='1')]
         [string]$From,
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position='2')]
         [string[]]$To,
+        [Parameter(Mandatory,Position='3')]
+        [string]$SmtpServer,
         [Parameter(Mandatory,ParameterSetName='ProfileName-Password')]
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath-Password')]
         [string]$UserName,
@@ -151,8 +153,6 @@ function New-sthMailProfile
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath-Credential')]
         [ValidateNotNullOrEmpty()]
         [PSCredential]$Credential,
-        [Parameter(Mandatory)]
-        [string]$SmtpServer,
         [int]$Port,
         [switch]$UseSSL,
         [string]$Encoding,

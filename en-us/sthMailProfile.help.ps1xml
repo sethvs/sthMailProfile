@@ -42,7 +42,20 @@ You can create profile by using the New-sthMailProfile function.
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message subject.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="2" aliases="none">
                     <maml:name>Message</maml:name>
                     <maml:Description>
                         <maml:para>Specifies mail message body.
@@ -53,19 +66,6 @@ You can create profile by using the New-sthMailProfile function.
                     <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
                     <dev:type>
                         <maml:name>Object[]</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
-                </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-                    <maml:name>Subject</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies mail message subject.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                    <dev:type>
-                        <maml:name>String</maml:name>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
@@ -101,7 +101,20 @@ You can create profile by using the New-sthMailProfile function.
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message subject.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="2" aliases="none">
                     <maml:name>Message</maml:name>
                     <maml:Description>
                         <maml:para>Specifies mail message body.
@@ -112,19 +125,6 @@ You can create profile by using the New-sthMailProfile function.
                     <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
                     <dev:type>
                         <maml:name>Object[]</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
-                </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-                    <maml:name>Subject</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies mail message subject.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                    <dev:type>
-                        <maml:name>String</maml:name>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
@@ -176,7 +176,20 @@ You can create profile by using the New-sthMailProfile function.
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
-            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                <maml:name>Subject</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies mail message subject.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="2" aliases="none">
                 <maml:name>Message</maml:name>
                 <maml:Description>
                     <maml:para>Specifies mail message body.
@@ -187,19 +200,6 @@ You can create profile by using the New-sthMailProfile function.
                 <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
                 <dev:type>
                     <maml:name>Object[]</maml:name>
-                    <maml:uri />
-                </dev:type>
-                <dev:defaultValue>None</dev:defaultValue>
-            </command:parameter>
-            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-                <maml:name>Subject</maml:name>
-                <maml:Description>
-                    <maml:para>Specifies mail message subject.
-                    </maml:para>
-                </maml:Description>
-                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                <dev:type>
-                    <maml:name>String</maml:name>
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
@@ -227,7 +227,7 @@ You can create profile by using the New-sthMailProfile function.
             <command:example>
                 <maml:title>Example 1: Send mail message using previously created profile.</maml:title>
                 <dev:code>$ps = Get-Process
-Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfile"</dev:code>
+Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" -Message $ps</dev:code>
                 <dev:remarks>
                     <maml:para>The first command gets the result of the Get-Process cmdlet and assigns it to the $ps variable.
 The second command sends it using previously created profile "MailProfile".</maml:para>
@@ -236,9 +236,21 @@ The second command sends it using previously created profile "MailProfile".</mam
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 2: Send mail message using profile file at the path specified.</maml:title>
+                <maml:title>Example 2: Send mail message using positional parameters.</maml:title>
                 <dev:code>$ps = Get-Process
-Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileFilePath C:\Profiles\SomeProfile.xml</dev:code>
+Send-sthMailMessage "MailProfile" "Process List" $ps</dev:code>
+                <dev:remarks>
+                    <maml:para>The first command gets the result of the Get-Process cmdlet and assigns it to the $ps variable.
+The second command sends it using previously created profile "MailProfile".
+The command uses positional parameters.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 3: Send mail message using profile file at the path specified.</maml:title>
+                <dev:code>$ps = Get-Process
+Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Process List" -Message $ps</dev:code>
                 <dev:remarks>
                     <maml:para>The first command gets the result of the Get-Process cmdlet and assigns it to the $ps variable.
 The second command sends it using previously created profile file SomeProfile.xml located in the C:\Profiles directory.</maml:para>
@@ -247,8 +259,8 @@ The second command sends it using previously created profile file SomeProfile.xm
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 3: Send mail message using pipeline and previously created profile.</maml:title>
-                <dev:code>Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile"</dev:code>
+                <maml:title>Example 4: Send mail message using pipeline and previously created profile.</maml:title>
+                <dev:code>Get-Process | Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List"</dev:code>
                 <dev:remarks>
                     <maml:para>This command gets the result of the Get-Process cmdlet and sends it using previously created profile "MailProfile".
 It uses pipeline for sending message content to the function.</maml:para>
@@ -257,8 +269,8 @@ It uses pipeline for sending message content to the function.</maml:para>
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 4: Send mail message with attachments using pipeline and previously created profile.</maml:title>
-                <dev:code>Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile" -Attachments "file1.txt, file2.txt"</dev:code>
+                <maml:title>Example 5: Send mail message with attachments using pipeline and previously created profile.</maml:title>
+                <dev:code>Get-Process | Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" -Attachments "file1.txt, file2.txt"</dev:code>
                 <dev:remarks>
                     <maml:para>This command gets the result of the Get-Process cmdlet and sends it with specified files as attachments using previously created profile "MailProfile".
 It uses pipeline for sending message content to the function.</maml:para>
@@ -337,6 +349,19 @@ It uses pipeline for sending message content to the function.</maml:para>
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                    <maml:name>SmtpServer</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the name of the SMTP server that sends the email message.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>UserName</maml:name>
                     <maml:Description>
@@ -379,19 +404,6 @@ It uses pipeline for sending message content to the function.</maml:para>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
-                </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-                    <maml:name>SmtpServer</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies the name of the SMTP server that sends the email message.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                    <dev:type>
-                        <maml:name>String</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -557,6 +569,19 @@ The acceptable values for this parameter are:
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                    <maml:name>SmtpServer</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the name of the SMTP server that sends the email message.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>UserName</maml:name>
                     <maml:Description>
@@ -599,19 +624,6 @@ The acceptable values for this parameter are:
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
-                </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-                    <maml:name>SmtpServer</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies the name of the SMTP server that sends the email message.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                    <dev:type>
-                        <maml:name>String</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -775,6 +787,19 @@ The acceptable values for this parameter are:
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                    <maml:name>SmtpServer</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the name of the SMTP server that sends the email message.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Credential</maml:name>
                     <maml:Description>
@@ -800,19 +825,6 @@ The acceptable values for this parameter are:
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
-                </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-                    <maml:name>SmtpServer</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies the name of the SMTP server that sends the email message.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                    <dev:type>
-                        <maml:name>String</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -978,6 +990,19 @@ The acceptable values for this parameter are:
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                    <maml:name>SmtpServer</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies the name of the SMTP server that sends the email message.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Credential</maml:name>
                     <maml:Description>
@@ -1003,19 +1028,6 @@ The acceptable values for this parameter are:
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
-                </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-                    <maml:name>SmtpServer</maml:name>
-                    <maml:Description>
-                        <maml:para>Specifies the name of the SMTP server that sends the email message.
-                        </maml:para>
-                    </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                    <dev:type>
-                        <maml:name>String</maml:name>
-                        <maml:uri />
-                    </dev:type>
-                    <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -1196,6 +1208,19 @@ The acceptable values for this parameter are:
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                <maml:name>SmtpServer</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies the name of the SMTP server that sends the email message.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
             <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                 <maml:name>UserName</maml:name>
                 <maml:Description>
@@ -1252,19 +1277,6 @@ The acceptable values for this parameter are:
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>False</dev:defaultValue>
-            </command:parameter>
-            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-                <maml:name>SmtpServer</maml:name>
-                <maml:Description>
-                    <maml:para>Specifies the name of the SMTP server that sends the email message.
-                    </maml:para>
-                </maml:Description>
-                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                <dev:type>
-                    <maml:name>String</maml:name>
-                    <maml:uri />
-                </dev:type>
-                <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
             <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                 <maml:name>Port</maml:name>
@@ -1403,7 +1415,16 @@ The acceptable values for this parameter are:
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 2: Create a new profile file at the specified path.</maml:title>
+                <maml:title>Example 2: Create a new profile using positional parameters.</maml:title>
+                <dev:code>New-sthMailProfile "MailProfile" source@domain.com destination@domain.com smtp.domain.com</dev:code>
+                <dev:remarks>
+                    <maml:para>The command creates mail profile with name "MailProfile", which contains settings: From, To and SmtpServer using positional parameters.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 3: Create a new profile file at the specified path.</maml:title>
                 <dev:code>New-sthMailProfile -ProfileFilePath "C:\Profiles\SomeProfile.xml" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com</dev:code>
                 <dev:remarks>
                     <maml:para>This command creates the profile file with the name SomeProfile.xml in the C:\Profiles directory.</maml:para>
@@ -1412,7 +1433,7 @@ The acceptable values for this parameter are:
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 3: Create a new profile with credential.</maml:title>
+                <maml:title>Example 4: Create a new profile with credential.</maml:title>
                 <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com
 Type the password:</dev:code>
                 <dev:remarks>
@@ -1424,7 +1445,7 @@ The -Password parameter is not used, so the command requests for it.</maml:para>
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 4: Create a new profile by specifying the password as string.</maml:title>
+                <maml:title>Example 5: Create a new profile by specifying the password as string.</maml:title>
                 <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password'</dev:code>
                 <dev:remarks>
                     <maml:para>The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
@@ -1435,7 +1456,7 @@ Password is specified as string.</maml:para>
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 5: Create a new profile with credential by specifying password as secure string.</maml:title>
+                <maml:title>Example 6: Create a new profile with credential by specifying password as secure string.</maml:title>
                 <dev:code>$Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password $Password</dev:code>
                 <dev:remarks>
@@ -1448,7 +1469,7 @@ Password is specified as secure string.</maml:para>
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 6: Create a new profile by specifying credential as PSCredential object.</maml:title>
+                <maml:title>Example 7: Create a new profile by specifying credential as PSCredential object.</maml:title>
                 <dev:code>$Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'UserName', $Password
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential $Credential</dev:code>
@@ -1462,7 +1483,7 @@ The third command creates mail profile with name "MailProfile" and settings: Fro
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 7: Create a new profile object and store password in plain text.</maml:title>
+                <maml:title>Example 8: Create a new profile object and store password in plain text.</maml:title>
                 <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText</dev:code>
                 <dev:remarks>
                     <maml:para>The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.

@@ -44,12 +44,27 @@ Install-Module sthMailProfile
 
 ```
 $ps = Get-Process
-Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfile"
+Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" -Message $ps
 ```
 
 ---
 
-#### Пример 2: Отправка сообщения электронной почты с использованием файла профиля, расположенного по указанному пути
+#### Пример 2: Отправка сообщения электронной почты с использованием позиционных параметров
+
+Первая команда получает результаты выполнения командлета Get-Process и сохраняет их в переменной $ps.
+
+Вторая команда отправляет их по электронной почте с использованием ранее созданного профиля с именем "MailProfile".
+
+Команда использует позиционные параметры.
+
+```
+$ps = Get-Process
+Send-sthMailMessage "MailProfile" "Process List" $ps
+```
+
+---
+
+#### Пример 3: Отправка сообщения электронной почты с использованием файла профиля, расположенного по указанному пути
 
 Команды отправляют сообщение электронной почты с использованием файла профиля, расположенного по указанному пути.
 
@@ -59,27 +74,27 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
 
 ```
 $ps = Get-Process
-Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileFilePath C:\Profiles\SomeProfile.xml
+Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Process List" -Message $ps
 ```
 
 ---
 
-#### Пример 3: Отправка сообщения электронной почты с использованием конвейера и ранее созданного профиля
+#### Пример 4: Отправка сообщения электронной почты с использованием конвейера и ранее созданного профиля
 
 Команда получает результаты выполнения командлета Get-Process по конвейеру и отправляет их по электронной почте с использованием ранее созданного профиля с именем "MailProfile".
 
 ```
-Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile"
+Get-Process | Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List"
 ```
 
 ---
 
-#### Пример 4: Отправка сообщения электронной почты, содержащего прикрепленные файлы, с использованием ранее созданного профиля
+#### Пример 5: Отправка сообщения электронной почты, содержащего прикрепленные файлы, с использованием ранее созданного профиля
 
 Команда получает результаты выполнения командлета Get-Process по конвейеру и отправляет их вместе с приложенными файлами по электронной почте с использованием ранее созданного профиля с именем "MailProfile".
 
 ```
-Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile" -Attachments "file1.txt, file2.txt"
+Get-Process | Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" -Attachments "file1.txt, file2.txt"
 ```
 
 ### New-sthMailProfile
@@ -94,7 +109,17 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Пример 2: Создание профиля с указанием пути и имени файла
+#### Пример 2: Создание нового профиля с использованием позиционных параметров
+
+Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To и SmtpServer с использованием позиционных параметров.
+
+```
+New-sthMailProfile "MailProfile" source@domain.com destination@domain.com smtp.domain.com
+```
+
+---
+
+#### Пример 3: Создание профиля с указанием пути и имени файла
 
 Команда создает файл профиля с именем SomeProfile.xml, расположенный в каталоге C:\Profiles.
 
@@ -104,7 +129,7 @@ New-sthMailProfile -ProfileFilePath "C:\Profiles\SomeProfile.xml" -From source@d
 
 ---
 
-#### Пример 3: Создание нового профиля, содержащего учетные данные
+#### Пример 4: Создание нового профиля, содержащего учетные данные
 
 Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, UserName и Password.
 
@@ -119,7 +144,7 @@ Type the password:
 
 ---
 
-#### Пример 4: Создание нового профиля с указанием пароля в качестве строки
+#### Пример 5: Создание нового профиля с указанием пароля в качестве строки
 
 Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, UserName и Password.
 
@@ -133,7 +158,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Пример 5: Создание нового профиля с указанием пароля в качестве объекта SecureString
+#### Пример 6: Создание нового профиля с указанием пароля в качестве объекта SecureString
 
 Команды создают новый профиль с указанием пароля в качестве объекта SecureString.
 
@@ -152,7 +177,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Пример 6: Создание нового профиля с использованием объекта PSCredential
+#### Пример 7: Создание нового профиля с использованием объекта PSCredential
 
 Команды создают новый профиль с использованием объекта PSCredential.
 
@@ -172,7 +197,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Пример 7: Создание нового профиля, хранящего пароль открытым текстом
+#### Пример 8: Создание нового профиля, хранящего пароль открытым текстом
 
 Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, UserName и Password.
 

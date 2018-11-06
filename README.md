@@ -46,12 +46,27 @@ The second command sends it using previously created profile "MailProfile".
 
 ```
 $ps = Get-Process
-Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfile"
+Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" -Message $ps
 ```
 
 ---
 
-#### Example 2: Send mail message using profile file at the path specified
+#### Example 2: Send mail message using positional parameters
+
+The first command gets the result of the Get-Process cmdlet and assigns it to the $ps variable.
+
+The second command sends it using previously created profile "MailProfile".
+
+The command uses positional parameters.
+
+```
+$ps = Get-Process
+Send-sthMailMessage "MailProfile" "Process List" $ps
+```
+
+---
+
+#### Example 3: Send mail message using profile file at the path specified
 
 The commands send mail message using profile file at the path specified.
 
@@ -61,31 +76,31 @@ The second command sends it using previously created profile file SomeProfile.xm
 
 ```
 $ps = Get-Process
-Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileFilePath C:\Profiles\SomeProfile.xml
+Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Process List" -Message $ps
 ```
 
 ---
 
-#### Example 3: Send mail message using pipeline and previously created profile
+#### Example 4: Send mail message using pipeline and previously created profile
 
 The command gets the result of the Get-Process cmdlet and sends it using previously created profile "MailProfile".
 
 It uses pipeline for sending message content to the function.
 
 ```
-Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile"
+Get-Process | Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List"
 ```
 
 ---
 
-#### Example 4: Send mail message with attachments using pipeline and previously created profile
+#### Example 5: Send mail message with attachments using pipeline and previously created profile
 
 The command gets the result of the Get-Process cmdlet and sends it with specified files as attachments using previously created profile "MailProfile".
 
 It uses pipeline for sending message content to the function.
 
 ```
-Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile" -Attachments "file1.txt, file2.txt"
+Get-Process | Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" -Attachments "file1.txt, file2.txt"
 ```
 
 ### New-sthMailProfile
@@ -100,7 +115,17 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Example 2: Create a new profile file at the specified path
+#### Example 2: Create a new profile using positional parameters
+
+The command creates mail profile with name "MailProfile", which contains settings: From, To and SmtpServer using positional parameters.
+
+```
+New-sthMailProfile "MailProfile" source@domain.com destination@domain.com smtp.domain.com
+```
+
+---
+
+#### Example 3: Create a new profile file at the specified path
 
 The command creates the profile file with the name SomeProfile.xml in the C:\Profiles directory.
 
@@ -110,7 +135,7 @@ New-sthMailProfile -ProfileFilePath "C:\Profiles\SomeProfile.xml" -From source@d
 
 ---
 
-#### Example 3: Create a new profile with credential
+#### Example 4: Create a new profile with credential
 
 The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
 
@@ -125,7 +150,7 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 4: Create a new profile by specifying the password as string
+#### Example 5: Create a new profile by specifying the password as string
 
 The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
 
@@ -139,7 +164,7 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 5: Create a new profile with credential by specifying password as secure string
+#### Example 6: Create a new profile with credential by specifying password as secure string
 
 The commands create a new profile with credential by specifying password as secure string.
 
@@ -158,7 +183,7 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 6: Create a new profile by specifying credential as PSCredential object
+#### Example 7: Create a new profile by specifying credential as PSCredential object
 
 The commands create a new profile by specifying credential as PSCredential object.
 
@@ -178,7 +203,7 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 7: Create a new profile object and store password in plain text
+#### Example 8: Create a new profile object and store password in plain text
 
 The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
 
