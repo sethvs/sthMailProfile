@@ -471,6 +471,19 @@ Describe "sthMailProfile" {
             It "Should return 'Profile is not found'." {
                 { Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Message $theMessage -Subject $theSubject -Attachments $theAttachment -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
             }
+            It "Should return 'Profile is not found'." {
+                { Send-sthMailMessage -ProfileFilePath '.\NonExistentFilePath' -Message $theMessage -Subject $theSubject -Attachments $theAttachment -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
+            }
+        }
+
+        Context "Get-sthMailProfile - non-existing profile" {
+
+            It "Should return nothing." {
+                Get-sthMailProfile -ProfileName 'Non-Existent Profile' | Should -BeNullOrEmpty
+            }
+            It "Should return nothing." {
+                Get-sthMailProfile -ProfileFilePath '.\NonExistentFilePath' | Should -BeNullOrEmpty
+            }
         }
     }
 }

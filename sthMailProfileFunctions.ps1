@@ -110,7 +110,14 @@ function Send-sthMailMessage
 
         else
         {
-            inProfileNameError -Value $ProfileName
+            if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
+            {
+                inProfileNameError -Value $ProfileName
+            }
+            if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+            {
+                inProfileNameError -Value $ProfileFilePath
+            }
         }
     }
 
@@ -307,9 +314,12 @@ function Get-sthMailProfile
     if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
     {
         # $ProfilePath = Get-Item $ProfileFilePath
-
-        $xml = Import-Clixml -Path $ProfileFilePath
-        inComposeMailProfile -Xml $xml -ProfileFileName $(Split-Path -Path $ProfileFilePath -Leaf)
+        # if ($ProfilePath = Get-Item -Path $ProfileFilePath -ErrorAction SilentlyContinue)
+        if (Test-Path -Path $ProfileFilePath)
+        {
+            $xml = Import-Clixml -Path $ProfileFilePath
+            inComposeMailProfile -Xml $xml -ProfileFileName $(Split-Path -Path $ProfileFilePath -Leaf)
+        }
     }
 }
 
@@ -342,7 +352,7 @@ function inProfileNameError
         [string]$Value
     )
 
-    $Exception = [System.ArgumentException]::new("`nProfile '$ProfileName' is not found.`n")
+    $Exception = [System.ArgumentException]::new("`nProfile '$Value' is not found.`n")
     $ErrorId = 'ArgumentError'
     $ErrorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
 
