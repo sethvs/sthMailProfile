@@ -16,23 +16,28 @@
         <maml:description>
             <maml:para>Функция Send-sthMailMessage отправляет сообщение по электронной почте с использованием настроек, заданных в указанном профиле.
             </maml:para>
-            <maml:para>Вы можете создать профиль при помощи функции New-sthMailProfile.
+            <maml:para>Профиль - это файл xml, содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            </maml:para>
+            <maml:para>Вы можете создать профиль при помощи команды New-sthMailProfile с параметром -ProfileName или -ProfileFilePath.
+Параметр -ProfileName создает .xml файл с указанным именем в папке Profiles, расположенной в каталоге модуля.
+Параметр -ProfileFilePath принимает в качестве значения путь и имя файла, например C:\Folder\file.xml, и создает его в указанном расположении.
             </maml:para>
         </maml:description>
         <command:syntax>
             <command:syntaxItem>
                 <maml:name>Send-sthMailMessage</maml:name>
-                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-                    <maml:name>Message</maml:name>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+                    <maml:name>ProfileName</maml:name>
                     <maml:Description>
-                        <maml:para>Задает тело сообщения электронной почты.
+                        <maml:para>Указывает имя профиля.
                         </maml:para>
-                        <maml:para>Вы можете передать функции Send-sthMailMessage результаты выполнения какой либо другой функции или командлета по конвейеру.
+                        <maml:para>Профили содержат настройки для отправки сообщений электронной почты.
+Вы можете создать профиль при помощи функции New-sthMailProfile.
                         </maml:para>
                     </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
                     <dev:type>
-                        <maml:name>Object[]</maml:name>
+                        <maml:name>String</maml:name>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
@@ -50,13 +55,43 @@
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-                    <maml:name>ProfileName</maml:name>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="2" aliases="none">
+                    <maml:name>Message</maml:name>
                     <maml:Description>
-                        <maml:para>Указывает имя профиля.
+                        <maml:para>Задает тело сообщения электронной почты.
                         </maml:para>
-                        <maml:para>Профили содержат настройки для отправки сообщений электронной почты.
-Вы можете создать профиль при помощи функции New-sthMailProfile.
+                        <maml:para>Вы можете передать функции Send-sthMailMessage результаты выполнения какой либо другой функции или командлета по конвейеру.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>Object[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Attachments</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает пути к файлам, которые нужно прикрепить к сообщению электронной почты.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
+            <command:syntaxItem>
+                <maml:name>Send-sthMailMessage</maml:name>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>ProfileFilePath</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает путь и имя файла профиля.
+                        </maml:para>
+                        <maml:para>Этот параметр позволяет вам использовать файл профиля, расположенный в произвольной локации.
                         </maml:para>
                     </maml:Description>
                     <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -66,7 +101,35 @@
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает тему сообщения электронной почты.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="2" aliases="none">
+                    <maml:name>Message</maml:name>
+                    <maml:Description>
+                        <maml:para>Задает тело сообщения электронной почты.
+                        </maml:para>
+                        <maml:para>Вы можете передать функции Send-sthMailMessage результаты выполнения какой либо другой функции или командлета по конвейеру.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>Object[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Attachments</maml:name>
                     <maml:Description>
                         <maml:para>Указывает пути к файлам, которые нужно прикрепить к сообщению электронной почты.
@@ -82,17 +145,33 @@
             </command:syntaxItem>
         </command:syntax>
         <command:parameters>
-            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
-                <maml:name>Message</maml:name>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+                <maml:name>ProfileName</maml:name>
                 <maml:Description>
-                    <maml:para>Задает тело сообщения электронной почты.
+                    <maml:para>Указывает имя профиля.
                     </maml:para>
-                    <maml:para>Вы можете передать функции Send-sthMailMessage результаты выполнения какой либо другой функции или командлета по конвейеру.
+                    <maml:para>Профили содержат настройки для отправки сообщений электронной почты.
+Вы можете создать профиль при помощи функции New-sthMailProfile.
                     </maml:para>
                 </maml:Description>
-                <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
                 <dev:type>
-                    <maml:name>Object[]</maml:name>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>ProfileFilePath</maml:name>
+                <maml:Description>
+                    <maml:para>Указывает путь и имя файла профиля.
+                    </maml:para>
+                    <maml:para>Этот параметр позволяет вам использовать файл профиля, расположенный в произвольной локации.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
@@ -110,23 +189,22 @@
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
-            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-                <maml:name>ProfileName</maml:name>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="2" aliases="none">
+                <maml:name>Message</maml:name>
                 <maml:Description>
-                    <maml:para>Указывает имя профиля.
+                    <maml:para>Задает тело сообщения электронной почты.
                     </maml:para>
-                    <maml:para>Профили содержат настройки для отправки сообщений электронной почты.
-Вы можете создать профиль при помощи функции New-sthMailProfile.
+                    <maml:para>Вы можете передать функции Send-sthMailMessage результаты выполнения какой либо другой функции или командлета по конвейеру.
                     </maml:para>
                 </maml:Description>
-                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <command:parameterValue required="true" variableLength="false">Object[]</command:parameterValue>
                 <dev:type>
-                    <maml:name>String</maml:name>
+                    <maml:name>Object[]</maml:name>
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
-            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                 <maml:name>Attachments</maml:name>
                 <maml:Description>
                     <maml:para>Указывает пути к файлам, которые нужно прикрепить к сообщению электронной почты.
@@ -149,7 +227,7 @@
             <command:example>
                 <maml:title>Пример 1: Отправка сообщения электронной почты с использованием ранее созданного профиля.</maml:title>
                 <dev:code>$ps = Get-Process
-Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfile"</dev:code>
+Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" -Message $ps</dev:code>
                 <dev:remarks>
                     <maml:para>Первая команда получает результаты выполнения командлета Get-Process и сохраняет их в переменной $ps.
 Вторая команда отправляет их по электронной почте с использованием ранее созданного профиля с именем "MailProfile".</maml:para>
@@ -158,8 +236,31 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Пример 2: Отправка сообщения электронной почты с использованием конвейера и ранее созданного профиля.</maml:title>
-                <dev:code>Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile"</dev:code>
+                <maml:title>Пример 2: Отправка сообщения электронной почты с использованием позиционных параметров.</maml:title>
+                <dev:code>$ps = Get-Process
+Send-sthMailMessage "MailProfile" "Process List" $ps</dev:code>
+                <dev:remarks>
+                    <maml:para>Первая команда получает результаты выполнения командлета Get-Process и сохраняет их в переменной $ps.
+Вторая команда отправляет их по электронной почте с использованием ранее созданного профиля с именем "MailProfile".
+Команда использует позиционные параметры.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Пример 3: Отправка сообщения электронной почты с использованием файла профиля, расположенного по указанному пути.</maml:title>
+                <dev:code>$ps = Get-Process
+Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Process List" -Message $ps</dev:code>
+                <dev:remarks>
+                    <maml:para>Первая команда получает результаты выполнения командлета Get-Process и сохраняет их в переменной $ps.
+Вторая команда отправляет их по электронной почте с использованием ранее созданного файла профиля SomeProfile.xml, расположенного в каталоге C:\Profiles.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Пример 4: Отправка сообщения электронной почты с использованием конвейера и ранее созданного профиля.</maml:title>
+                <dev:code>Get-Process | Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" </dev:code>
                 <dev:remarks>
                     <maml:para>Команда получает результаты выполнения командлета Get-Process по конвейеру и отправляет их по электронной почте с использованием ранее созданного профиля с именем "MailProfile".</maml:para>
                     <maml:para/>
@@ -167,8 +268,8 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Пример 3: Отправка сообщения электронной почты, содержащего прикрепленные файлы, с использованием ранее созданного профиля.</maml:title>
-                <dev:code>Get-Process | Send-sthMailMessage -Subject "Process List" -ProfileName "MailProfile" -Attachments "file1.txt, file2.txt"</dev:code>
+                <maml:title>Пример 5: Отправка сообщения электронной почты, содержащего прикрепленные файлы, с использованием ранее созданного профиля.</maml:title>
+                <dev:code>Get-Process | Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" -Attachments "file1.txt, file2.txt"</dev:code>
                 <dev:remarks>
                     <maml:para>Команда получает результаты выполнения командлета Get-Process по конвейеру и отправляет их вместе с приложенными файлами по электронной почте с использованием ранее созданного профиля с именем "MailProfile".</maml:para>
                     <maml:para/>
@@ -193,7 +294,11 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
         <maml:description>
             <maml:para>Функция New-sthMailProfile создает профиль электронной почты, содержащий указанные параметры.
             </maml:para>
-            <maml:para>Профиль - это файл xml, расположенный в каталоге "Profiles", находящемся в папке модуля и содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            <maml:para>Профиль - это файл xml, содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            </maml:para>
+            <maml:para>Вы можете создать профиль при помощи параметров -ProfileName или -ProfileFilePath.
+Параметр -ProfileName создает .xml файл с указанным именем в папке Profiles, расположенной в каталоге модуля.
+Параметр -ProfileFilePath принимает в качестве значения путь и имя файла, например C:\Folder\file.xml, и создает его в указанном расположении.
             </maml:para>
             <maml:para>Профиль используется функцией Send-sthMailMessage.
             </maml:para>
@@ -206,7 +311,7 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                     <maml:Description>
                         <maml:para>Задает имя профиля.
                         </maml:para>
-                        <maml:para>Указанное значение будет использовано в качестве имени файла профиля.
+                        <maml:para>Функция создает профиль с указанным именем в папке Profiles, расположенной в каталоге модуля.
                         </maml:para>
                     </maml:Description>
                     <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -238,6 +343,19 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                     <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
                     <dev:type>
                         <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                    <maml:name>SmtpServer</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает имя SMTP-сервера, через который будет отправлено сообщение электронной почты.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
@@ -285,7 +403,173 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Port</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает порт SMTP-сервера. По умолчанию используется порт 25.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+                    <dev:type>
+                        <maml:name>Int32</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>UseSSL</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что для подключения к SMTP-серверу будет использоваться протокол Secure Sockets Layer (SSL). По умолчанию SSL не используется.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Encoding</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает кодировку сообщения электронной почты.
+                        </maml:para>
+                        <maml:para>Вы можете указать как имя кодовой страницы, например 'unicode', так и ее числовое значение, например '1200'.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>BodyAsHTML</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что содержимое сообщения представляет из себя HTML.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>CC</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает адреса электронной почты, на которые будет отправлена копия сообщения.
+Введите имена (не обязательно) и адреса электронной почты, например: Получатель &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>BCC</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает адреса электронной почты, которые получат копию сообщения, однако не будут отображены в качестве получателей.
+Введите имена (не обязательно) и адреса электронной почты, например: Получатель &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>DeliveryNotificationOption</maml:name>
+                    <maml:Description>
+                        <maml:para>Задает опции уведомления о доставке для сообщения электронной почты. Вы можете указать несколько значений. Значение по умолчанию - None.
+
+Опции уведомления о доставке отправляются в сообщении, отсылаемом на адрес, указанный в значении параметра -To.
+
+Допустимые значения параметра:
+- None. Без уведомления.
+- OnSuccess. Уведомить в случае успешной доставки.
+- OnFailure. Уведомить в случае если доставка не удалась.
+- Delay. Уведомить, если доставка задерживается.
+- Never. Никогда не уведомлять.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Priority</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает приоритет сообщения электронной почты. Значение по умолчанию - Normal.
+
+Допустимые значения параметра:
+- Normal
+- High
+- Low
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
+            <command:syntaxItem>
+                <maml:name>New-sthMailProfile</maml:name>
                 <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>ProfileFilePath</maml:name>
+                    <maml:Description>
+                        <maml:para>Задает путь и имя файла профиля.
+                        </maml:para>
+                        <maml:para>Этот параметр позволяет вам создать файл профиля, расположенный в произвольной локации.
+                        </maml:para>
+                        <maml:para>Значение должно содержать путь и имя файла с расширением .xml.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                    <maml:name>From</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает адрес отправителя. Введите имя (не обязательно) и адрес электронной почты, например: Отправитель &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+                    <maml:name>To</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает адрес получателя. Введите имена (не обязательно) и адреса электронной почты, например: Получатель &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
                     <maml:name>SmtpServer</maml:name>
                     <maml:Description>
                         <maml:para>Указывает имя SMTP-сервера, через который будет отправлено сообщение электронной почты.
@@ -297,6 +581,49 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>UserName</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает имя пользователя, обладающего правами на отправку электронной почты.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Password</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает пароль пользователя, имя которого было задано параметром -UserName.
+                        </maml:para>
+                        <maml:para>Значение параметра может быть строкой или объектом SecureString.
+                        </maml:para>
+                        <maml:para>Если параметр -UserName был указан, а параметр -Password - нет, то функция запросит его значение.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String or SecureString</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String or SecureString</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>StorePasswordInPlainText</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что пароль будет храниться открытым текстом.</maml:para>
+                        <maml:para>По умолчанию, пароль шифруется при помощи DPAPI, что означает, что профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.</maml:para>
+                        <maml:para>Если же использован параметр -StorePasswordInPlainText, пароль будет храниться открытым текстом, что позволяет использовать профиль на других компьютерах, а не только на том, где он был создан, а также под иными пользовательскими учетными записями, отличными от той, под которой он был создан.</maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -426,7 +753,7 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                     <maml:Description>
                         <maml:para>Задает имя профиля.
                         </maml:para>
-                        <maml:para>Указанное значение будет использовано в качестве имени файла профиля.
+                        <maml:para>Функция создает профиль с указанным именем в папке Profiles, расположенной в каталоге модуля.
                         </maml:para>
                     </maml:Description>
                     <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -462,6 +789,19 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                    <maml:name>SmtpServer</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает имя SMTP-сервера, через который будет отправлено сообщение электронной почты.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Credential</maml:name>
                     <maml:Description>
@@ -489,7 +829,173 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Port</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает порт SMTP-сервера. По умолчанию используется порт 25.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+                    <dev:type>
+                        <maml:name>Int32</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>UseSSL</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что для подключения к SMTP-серверу будет использоваться протокол Secure Sockets Layer (SSL). По умолчанию SSL не используется.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Encoding</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает кодировку сообщения электронной почты.
+                        </maml:para>
+                        <maml:para>Вы можете указать как имя кодовой страницы, например 'unicode', так и ее числовое значение, например '1200'.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>BodyAsHTML</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что содержимое сообщения представляет из себя HTML.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>CC</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает адреса электронной почты, на которые будет отправлена копия сообщения.
+Введите имена (не обязательно) и адреса электронной почты, например: Получатель &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>BCC</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает адреса электронной почты, которые получат копию сообщения, однако не будут отображены в качестве получателей.
+Введите имена (не обязательно) и адреса электронной почты, например: Получатель &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>DeliveryNotificationOption</maml:name>
+                    <maml:Description>
+                        <maml:para>Задает опции уведомления о доставке для сообщения электронной почты. Вы можете указать несколько значений. Значение по умолчанию - None.
+
+Опции уведомления о доставке отправляются в сообщении, отсылаемом на адрес, указанный в значении параметра -To.
+
+Допустимые значения параметра:
+- None. Без уведомления.
+- OnSuccess. Уведомить в случае успешной доставки.
+- OnFailure. Уведомить в случае если доставка не удалась.
+- Delay. Уведомить, если доставка задерживается.
+- Never. Никогда не уведомлять.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Priority</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает приоритет сообщения электронной почты. Значение по умолчанию - Normal.
+
+Допустимые значения параметра:
+- Normal
+- High
+- Low
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
+            <command:syntaxItem>
+                <maml:name>New-sthMailProfile</maml:name>
                 <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>ProfileFilePath</maml:name>
+                    <maml:Description>
+                        <maml:para>Задает путь и имя файла профиля.
+                        </maml:para>
+                        <maml:para>Этот параметр позволяет вам создать файл профиля, расположенный в произвольной локации.
+                        </maml:para>
+                        <maml:para>Значение должно содержать путь и имя файла с расширением .xml.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                    <maml:name>From</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает адрес отправителя. Введите имя (не обязательно) и адрес электронной почты, например: Отправитель &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+                    <maml:name>To</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает адрес получателя. Введите имена (не обязательно) и адреса электронной почты, например: Получатель &lt;someone@example.com&gt;.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String[]</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
                     <maml:name>SmtpServer</maml:name>
                     <maml:Description>
                         <maml:para>Указывает имя SMTP-сервера, через который будет отправлено сообщение электронной почты.
@@ -501,6 +1007,33 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Credential</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает учетные данные пользователя, обладающего правами на отправку электронной почты.
+В качестве значения принимает объект PSCredential.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+                    <dev:type>
+                        <maml:name>PSCredential</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>StorePasswordInPlainText</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что пароль будет храниться открытым текстом.</maml:para>
+                        <maml:para>По умолчанию, пароль шифруется при помощи DPAPI, что означает, что профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.</maml:para>
+                        <maml:para>Если же использован параметр -StorePasswordInPlainText, пароль будет храниться открытым текстом, что позволяет использовать профиль на других компьютерах, а не только на том, где он был создан, а также под иными пользовательскими учетными записями, отличными от той, под которой он был создан.</maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -630,7 +1163,24 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                 <maml:Description>
                     <maml:para>Задает имя профиля.
                     </maml:para>
-                    <maml:para>Указанное значение будет использовано в качестве имени файла профиля.
+                    <maml:para>Функция создает профиль с указанным именем в папке Profiles, расположенной в каталоге модуля.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>ProfileFilePath</maml:name>
+                <maml:Description>
+                    <maml:para>Задает путь и имя файла профиля.
+                    </maml:para>
+                    <maml:para>Этот параметр позволяет вам создать файл профиля, расположенный в произвольной локации.
+                    </maml:para>
+                    <maml:para>Значение должно содержать путь и имя файла с расширением .xml.
                     </maml:para>
                 </maml:Description>
                 <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -662,6 +1212,19 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                 <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
                 <dev:type>
                     <maml:name>String[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+                <maml:name>SmtpServer</maml:name>
+                <maml:Description>
+                    <maml:para>Указывает имя SMTP-сервера, через который будет отправлено сообщение электронной почты.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
@@ -723,19 +1286,6 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>False</dev:defaultValue>
-            </command:parameter>
-            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-                <maml:name>SmtpServer</maml:name>
-                <maml:Description>
-                    <maml:para>Указывает имя SMTP-сервера, через который будет отправлено сообщение электронной почты.
-                    </maml:para>
-                </maml:Description>
-                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-                <dev:type>
-                    <maml:name>String</maml:name>
-                    <maml:uri />
-                </dev:type>
-                <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
             <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                 <maml:name>Port</maml:name>
@@ -876,7 +1426,25 @@ Send-sthMailMessage -Message $ps -Subject "Process List" -ProfileName "MailProfi
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Пример 2: Создание нового профиля, содержащего учетные данные.</maml:title>
+                <maml:title>Пример 2: Создание нового профиля с использованием позиционных параметров.</maml:title>
+                <dev:code>New-sthMailProfile "MailProfile" source@domain.com destination@domain.com smtp.domain.com</dev:code>
+                <dev:remarks>
+                    <maml:para>Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To и SmtpServer с использованием позиционных параметров.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Пример 3: Создание профиля с указанием пути и имени файла.</maml:title>
+                <dev:code>New-sthMailProfile -ProfileFilePath "C:\Profiles\SomeProfile.xml" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com</dev:code>
+                <dev:remarks>
+                    <maml:para>Команда создает файл профиля с именем SomeProfile.xml, расположенный в каталоге C:\Profiles.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Пример 4: Создание нового профиля, содержащего учетные данные.</maml:title>
                 <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com
 Type the password:</dev:code>
                 <dev:remarks>
@@ -888,7 +1456,7 @@ Type the password:</dev:code>
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Пример 3: Создание нового профиля с указанием пароля в качестве строки.</maml:title>
+                <maml:title>Пример 5: Создание нового профиля с указанием пароля в качестве строки.</maml:title>
                 <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password'</dev:code>
                 <dev:remarks>
                     <maml:para>Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, UserName и Password.
@@ -899,7 +1467,7 @@ Type the password:</dev:code>
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Пример 4: Создание нового профиля с указанием пароля в качестве объекта SecureString.</maml:title>
+                <maml:title>Пример 6: Создание нового профиля с указанием пароля в качестве объекта SecureString.</maml:title>
                 <dev:code>$Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password $Password</dev:code>
                 <dev:remarks>
@@ -912,7 +1480,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Пример 5: Создание нового профиля с использованием объекта PSCredential.</maml:title>
+                <maml:title>Пример 7: Создание нового профиля с использованием объекта PSCredential.</maml:title>
                 <dev:code>$Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'UserName', $Password
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential $Credential</dev:code>
@@ -926,7 +1494,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Пример 6: Создание нового профиля, хранящего пароль открытым текстом.</maml:title>
+                <maml:title>Пример 8: Создание нового профиля, хранящего пароль открытым текстом.</maml:title>
                 <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText</dev:code>
                 <dev:remarks>
                     <maml:para>Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, UserName и Password.
@@ -954,9 +1522,13 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
         <maml:description>
             <maml:para>Функция Get-sthMailProfile получает существующие профили электронной почты и отображает их параметры.
             </maml:para>
-            <maml:para>Профиль - это файл xml, расположенный в каталоге "Profiles", находящемся в папке модуля и содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            <maml:para>Профиль - это файл xml, содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
             </maml:para>
-            <maml:para>Профиль создается при помощи функции New-sthMailProfile и используется функцией Send-sthMailMessage.
+            <maml:para>Вы можете создать профиль при помощи команды New-sthMailProfile с параметром -ProfileName или -ProfileFilePath.
+Параметр -ProfileName создает .xml файл с указанным именем в папке Profiles, расположенной в каталоге модуля.
+Параметр -ProfileFilePath принимает в качестве значения путь и имя файла, например C:\Folder\file.xml, и создает его в указанном расположении.
+            </maml:para>
+            <maml:para>Профиль используется функцией Send-sthMailMessage.
             </maml:para>
         </maml:description>
         <command:syntax>
@@ -966,6 +1538,10 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
                     <maml:name>ProfileName</maml:name>
                     <maml:Description>
                         <maml:para>Указывает имя профиля.
+                        </maml:para>
+                        <maml:para>Это имя профиля, созданного при помощи команды New-sthMailProfile с параметром -ProfileName, находящегося в папке Profiles, расположенной в каталоге модуля.
+                        </maml:para>
+                        <maml:para>Если параметр отсутствует, команда выводит все профили, находящиеся в папке Profiles, расположенной в каталоге модуля.
                         </maml:para>
                         <maml:para>Поддерживается использование символов подстановки.
                         </maml:para>
@@ -990,6 +1566,38 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
                     <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
             </command:syntaxItem>
+            <command:syntaxItem>
+                <maml:name>Get-sthMailProfile</maml:name>
+                <command:parameter required="true" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>ProfileFilePath</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает путь и имя файла профиля.
+                        </maml:para>
+                        <maml:para>Это путь и имя файла .xml, созданного при помощи команды New-sthMailProfile с параметром -ProfileFilePath.
+                        </maml:para>
+                        <maml:para>Этот параметр позволяет вам использовать файл профиля, расположенный в произвольной локации.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>ShowPassword</maml:name>
+                    <maml:Description>
+                <maml:para>Указвыает, что вывод команды должен включать в себя значение пароля.
+По умолчанию пароли не отображаются.</maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
         </command:syntax>
         <command:parameters>
             <command:parameter required="false" variableLength="true" globbing="true" pipelineInput="False" position="0" aliases="none">
@@ -997,12 +1605,33 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
                 <maml:Description>
                     <maml:para>Указывает имя профиля.
                     </maml:para>
+                    <maml:para>Это имя профиля, созданного при помощи команды New-sthMailProfile с параметром -ProfileName, находящегося в папке Profiles, расположенной в каталоге модуля.
+                    </maml:para>
+                    <maml:para>Если параметр отсутствует, команда выводит все профили, находящиеся в папке Profiles, расположенной в каталоге модуля.
+                    </maml:para>
                     <maml:para>Поддерживается использование символов подстановки.
                     </maml:para>
                 </maml:Description>
                 <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
                 <dev:type>
                     <maml:name>String[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="none">
+                <maml:name>ProfileFilePath</maml:name>
+                <maml:Description>
+                    <maml:para>Указывает путь и имя файла профиля.
+                    </maml:para>
+                    <maml:para>Это путь и имя файла .xml, созданного при помощи команды New-sthMailProfile с параметром -ProfileFilePath.
+                    </maml:para>
+                    <maml:para>Этот параметр позволяет вам использовать файл профиля, расположенный в произвольной локации.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
@@ -1106,7 +1735,22 @@ SmtpServer  : smtp.domain.com</dev:code>
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Пример 4: Получение профилей и отображение их параметров, в том числе пароля.</maml:title>
+                <maml:title>Пример 4: Получение содержимого файла профиля, расположенного в указанном местоположении.</maml:title>
+                <dev:code>Get-sthMailProfile -ProfileFilePath C:\Profiles\SomeProfile.xml
+                
+ProfileName : SomeProfile
+From        : source@domain.com
+To          : {destination@domain.com}
+PasswordIs  : NotExist
+SmtpServer  : smtp.domain.com</dev:code>
+                <dev:remarks>
+                    <maml:para>Команда отображает содержимое файла профиля с именем SomeProfile.xml, расположенного в папке C:\Profiles.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Пример 5: Получение профилей и отображение их параметров, в том числе пароля.</maml:title>
                 <dev:code>Get-sthMailProfile -ShowPassword
                 
 ProfileName : MailProfile
@@ -1154,9 +1798,13 @@ SmtpServer  : smtp.domain.com</dev:code>
         <maml:description>
             <maml:para>Функция Remove-sthMailProfile удаляет указанные профили электронной почты.
             </maml:para>
-            <maml:para>Профиль - это файл xml, расположенный в каталоге "Profiles", находящемся в папке модуля и содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            <maml:para>Профиль - это файл xml, содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
             </maml:para>
-            <maml:para>Профиль создается при помощи функции New-sthMailProfile и используется функцией Send-sthMailMessage.
+            <maml:para>Вы можете создать профиль при помощи команды New-sthMailProfile с параметром -ProfileName или -ProfileFilePath.
+Параметр -ProfileName создает .xml файл с указанным именем в папке Profiles, расположенной в каталоге модуля.
+Параметр -ProfileFilePath принимает в качестве значения путь и имя файла, например C:\Folder\file.xml, и создает его в указанном расположении.
+            </maml:para>
+            <maml:para>Профиль используется функцией Send-sthMailMessage.
             </maml:para>
         </maml:description>
         <command:syntax>
@@ -1167,12 +1815,34 @@ SmtpServer  : smtp.domain.com</dev:code>
                     <maml:Description>
                         <maml:para>Указывает имя профиля для удаления.
                         </maml:para>
+                        <maml:para>Функция удаляет профиль с указанным именем из папки Profiles, расположенной в каталоге модуля.
+                        </maml:para>
                         <maml:para>Поддерживается использование символов подстановки.
                         </maml:para>
                     </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
                     <dev:type>
-                        <maml:name>String[]</maml:name>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+            </command:syntaxItem>
+            <command:syntaxItem>
+                <maml:name>Remove-sthMailProfile</maml:name>
+                <command:parameter required="true" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>ProfileFilePath</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает путь и имя файла профиля.
+                        </maml:para>
+                        <maml:para>Этот параметр позволяет вам удалить файл профиля, расположенный в произвольной локации.
+                        </maml:para>
+                        <maml:para>Значение должно содержать путь и имя файла с расширением .xml.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
@@ -1185,12 +1855,31 @@ SmtpServer  : smtp.domain.com</dev:code>
                 <maml:Description>
                     <maml:para>Указывает имя профиля для удаления.
                     </maml:para>
+                    <maml:para>Функция удаляет профиль с указанным именем из папки Profiles, расположенной в каталоге модуля.
+                    </maml:para>
                     <maml:para>Поддерживается использование символов подстановки.
                     </maml:para>
                 </maml:Description>
                 <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
                 <dev:type>
                     <maml:name>String[]</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="true" variableLength="true" globbing="true" pipelineInput="False" position="named" aliases="none">
+                <maml:name>ProfileFilePath</maml:name>
+                <maml:Description>
+                    <maml:para>Указывает путь и имя файла профиля.
+                    </maml:para>
+                    <maml:para>Этот параметр позволяет вам удалить файл профиля, расположенный в произвольной локации.
+                    </maml:para>
+                    <maml:para>Значение должно содержать путь и имя файла с расширением .xml.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
@@ -1219,7 +1908,16 @@ SmtpServer  : smtp.domain.com</dev:code>
                 <maml:title>Пример 3: Удаление всех профилей.</maml:title>
                 <dev:code>Remove-sthMailProfile -ProfileName *</dev:code>
                 <dev:remarks>
-                    <maml:para>Команда удаляет все профили.</maml:para>
+                    <maml:para>Команда удаляет все профили из папки Profiles, расположенной в каталоге модуля.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Пример 4: Удаление файла профиля, расположенного по указанному пути.</maml:title>
+                <dev:code>Remove-sthMailProfile -ProfileFilePath C:\Profiles\SomeProfile.xml</dev:code>
+                <dev:remarks>
+                    <maml:para>Команда удаляет файл профиля с именем SomeProfile.xml, расположенный в каталоге C:\Profiles.</maml:para>
                     <maml:para/>
                     <maml:para/>
                 </dev:remarks>
