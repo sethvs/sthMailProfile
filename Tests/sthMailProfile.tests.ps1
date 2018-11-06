@@ -554,5 +554,34 @@ Describe "sthMailProfile" {
                 Get-sthMailProfile -ProfileFilePath '.\NonExistentFilePath' | Should -BeNullOrEmpty
             }
         }
+
+        Context "Send-sthMailMessage - multiple profiles" {
+
+            $ContextSettings = DuplicateOrderedDictionary $Settings
+            $ContextSettings.Remove('UserName')
+            $ContextSettings.Remove('Password')
+
+            New-sthMailProfile -ProfileName $ProfileName @ContextSettings
+
+            It "Should create the first profile" {
+                Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
+            }
+
+            New-sthMailProfile -ProfileName "${ProfileName}2" @ContextSettings
+
+            It "Should create the second profile" {
+                Get-sthMailProfile -ProfileName "${ProfileName}2" | Should -Not -BeNullOrEmpty
+            }
+
+            It "Should return value matches multiple profiles." {
+                { Send-sthMailMessage -ProfileName "${ProfileName}*" -Subject $theSubject -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
+            }
+
+            Remove-sthMailProfile -ProfileName "${ProfileName}*"
+
+            It "Should remove the profiles" {
+                Get-sthMailProfile | Should -BeNullOrEmpty
+            }
+        }
     }
 }
