@@ -356,7 +356,7 @@ function inProfileNameError
     $ErrorId = 'ArgumentError'
     $ErrorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
 
-    $ErrorRecord = [System.Management.Automation.ErrorRecord]::new($Exception, $ErrorId, $ErrorCategory, $null)
+    $ErrorRecord = [System.Management.Automation.ErrorRecord]::new($Exception, $ErrorId, $ErrorCategory, $null) 
 
     $PSCmdlet.WriteError($ErrorRecord)
 }
@@ -368,7 +368,10 @@ function inComposeMailProfile
         [string]$ProfileFileName
     )
 
-    $xml.Encoding = [System.Text.Encoding]::GetEncoding($xml.Encoding.CodePage)
+    if ($Xml.Encoding)
+    {
+        $xml.Encoding = [System.Text.Encoding]::GetEncoding($xml.Encoding.CodePage)
+    }
                 
     $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority)
     # $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfilePath.Name.Substring(0,$ProfilePath.Name.Length - 4)
