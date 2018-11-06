@@ -149,32 +149,29 @@ function New-sthMailProfile
 
     if ($PSCmdlet.ParameterSetName -eq 'ProfileName-Password' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Password')
     {
-        # if ($PSBoundParameters.ContainsKey('UserName'))
-        # {
-            if ($PSBoundParameters.ContainsKey('Password'))
+        if ($PSBoundParameters.ContainsKey('Password'))
+        {
+            if ($Password.GetType().FullName -eq 'System.String')
             {
-                if ($Password.GetType().FullName -eq 'System.String')
+                if ($Password -eq '')
                 {
-                    if ($Password -eq '')
-                    {
-                        $Password = [System.Security.SecureString]::new()
-                    }
-                    else
-                    {
-                        $Password = ConvertTo-SecureString -String $Password -AsPlainText -Force
-                    }
+                    $Password = [System.Security.SecureString]::new()
+                }
+                else
+                {
+                    $Password = ConvertTo-SecureString -String $Password -AsPlainText -Force
                 }
             }
-
-            else
-            {
-                $Password = Read-Host -Prompt "Type the password" -AsSecureString
-            }
-            
-            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password
-            
-            $MailParameters = [sthMailProfile]::new($From, $To, $Credential, $SmtpServer)
-        # }
+        }
+        
+        else
+        {
+            $Password = Read-Host -Prompt "Type the password" -AsSecureString
+        }
+        
+        $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password
+        
+        $MailParameters = [sthMailProfile]::new($From, $To, $Credential, $SmtpServer)
     }
 
     if ($PSCmdlet.ParameterSetName -eq 'ProfileName-Credential' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Credential')

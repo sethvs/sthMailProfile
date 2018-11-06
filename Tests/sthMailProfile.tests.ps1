@@ -193,7 +193,7 @@ Describe "sthMailProfile" {
                 }
 
                 It "Send-sthMailMessage using pipeline" {
-                    $theMessagee | Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Attachments $theAttachment
+                    $theMessage | Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessage
                 }
             }
@@ -230,7 +230,7 @@ Describe "sthMailProfile" {
                 }
 
                 It "Send-sthMailMessage using pipeline" {
-                    $theMessagee | Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Attachments $theAttachment
+                    $theMessage | Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessage
                 }
             }
@@ -374,7 +374,7 @@ Describe "sthMailProfile" {
                 }
     
                 It "Send-sthMailMessage using pipeline" {
-                    $theMessagee | Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Attachments $theAttachment
+                    $theMessage | Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessageAndCredential
                 }
     
@@ -399,7 +399,7 @@ Describe "sthMailProfile" {
                 }
     
                 It "Send-sthMailMessage using pipeline" {
-                    $theMessagee | Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Attachments $theAttachment
+                    $theMessage | Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessageAndCredential
                 }
 
@@ -444,7 +444,7 @@ Describe "sthMailProfile" {
                 }
                 
                 It "Send-sthMailMessage using pipeline" {
-                    $theMessagee | Send-sthMailMessage $ProfileName $theSubject -Attachments $theAttachment
+                    $theMessage | Send-sthMailMessage $ProfileName $theSubject -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessageAndCredential
                 }
 
@@ -475,7 +475,7 @@ Describe "sthMailProfile" {
                 }
 
                 It "Send-sthMailMessage using pipeline" {
-                    $theMessagee | Send-sthMailMessage -ProfileFilePath $ProfileFilePath $theSubject -Attachments $theAttachment
+                    $theMessage | Send-sthMailMessage -ProfileFilePath $ProfileFilePath $theSubject -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessageAndCredential
                 }
 
