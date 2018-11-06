@@ -188,7 +188,7 @@ Describe "sthMailProfile" {
                 }
 
                 It "Send-sthMailMessage" {
-                    Send-sthMailMessage -ProfileName $ProfileName -Message $theMessage -Subject $theSubject -Attachments $theAttachment
+                    Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Message $theMessage -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilter
                 }
 
@@ -225,7 +225,7 @@ Describe "sthMailProfile" {
                 }
 
                 It "Send-sthMailMessage" {
-                    Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Message $theMessage -Subject $theSubject -Attachments $theAttachment
+                    Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Message $theMessage -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilter
                     # Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly
                 }
@@ -272,7 +272,7 @@ Describe "sthMailProfile" {
         }
         if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
         {
-            Remove-sthMailProfile -ProfileFile $ProfileFilePath
+            Remove-sthMailProfile -ProfileFilePath $ProfileFilePath
     
             It "Should remove the profile" {
                 Get-sthMailProfile | Should -BeNullOrEmpty
@@ -340,7 +340,7 @@ Describe "sthMailProfile" {
             TestProfileExistence -ProfileFilePath $ProfileFilePath
 
             TestMailProfile -ProfileFilePath $ProfileFilePath -PasswordIs 'PlainText'
-            RemoveProfile -ProfileFile $ProfileFilePath
+            RemoveProfile -ProfileFilePath $ProfileFilePath
         }
 
         
@@ -374,7 +374,7 @@ Describe "sthMailProfile" {
                 }
     
                 It "Send-sthMailMessage" {
-                    Send-sthMailMessage -ProfileName $ProfileName -Message $theMessage -Subject $theSubject -Attachments $theAttachment
+                    Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Message $theMessage -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
                 }
     
@@ -399,7 +399,7 @@ Describe "sthMailProfile" {
                 }
     
                 It "Send-sthMailMessage" {
-                    Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Message $theMessage -Subject $theSubject -Attachments $theAttachment
+                    Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Message $theMessage -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
                 }
     
@@ -558,10 +558,10 @@ Describe "sthMailProfile" {
         Context "Send-sthMailMessage - non-existing profile" {
             
             It "Should return 'Profile is not found'." {
-                { Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Message $theMessage -Subject $theSubject -Attachments $theAttachment -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
+                { Send-sthMailMessage -ProfileName 'Non-Existent Profile' -Subject $theSubject -Message $theMessage -Attachments $theAttachment -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
             }
             It "Should return 'Profile is not found'." {
-                { Send-sthMailMessage -ProfileFilePath '.\NonExistentFilePath' -Message $theMessage -Subject $theSubject -Attachments $theAttachment -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
+                { Send-sthMailMessage -ProfileFilePath '.\NonExistentFilePath' -Subject $theSubject -Message $theMessage -Attachments $theAttachment -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
             }
         }
 
