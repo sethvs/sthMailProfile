@@ -35,7 +35,6 @@ function Send-sthMailMessage
         {
             $MailProfile = Get-sthMailProfile -ProfileFilePath $ProfileFilePath
         }
-        # if ($MailProfile = Get-sthMailProfile -ProfileName $ProfileName)
         if ($MailProfile)
         {
             if ($MailProfile.PasswordIs -eq 'PlainText')
@@ -55,30 +54,7 @@ function Send-sthMailMessage
                 {
                     $Password = [System.Security.SecureString]::new()
                 }
-<# 
-                if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
-                {
-                    try
-                    {
-                        $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
-                    }
-                    catch [System.Management.Automation.ParameterBindingException]
-                    {
-                        $Password = [System.Security.SecureString]::new()
-                    }
-                }
-                if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
-                {
-                    try
-                    {
-                        $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileFilePath $ProfileFilePath -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
-                    }
-                    catch [System.Management.Automation.ParameterBindingException]
-                    {
-                        $Password = [System.Security.SecureString]::new()
-                    }
-                }
- #>
+
                 $MailProfile.Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $MailProfile.Credential.UserName, $Password
             }
 
@@ -166,11 +142,15 @@ function New-sthMailProfile
         [switch]$StorePasswordInPlainText
     )
 
-    # Wait-Debugger
+    if ($PSCmdlet.ParameterSetName -eq 'ProfileName' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+    {
+        $MailParameters = [sthMailProfile]::new($From, $To, $SmtpServer)
+    }
+
     if ($PSCmdlet.ParameterSetName -eq 'ProfileName-Password' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Password')
     {
-        if ($PSBoundParameters.ContainsKey('UserName'))
-        {
+        # if ($PSBoundParameters.ContainsKey('UserName'))
+        # {
             if ($PSBoundParameters.ContainsKey('Password'))
             {
                 if ($Password.GetType().FullName -eq 'System.String')
@@ -194,17 +174,7 @@ function New-sthMailProfile
             $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password
             
             $MailParameters = [sthMailProfile]::new($From, $To, $Credential, $SmtpServer)
-        }
-
-        # else
-        # {
-        #     $MailParameters = [sthMailProfile]::new($From, $To, $SmtpServer)
         # }
-    }
-
-    if ($PSCmdlet.ParameterSetName -eq 'ProfileName' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
-    {
-        $MailParameters = [sthMailProfile]::new($From, $To, $SmtpServer)
     }
 
     if ($PSCmdlet.ParameterSetName -eq 'ProfileName-Credential' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Credential')
@@ -244,25 +214,12 @@ function New-sthMailProfile
     if ($PSCmdlet.ParameterSetName -eq 'ProfileName-Password' -or $PSCmdlet.ParameterSetName -eq 'ProfileName-Credential' -or $PSCmdlet.ParameterSetName -eq 'ProfileName')
     {
         inWriteProfile -ProfileName $ProfileName -Profile $MailParameters
-<# 
-        $Path = Join-Path -Path $PSScriptRoot -ChildPath $ProfileDirectory
-        
-        if (-not (Test-Path -Path $Path))
-        {
-            New-Item -Path $Path -ItemType Directory | Out-Null
-        }
-    
-        $FilePath = Join-Path -Path $Path -ChildPath $($ProfileName + '.xml')
- #>
     }
 
     if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Password' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Credential' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
     {
         inWriteProfile -ProfileFilePath $ProfileFilePath -Profile $MailParameters
-        # $FilePath = $ProfileFilePath
     }
-
-    # Export-Clixml -Path $FilePath -InputObject $MailParameters
 }
 
 # .ExternalHelp sthMailProfile.help.ps1xml
@@ -287,34 +244,12 @@ function Get-sthMailProfile
             {
                 $xml = Import-Clixml -Path $ProfilePath.FullName
                 inComposeMailProfile -Xml $xml -ProfileFileName $ProfilePath.Name
-<# 
-                $xml.Encoding = [System.Text.Encoding]::GetEncoding($xml.Encoding.CodePage)
-                
-                $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority)
-                $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfilePath.Name.Substring(0,$ProfilePath.Name.Length - 4)
-                $MailProfile | Add-Member -NotePropertyName UserName -NotePropertyValue $MailProfile.Credential.UserName
-                if ($ShowPassword)
-                {
-                    if ($MailProfile.PasswordIs -eq 'Secured')
-                    {
-                        $MailProfile | Add-Member -NotePropertyName Password -NotePropertyValue $MailProfile.Credential.GetNetworkCredential().Password
-                    }
-                    if ($MailProfile.PasswordIs -eq 'PlainText')
-                    {
-                        $MailProfile | Add-Member -NotePropertyName Password -NotePropertyValue $xml.PlainTextPassword
-                    }
-                    $MailProfile | Add-Member -TypeName 'sthMailProfile#Password'
-                }
-                $MailProfile
- #>
             }
         }
     }
 
     if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
     {
-        # $ProfilePath = Get-Item $ProfileFilePath
-        # if ($ProfilePath = Get-Item -Path $ProfileFilePath -ErrorAction SilentlyContinue)
         if (Test-Path -Path $ProfileFilePath)
         {
             $xml = Import-Clixml -Path $ProfileFilePath
@@ -374,7 +309,6 @@ function inComposeMailProfile
     }
                 
     $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority)
-    # $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfilePath.Name.Substring(0,$ProfilePath.Name.Length - 4)
     $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfileFileName.Substring(0,$ProfileFileName.Length - 4)
     $MailProfile | Add-Member -NotePropertyName UserName -NotePropertyValue $MailProfile.Credential.UserName
     if ($ShowPassword)
