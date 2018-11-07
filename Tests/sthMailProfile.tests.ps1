@@ -20,15 +20,16 @@ Describe "sthMailProfile" {
             Priority = 'Normal'
         }
 
-        $TestCasesTemplate = @($Settings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
-
         $ProfileName = '_Profile'
         $ProfileFilePath = 'TestDrive:\_Profile.xml'
-        # $ProfileFilePath2 = 'TestDrive:\_Profile2.xml'
-
-        $theMessage = 'TheMessage' 
-        $theSubject = 'TheSubject' 
+        
+        $theMessage = 'TheMessage'
+        $theMessageArray = 'TheMessage','TheMessage2','TheMessage3'
+        $theSubject = 'TheSubject'
         $theAttachment = 'TestDrive:\TheAttachment.xml'
+
+        $TestCasesTemplate = @($Settings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
+        $TestCasesTemplate += @{Name = 'ProfileName'; Value = $ProfileName}
 
         $ProfileDirectory = InModuleScope -ModuleName sthMailProfile -ScriptBlock {$ProfileDirectory}
         
@@ -46,8 +47,9 @@ Describe "sthMailProfile" {
         }
     }
 
+    $MessageCondition = @('$Body -eq "$theMessage`r`n"')
+    $MessageArrayCondition = @('$Body -eq "$theMessage`r`n${theMessage}2`r`n${theMessage}3`r`n"')
     $ParameterFilterConditionsWithoutCredential = @(
-        '$Body -eq "$theMessage`r`n"'
         '$Subject -eq $theSubject'
         '$Attachments -eq $theAttachment'
         '$From -eq $($Settings.From)'
@@ -86,8 +88,11 @@ Describe "sthMailProfile" {
     '[System.Net.NetworkCredential]::new("something",$Credential.Password).Password -eq $Settings.Password'
     )
 
-    $ParameterFilterWithoutCredential = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential -join " -and `n")
-    $ParameterFilter = [scriptblock]::Create($ParameterFilterConditionsWithoutCredential + $CredentialConditions -join " -and `n")
+    $ParameterFilterWithoutCredential = [scriptblock]::Create($MessageCondition + $ParameterFilterConditionsWithoutCredential -join " -and `n")
+    $ParameterFilter = [scriptblock]::Create($MessageCondition + $ParameterFilterConditionsWithoutCredential + $CredentialConditions -join " -and `n")
+
+    $ParameterFilterWithoutCredentialMessageAsArray = [scriptblock]::Create($MessageArrayCondition + $ParameterFilterConditionsWithoutCredential -join " -and `n")
+    $ParameterFilterMessageAsArray = [scriptblock]::Create($MessageArrayCondition + $ParameterFilterConditionsWithoutCredential + $CredentialConditions -join " -and `n")
 
     function TestMailProfileContent
     {
@@ -190,8 +195,12 @@ Describe "sthMailProfile" {
 
                 It "Send-sthMailMessage using pipeline" {
                     $theMessage | Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Attachments $theAttachment
-                    # Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessage
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilter
+                }
+
+                It "Send-sthMailMessage using pipeline - array" {
+                    $theMessageArray | Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Attachments $theAttachment
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterMessageAsArray
                 }
             }
 
@@ -229,8 +238,13 @@ Describe "sthMailProfile" {
                 It "Send-sthMailMessage using pipeline" {
                     $theMessage | Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilter
-                    # Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutMessage
                 }
+
+                It "Send-sthMailMessage using pipeline - array" {
+                    $theMessageArray | Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Attachments $theAttachment
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterMessageAsArray
+                }
+
             }
 
             Context "Get-sthMailProfile -ShowPassword" {
@@ -262,7 +276,7 @@ Describe "sthMailProfile" {
             Remove-sthMailProfile -ProfileName $ProfileName
 
             It "Should remove the profile" {
-                Get-sthMailProfile | Should -BeNullOrEmpty
+                Get-sthMailProfile -ProfileName $ProfileName | Should -BeNullOrEmpty
             }
         }
         if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
@@ -270,7 +284,7 @@ Describe "sthMailProfile" {
             Remove-sthMailProfile -ProfileFilePath $ProfileFilePath
 
             It "Should remove the profile" {
-                Get-sthMailProfile | Should -BeNullOrEmpty
+                Get-sthMailProfile -ProfileFilePath $ProfileFilePath | Should -BeNullOrEmpty
             }
         }
     }
@@ -376,6 +390,11 @@ Describe "sthMailProfile" {
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
                 }
 
+                It "Send-sthMailMessage using pipeline - array" {
+                    $theMessageArray | Send-sthMailMessage -ProfileName $ProfileName -Subject $theSubject -Attachments $theAttachment
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredentialMessageAsArray
+                }
+
                 RemoveProfile -ProfileName $ProfileName
             }
 
@@ -399,6 +418,11 @@ Describe "sthMailProfile" {
                 It "Send-sthMailMessage using pipeline" {
                     $theMessage | Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Attachments $theAttachment
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
+                }
+
+                It "Send-sthMailMessage using pipeline - array" {
+                    $theMessageArray | Send-sthMailMessage -ProfileFilePath $ProfileFilePath -Subject $theSubject -Attachments $theAttachment
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredentialMessageAsArray
                 }
 
                 RemoveProfile -ProfileFilePath $ProfileFilePath
@@ -445,10 +469,15 @@ Describe "sthMailProfile" {
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
                 }
 
+                It "Send-sthMailMessage using pipeline - array" {
+                    $theMessageArray | Send-sthMailMessage $ProfileName $theSubject -Attachments $theAttachment
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredentialMessageAsArray
+                }
+
                 Remove-sthMailProfile $ProfileName
 
                 It "Should remove the profile" {
-                    Get-sthMailProfile | Should -BeNullOrEmpty
+                    Get-sthMailProfile $ProfileName | Should -BeNullOrEmpty
                 }
             }
 
@@ -476,10 +505,15 @@ Describe "sthMailProfile" {
                     Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredential
                 }
 
+                It "Send-sthMailMessage using pipeline - array" {
+                    $theMessageArray | Send-sthMailMessage -ProfileFilePath $ProfileFilePath $theSubject -Attachments $theAttachment
+                    Assert-MockCalled -CommandName "Send-MailMessage" -ModuleName sthMailProfile -Scope It -Times 1 -Exactly -ParameterFilter $ParameterFilterWithoutCredentialMessageAsArray
+                }
+
                 Remove-sthMailProfile -ProfileFilePath $ProfileFilePath
 
                 It "Should remove the profile" {
-                    Get-sthMailProfile | Should -BeNullOrEmpty
+                    Get-sthMailProfile $ProfileFilePath | Should -BeNullOrEmpty
                 }
             }
         }
@@ -562,6 +596,8 @@ Describe "sthMailProfile" {
             $ContextSettings.Remove('UserName')
             $ContextSettings.Remove('Password')
             $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured'
+            $TestCases2 = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured' | Where-Object {$_.Name -ne 'ProfileName'}
+            $TestCases2 += @{Name = 'ProfileName'; Value = "${ProfileName}2"}
 
             Context "ProfileName" {
 
@@ -584,7 +620,7 @@ Describe "sthMailProfile" {
                     }
 
                     $MailProfile = $Profiles[1]
-                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases2 {
 
                         Param ($Name, $Value)
                         TestMailProfileContent -Name $Name -Value $Value
@@ -607,7 +643,7 @@ Describe "sthMailProfile" {
                     }
 
                     $MailProfile = $Profiles[1]
-                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases2 {
 
                         Param ($Name, $Value)
                         TestMailProfileContent -Name $Name -Value $Value
@@ -631,7 +667,7 @@ Describe "sthMailProfile" {
                 $ProfileFilePathWildcard = 'TestDrive:\_Profile*.xml'
                 New-sthMailProfile -ProfileFilePath $ProfileFilePath @ContextSettings
                 New-sthMailProfile -ProfileFilePath $ProfileFilePath2 @ContextSettings
-                
+
                 Context "Wildcards" {
 
                     $Profiles = Get-sthMailProfile -ProfileFilePath $ProfileFilePathWildcard
@@ -648,7 +684,7 @@ Describe "sthMailProfile" {
                     }
 
                     $MailProfile = $Profiles[1]
-                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases2 {
 
                         Param ($Name, $Value)
                         TestMailProfileContent -Name $Name -Value $Value
@@ -658,7 +694,7 @@ Describe "sthMailProfile" {
                 Context "Array" {
 
                     $Profiles = Get-sthMailProfile -ProfileFilePath $ProfileFilePath, $ProfileFilePath2
-                    
+
                     It "Should create two profiles" {
                         $Profiles | Should -HaveCount 2
                     }
@@ -671,7 +707,7 @@ Describe "sthMailProfile" {
                     }
 
                     $MailProfile = $Profiles[1]
-                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases2 {
                         
                         Param ($Name, $Value)
                         TestMailProfileContent -Name $Name -Value $Value
