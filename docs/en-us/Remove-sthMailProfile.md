@@ -39,7 +39,7 @@ Profile can be used by the `Send-sthMailMessage` function.
 ### -ProfileName
 Specifies the name of the profile to remove.
 
-Function removes the profile with the name specified under the Profiles folder in the module's directory.
+Function removes the profile with the name specified under the **Profiles** folder in the module's directory.
 
 Wildcards are permitted.
 
