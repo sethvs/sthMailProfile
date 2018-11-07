@@ -2,7 +2,6 @@ enum PasswordIs
 {
     Secured
     PlainText
-    EmptyString
     NotExist
 }
 
