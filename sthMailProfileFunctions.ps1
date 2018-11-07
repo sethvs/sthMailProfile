@@ -31,7 +31,7 @@ function Send-sthMailMessage
         {
             $MailProfile = Get-sthMailProfile -ProfileName $ProfileName
         }
-        if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+        elseif ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
         {
             $MailProfile = Get-sthMailProfile -ProfileFilePath $ProfileFilePath
         }
@@ -46,7 +46,7 @@ function Send-sthMailMessage
                     {
                         $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
                     }
-                    if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+                    elseif ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
                     {
                         $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileFilePath $ProfileFilePath -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
                     }
@@ -149,7 +149,7 @@ function New-sthMailProfile
         $MailParameters = [sthMailProfile]::new($From, $To, $SmtpServer)
     }
 
-    if ($PSCmdlet.ParameterSetName -eq 'ProfileName-Password' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Password')
+    elseif ($PSCmdlet.ParameterSetName -eq 'ProfileName-Password' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Password')
     {
         if ($PSBoundParameters.ContainsKey('Password'))
         {
@@ -176,7 +176,7 @@ function New-sthMailProfile
         $MailParameters = [sthMailProfile]::new($From, $To, $Credential, $SmtpServer)
     }
 
-    if ($PSCmdlet.ParameterSetName -eq 'ProfileName-Credential' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Credential')
+    elseif ($PSCmdlet.ParameterSetName -eq 'ProfileName-Credential' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Credential')
     {
         $MailParameters = [sthMailProfile]::new($From, $To, $Credential, $SmtpServer)
     }
@@ -215,7 +215,7 @@ function New-sthMailProfile
         inWriteProfile -ProfileName $ProfileName -Profile $MailParameters
     }
 
-    if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Password' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Credential' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+    elseif ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Password' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Credential' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
     {
         inWriteProfile -ProfileFilePath $ProfileFilePath -Profile $MailParameters
     }
@@ -247,7 +247,7 @@ function Get-sthMailProfile
         }
     }
 
-    if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+    elseif ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
     {
         foreach ($PFile in $ProfileFilePath)
         {
@@ -275,7 +275,7 @@ function Remove-sthMailProfile
         $Path = Join-Path -Path $PSScriptRoot -ChildPath $ProfileDirectory
         $Path = Join-Path -Path $Path -ChildPath $($ProfileName + '.xml')
     }
-    if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+    elseif ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
     {
         $Path = $ProfileFilePath
     }
@@ -295,7 +295,7 @@ function inProfileNameError
     {
         $Exception = [System.ArgumentException]::new("`nProfile '$Value' is not found.`n")
     }
-    if ($ErrorType -eq 'MultipleProfiles')
+    elseif ($ErrorType -eq 'MultipleProfiles')
     {
         $Exception = [System.ArgumentException]::new("`n'$Value' value matches multiple profiles.`n")
     }
@@ -329,7 +329,7 @@ function inComposeMailProfile
         {
             $MailProfile | Add-Member -NotePropertyName Password -NotePropertyValue $MailProfile.Credential.GetNetworkCredential().Password
         }
-        if ($MailProfile.PasswordIs -eq 'PlainText')
+        elseif ($MailProfile.PasswordIs -eq 'PlainText')
         {
             $MailProfile | Add-Member -NotePropertyName Password -NotePropertyValue $xml.PlainTextPassword
         }
@@ -360,7 +360,7 @@ function inWriteProfile
         $FilePath = Join-Path -Path $Path -ChildPath $($ProfileName + '.xml')
     }
 
-    if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+    elseif ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
     {
         $FilePath = $ProfileFilePath
     }
