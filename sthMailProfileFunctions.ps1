@@ -36,72 +36,74 @@ function Send-sthMailMessage
             $MailProfile = Get-sthMailProfile -ProfileFilePath $ProfileFilePath
         }
 
-        if ($MailProfile)
+        if ($MailProfile -and $MailProfile.Count -eq 1)
         {
-            if ($MailProfile.Count -eq 1)
+            if ($MailProfile.PasswordIs -eq 'PlainText')
             {
-                if ($MailProfile.PasswordIs -eq 'PlainText')
+                try
                 {
-                    try
+                    if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
                     {
-                        if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
-                        {
-                            $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
-                        }
-                        if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
-                        {
-                            $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileFilePath $ProfileFilePath -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
-                        }
+                        $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
                     }
-                    catch [System.Management.Automation.ParameterBindingException]
+                    if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
                     {
-                        $Password = [System.Security.SecureString]::new()
-                    }
-
-                    $MailProfile.Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $MailProfile.Credential.UserName, $Password
-                }
-
-                $Parameters = @{}
-
-                foreach ($Property in $MailProfile.PSObject.Properties.Name | Where-Object -FilterScript {$_ -notin 'ProfileName', 'PasswordIs', 'UserName', 'Password'})
-                {
-                    if ($MailProfile.$Property)
-                    {
-                        $Parameters.Add($Property, $MailProfile.$Property)
+                        $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileFilePath $ProfileFilePath -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
                     }
                 }
-
-                $Parameters.Add("Subject", $Subject)
-
-                if ($Content)
+                catch [System.Management.Automation.ParameterBindingException]
                 {
-                    $Body = $Content | Out-String -Width 1000
-                    $Parameters.Add("Body", $Body)
+                    $Password = [System.Security.SecureString]::new()
                 }
 
-                if ($Attachments)
-                {
-                    $Parameters.Add("Attachments", $Attachments)
-                }
-
-                Send-MailMessage @Parameters
+                $MailProfile.Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $MailProfile.Credential.UserName, $Password
             }
-            else
+
+            $Parameters = @{}
+
+            foreach ($Property in $MailProfile.PSObject.Properties.Name | Where-Object -FilterScript {$_ -notin 'ProfileName', 'PasswordIs', 'UserName', 'Password'})
             {
-                inProfileNameError -Value $ProfileName -ErrorType 'MultipleProfiles'
+                if ($MailProfile.$Property)
+                {
+                    $Parameters.Add($Property, $MailProfile.$Property)
+                }
             }
+
+            $Parameters.Add("Subject", $Subject)
+
+            if ($Content)
+            {
+                $Body = $Content | Out-String -Width 1000
+                $Parameters.Add("Body", $Body)
+            }
+
+            if ($Attachments)
+            {
+                $Parameters.Add("Attachments", $Attachments)
+            }
+
+            Send-MailMessage @Parameters
+        }
+
+        elseif ($MailProfile)
+        {
+            inProfileNameError -Value $($ProfileName + $ProfileFilePath) -ErrorType 'MultipleProfiles'
         }
 
         else
         {
-            if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
-            {
-                inProfileNameError -Value $ProfileName -ErrorType 'ProfileNotFound'
-            }
-            if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
-            {
-                inProfileNameError -Value $ProfileFilePath -ErrorType 'ProfileNotFound'
-            }
+            inProfileNameError -Value $($ProfileName + $ProfileFilePath) -ErrorType 'ProfileNotFound'
+            # inProfileNameError -Value $ProfileName + $ProfileFilePath -ErrorType 'ProfileNotFound'
+            # inProfileNameError -Value $ProfileFilePath + $ProfileName  -ErrorType 'ProfileNotFound'
+
+            # if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
+            # {
+            #     inProfileNameError -Value $ProfileName -ErrorType 'ProfileNotFound'
+            # }
+            # if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+            # {
+            #     inProfileNameError -Value $ProfileFilePath -ErrorType 'ProfileNotFound'
+            # }
         }
     }
 }
@@ -234,7 +236,7 @@ function Get-sthMailProfile
         [Parameter(Position='0',ParameterSetName='ProfileName')]
         [string[]]$ProfileName = "*",
         [Parameter(ParameterSetName='ProfileFilePath')]
-        [string]$ProfileFilePath,
+        [string[]]$ProfileFilePath,
         [switch]$ShowPassword
         )
 
@@ -254,11 +256,20 @@ function Get-sthMailProfile
 
     if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
     {
-        if (Test-Path -Path $ProfileFilePath)
+        foreach ($PFile in $ProfileFilePath)
         {
-            $xml = Import-Clixml -Path $ProfileFilePath
-            inComposeMailProfile -Xml $xml -ProfileFileName $(Split-Path -Path $ProfileFilePath -Leaf)
+            foreach ($ProfilePath in (Get-Item -Path $PFile -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
+            {
+                $xml = Import-Clixml -Path $ProfilePath.FullName
+                inComposeMailProfile -Xml $xml -ProfileFileName $ProfilePath.Name
+            }
         }
+
+        # if (Test-Path -Path $ProfileFilePath)
+        # {
+        #     $xml = Import-Clixml -Path $ProfileFilePath
+        #     inComposeMailProfile -Xml $xml -ProfileFileName $(Split-Path -Path $ProfileFilePath -Leaf)
+        # }
     }
 }
 
