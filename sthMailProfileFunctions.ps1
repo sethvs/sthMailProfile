@@ -93,17 +93,6 @@ function Send-sthMailMessage
         else
         {
             inProfileNameError -Value $($ProfileName + $ProfileFilePath) -ErrorType 'ProfileNotFound'
-            # inProfileNameError -Value $ProfileName + $ProfileFilePath -ErrorType 'ProfileNotFound'
-            # inProfileNameError -Value $ProfileFilePath + $ProfileName  -ErrorType 'ProfileNotFound'
-
-            # if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
-            # {
-            #     inProfileNameError -Value $ProfileName -ErrorType 'ProfileNotFound'
-            # }
-            # if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
-            # {
-            #     inProfileNameError -Value $ProfileFilePath -ErrorType 'ProfileNotFound'
-            # }
         }
     }
 }
@@ -172,14 +161,14 @@ function New-sthMailProfile
                 }
             }
         }
-        
+
         else
         {
             $Password = Read-Host -Prompt "Type the password" -AsSecureString
         }
         
         $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password
-        
+
         $MailParameters = [sthMailProfile]::new($From, $To, $Credential, $SmtpServer)
     }
 
@@ -264,12 +253,6 @@ function Get-sthMailProfile
                 inComposeMailProfile -Xml $xml -ProfileFileName $ProfilePath.Name
             }
         }
-
-        # if (Test-Path -Path $ProfileFilePath)
-        # {
-        #     $xml = Import-Clixml -Path $ProfileFilePath
-        #     inComposeMailProfile -Xml $xml -ProfileFileName $(Split-Path -Path $ProfileFilePath -Leaf)
-        # }
     }
 }
 
