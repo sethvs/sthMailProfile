@@ -20,15 +20,16 @@ Describe "sthMailProfile" {
             Priority = 'Normal'
         }
 
-        $TestCasesTemplate = @($Settings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
-
         $ProfileName = '_Profile'
         $ProfileFilePath = 'TestDrive:\_Profile.xml'
-
+        
         $theMessage = 'TheMessage'
         $theMessageArray = 'TheMessage','TheMessage2','TheMessage3'
         $theSubject = 'TheSubject'
         $theAttachment = 'TestDrive:\TheAttachment.xml'
+
+        $TestCasesTemplate = @($Settings.GetEnumerator() | ForEach-Object {@{Name = $_.Name; Value = $_.Value}})
+        $TestCasesTemplate += @{Name = 'ProfileName'; Value = $ProfileName}
 
         $ProfileDirectory = InModuleScope -ModuleName sthMailProfile -ScriptBlock {$ProfileDirectory}
         
@@ -595,6 +596,8 @@ Describe "sthMailProfile" {
             $ContextSettings.Remove('UserName')
             $ContextSettings.Remove('Password')
             $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured'
+            $TestCases2 = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured' | Where-Object {$_.Name -ne 'ProfileName'}
+            $TestCases2 += @{Name = 'ProfileName'; Value = "${ProfileName}2"}
 
             Context "ProfileName" {
 
@@ -617,7 +620,7 @@ Describe "sthMailProfile" {
                     }
 
                     $MailProfile = $Profiles[1]
-                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases2 {
 
                         Param ($Name, $Value)
                         TestMailProfileContent -Name $Name -Value $Value
@@ -640,7 +643,7 @@ Describe "sthMailProfile" {
                     }
 
                     $MailProfile = $Profiles[1]
-                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases2 {
 
                         Param ($Name, $Value)
                         TestMailProfileContent -Name $Name -Value $Value
@@ -664,7 +667,7 @@ Describe "sthMailProfile" {
                 $ProfileFilePathWildcard = 'TestDrive:\_Profile*.xml'
                 New-sthMailProfile -ProfileFilePath $ProfileFilePath @ContextSettings
                 New-sthMailProfile -ProfileFilePath $ProfileFilePath2 @ContextSettings
-                
+
                 Context "Wildcards" {
 
                     $Profiles = Get-sthMailProfile -ProfileFilePath $ProfileFilePathWildcard
@@ -681,7 +684,7 @@ Describe "sthMailProfile" {
                     }
 
                     $MailProfile = $Profiles[1]
-                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases2 {
 
                         Param ($Name, $Value)
                         TestMailProfileContent -Name $Name -Value $Value
@@ -691,7 +694,7 @@ Describe "sthMailProfile" {
                 Context "Array" {
 
                     $Profiles = Get-sthMailProfile -ProfileFilePath $ProfileFilePath, $ProfileFilePath2
-                    
+
                     It "Should create two profiles" {
                         $Profiles | Should -HaveCount 2
                     }
@@ -704,7 +707,7 @@ Describe "sthMailProfile" {
                     }
 
                     $MailProfile = $Profiles[1]
-                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases2 {
                         
                         Param ($Name, $Value)
                         TestMailProfileContent -Name $Name -Value $Value
