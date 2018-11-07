@@ -239,10 +239,13 @@ function Get-sthMailProfile
 
         foreach ($PName in $ProfileName)
         {
-            foreach ($ProfilePath in (Get-Item -Path $("$FolderPath\$PName.xml") -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
+            # foreach ($ProfilePath in (Get-Item -Path $("$FolderPath\$PName.xml") -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
+            foreach ($ProfileFile in (Get-Item -Path $("$FolderPath\$PName.xml") -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
             {
-                $xml = Import-Clixml -Path $ProfilePath.FullName
-                inComposeMailProfile -Xml $xml -ProfileFileName $ProfilePath.Name
+                # $xml = Import-Clixml -Path $ProfilePath.FullName
+                # inComposeMailProfile -Xml $xml -ProfileFileName $ProfilePath.Name
+                # inComposeMailProfile -ProfilePath $ProfilePath
+                inComposeMailProfile -ProfileFile $ProfileFile
             }
         }
     }
@@ -251,10 +254,13 @@ function Get-sthMailProfile
     {
         foreach ($PFile in $ProfileFilePath)
         {
-            foreach ($ProfilePath in (Get-Item -Path $PFile -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
+            # foreach ($ProfilePath in (Get-Item -Path $PFile -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
+            foreach ($ProfileFile in (Get-Item -Path $PFile -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
             {
-                $xml = Import-Clixml -Path $ProfilePath.FullName
-                inComposeMailProfile -Xml $xml -ProfileFileName $ProfilePath.Name
+                # $xml = Import-Clixml -Path $ProfilePath.FullName
+                # inComposeMailProfile -Xml $xml -ProfileFileName $ProfilePath.Name
+                # inComposeMailProfile -ProfilePath $ProfilePath
+                inComposeMailProfile -ProfileFile $ProfileFile
             }
         }
     }
@@ -311,9 +317,15 @@ function inProfileNameError
 function inComposeMailProfile
 {
     Param (
-        $Xml,
-        [string]$ProfileFileName
+        # $Xml,
+        # [string]$ProfileFileName
+        # [string]$ProfilePath
+        $ProfileFile
     )
+
+    $xml = Import-Clixml -Path $ProfileFile.FullName
+    # $xml = Import-Clixml -Path $ProfilePath.FullName
+    # $ProfileFileName = $ProfilePath.Name
 
     if ($Xml.Encoding)
     {
@@ -321,7 +333,9 @@ function inComposeMailProfile
     }
 
     $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority)
-    $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfileFileName.Substring(0,$ProfileFileName.Length - 4)
+    # $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfileFileName.Substring(0,$ProfileFileName.Length - 4)
+    # $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfilePath.Name.Substring(0,$ProfilePath.Name.Length - 4)
+    $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfileFile.Name.Substring(0,$ProfileFile.Name.Length - 4)
     $MailProfile | Add-Member -NotePropertyName UserName -NotePropertyValue $MailProfile.Credential.UserName
     if ($ShowPassword)
     {
