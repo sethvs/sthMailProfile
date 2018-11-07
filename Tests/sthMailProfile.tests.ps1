@@ -24,6 +24,7 @@ Describe "sthMailProfile" {
 
         $ProfileName = '_Profile'
         $ProfileFilePath = 'TestDrive:\_Profile.xml'
+        # $ProfileFilePath2 = 'TestDrive:\_Profile2.xml'
 
         $theMessage = 'TheMessage' 
         $theSubject = 'TheSubject' 
@@ -560,27 +561,139 @@ Describe "sthMailProfile" {
             $ContextSettings = DuplicateOrderedDictionary $Settings
             $ContextSettings.Remove('UserName')
             $ContextSettings.Remove('Password')
+            $TestCases = ComposeTestCases $TestCasesTemplate 'Password','Credential' 'Secured'
 
-            New-sthMailProfile -ProfileName $ProfileName @ContextSettings
+            Context "ProfileName" {
 
-            It "Should create the first profile" {
-                Get-sthMailProfile -ProfileName $ProfileName | Should -Not -BeNullOrEmpty
+                New-sthMailProfile -ProfileName $ProfileName @ContextSettings
+                
+                New-sthMailProfile -ProfileName "${ProfileName}2" @ContextSettings
+                
+                Context "Wildcards" {
+                    
+                    $Profiles = Get-sthMailProfile -ProfileName "${ProfileName}*"
+                    
+                    It "Should create two profiles" {
+                        $Profiles | Should -HaveCount 2
+                    }
+                    
+                    $MailProfile = $Profiles[0]
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                        
+                        Param ($Name, $Value)
+                        TestMailProfileContent -Name $Name -Value $Value
+                    }
+                    
+                    $MailProfile = $Profiles[1]
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                        
+                        Param ($Name, $Value)
+                        TestMailProfileContent -Name $Name -Value $Value
+                    }
+                }
+                
+                Context "Array" {
+                    
+                    $Profiles = Get-sthMailProfile -ProfileName $ProfileName, "${ProfileName}2"
+                    
+                    It "Should create two profiles" {
+                        $Profiles | Should -HaveCount 2
+                    }
+                    
+                    $MailProfile = $Profiles[0]
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                        
+                        Param ($Name, $Value)
+                        TestMailProfileContent -Name $Name -Value $Value
+                    }
+                
+                    $MailProfile = $Profiles[1]
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                        
+                        Param ($Name, $Value)
+                        TestMailProfileContent -Name $Name -Value $Value
+                    }
+                }
+                
+                
+                
+                It "Should return value matches multiple profiles." {
+                    { Send-sthMailMessage -ProfileName "${ProfileName}*" -Subject $theSubject -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
+                }
+                
+                Remove-sthMailProfile -ProfileName "${ProfileName}*"
+                
+                It "Should remove the profiles" {
+                    Get-sthMailProfile | Should -BeNullOrEmpty
+                }
             }
 
-            New-sthMailProfile -ProfileName "${ProfileName}2" @ContextSettings
+            Context "ProfileFilePath" {
 
-            It "Should create the second profile" {
-                Get-sthMailProfile -ProfileName "${ProfileName}2" | Should -Not -BeNullOrEmpty
-            }
-
-            It "Should return value matches multiple profiles." {
-                { Send-sthMailMessage -ProfileName "${ProfileName}*" -Subject $theSubject -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
-            }
-
-            Remove-sthMailProfile -ProfileName "${ProfileName}*"
-
-            It "Should remove the profiles" {
-                Get-sthMailProfile | Should -BeNullOrEmpty
+                New-sthMailProfile -ProfileFilePath $ProfileFilePath @ContextSettings
+                # $ProfileFilePath2 = $(Split-Path -Path $ProfileFilePath -Parent) + $(Split-Path -Path $ProfileFilePath -LeafBase) + '2' + $(Split-Path -Path $ProfileFilePath -Extension)
+                # $ProfileFilePathWildcard = $(Split-Path -Path $ProfileFilePath -Parent) + $(Split-Path -Path $ProfileFilePath -LeafBase) + '*' + $(Split-Path -Path $ProfileFilePath -Extension)
+                $ProfileFilePath2 = 'TestDrive:\_Profile2.xml'
+                $ProfileFilePathWildcard = 'TestDrive:\_Profile*.xml'
+                New-sthMailProfile -ProfileFilePath $ProfileFilePath2 @ContextSettings
+                
+                Context "Wildcards" {
+                    
+                    $Profiles = Get-sthMailProfile -ProfileFilePath $ProfileFilePathWildcard
+                    
+                    It "Should create two profiles" {
+                        $Profiles | Should -HaveCount 2
+                    }
+                    
+                    $MailProfile = $Profiles[0]
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                        
+                        Param ($Name, $Value)
+                        TestMailProfileContent -Name $Name -Value $Value
+                    }
+                    
+                    $MailProfile = $Profiles[1]
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                        
+                        Param ($Name, $Value)
+                        TestMailProfileContent -Name $Name -Value $Value
+                    }
+                }
+                
+                Context "Array" {
+                    
+                    $Profiles = Get-sthMailProfile -ProfileFilePath $ProfileFilePath, $ProfileFilePath2
+                    
+                    It "Should create two profiles" {
+                        $Profiles | Should -HaveCount 2
+                    }
+                    
+                    $MailProfile = $Profiles[0]
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                        
+                        Param ($Name, $Value)
+                        TestMailProfileContent -Name $Name -Value $Value
+                    }
+                
+                    $MailProfile = $Profiles[1]
+                    It "Should contain property '<Name>' with value '<Value>'" -TestCases $TestCases {
+                        
+                        Param ($Name, $Value)
+                        TestMailProfileContent -Name $Name -Value $Value
+                    }
+                }
+                
+                
+                
+                It "Should return value matches multiple profiles." {
+                    { Send-sthMailMessage -ProfileFilePath $ProfileFilePathWildcard -Subject $theSubject -ErrorAction Stop } | Should -Throw -ExceptionType 'System.ArgumentException'
+                }
+                
+                Remove-sthMailProfile -ProfileFilePath $ProfileFilePathWildcard
+                
+                It "Should remove the profiles" {
+                    Get-sthMailProfile | Should -BeNullOrEmpty
+                }
             }
         }
     }
