@@ -39,7 +39,7 @@ You can create the profile by using the `New-sthMailProfile` function with the *
 Specifies profile name.
 
 Profiles contain mail settings.\
-You can create profile by using the New-sthMailProfile function.
+You can create profile by using the `New-sthMailProfile` function.
 
 ```yaml
 Type: String
@@ -137,7 +137,7 @@ $ps = Get-Process
 Send-sthMailMessage -ProfileName "MailProfile" -Subject "Process List" -Message $ps
 ```
 
-The first command gets the result of the Get-Process cmdlet and assigns it to the $ps variable.
+The first command gets the result of the Get-Process cmdlet and assigns it to the $ps variable.\
 The second command sends it using previously created profile "MailProfile".
 
 ### Example 2: Send mail message using positional parameters.

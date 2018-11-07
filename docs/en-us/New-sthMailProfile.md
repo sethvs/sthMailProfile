@@ -60,7 +60,7 @@ Profile can be used by the `Send-sthMailMessage` function.
 ### -ProfileName
 Specifies the name of the profile.
 
-Function creates the profile with the name specified under the Profiles folder in the module's directory.
+Function creates the profile with the name specified under the **Profiles** folder in the module's directory.
 
 ```yaml
 Type: String
@@ -160,7 +160,7 @@ Accept wildcard characters: False
 ### -Password
 Specifies password of the user account specified by **-UserName** parameter.
 
-The value can be the String or SecureString object.
+The value can be the **String** or **SecureString** object.
 
 If the **-UserName** parameter is specified and the **-Password** parameter is not, you will be asked for password.
 
@@ -278,6 +278,7 @@ Accept wildcard characters: False
 
 ### -CC
 Specifies the email addresses to which a carbon copy (CC) of the email message is sent.
+
 Enter names (optional) and the email address, such as Name \<someone@example.com\>.
 
 ```yaml
@@ -294,6 +295,7 @@ Accept wildcard characters: False
 
 ### -BCC
 Specifies the email addresses that receive a copy of the mail but are not listed as recipients of the message.
+
 Enter names (optional) and the email address, such as Name \<someone@example.com\>.
 
 ```yaml
@@ -311,9 +313,9 @@ Accept wildcard characters: False
 ### -DeliveryNotificationOption
 Specifies the delivery notification options for the email message.
 You can specify multiple values.
-None is the default value.
+**None** is the default value.
 
-The delivery notifications are sent in an email message to the address specified in the value of the To parameter.
+The delivery notifications are sent in an email message to the address specified in the value of the **To** parameter.
 
 The acceptable values for this parameter are:
 - **None**.
@@ -342,7 +344,7 @@ Accept wildcard characters: False
 ### -Priority
 Specifies the priority of the email message.
 
-Normal is the default value.
+**Normal** is the default value.
 
 The acceptable values for this parameter are:
 - **Normal**

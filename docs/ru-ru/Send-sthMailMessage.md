@@ -42,7 +42,7 @@ Send-sthMailMessage -ProfileFilePath <String> [-Subject] <String> [[-Message] <O
 Указывает имя профиля.
 
 Профили содержат настройки для отправки сообщений электронной почты.\
-Вы можете создать профиль при помощи функции New-sthMailProfile.
+Вы можете создать профиль при помощи функции `New-sthMailProfile`.
 
 ```yaml
 Type: String
@@ -91,7 +91,7 @@ Accept wildcard characters: False
 ### -Message
 Задает тело сообщения электронной почты.
 
-Вы можете передать функции Send-sthMailMessage результаты выполнения какой либо другой функции или командлета по конвейеру.
+Вы можете передать функции `Send-sthMailMessage` результаты выполнения какой либо другой функции или командлета по конвейеру.
 
 ```yaml
 Type: Object[]

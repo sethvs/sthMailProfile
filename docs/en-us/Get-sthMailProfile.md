@@ -38,9 +38,9 @@ Profile can be used by the `Send-sthMailMessage` function.
 ### -ProfileName
 Specifies the name of the profile.
 
-This is the profile, created by the New-sthMailProfile function with the -ProfileName parameter and located under the Profiles folder in the module's directory.
+This is the profile, created by the `New-sthMailProfile` function with the **-ProfileName** parameter and located under the **Profiles** folder in the module's directory.
 
-If omitted, returns all the profiles from the Profiles folder in the module's directory.
+If omitted, returns all the profiles from the **Profiles** folder in the module's directory.
 
 Wildcards are permitted.
 
@@ -59,7 +59,7 @@ Accept wildcard characters: True
 ### -ProfileFilePath
 Specifies the profile file path.
 
-It is the path to .xml file, created by the New-sthMailProfile function with the -ProfileFilePath parameter.
+It is the path to .xml file, created by the `New-sthMailProfile` function with the **-ProfileFilePath** parameter.
 
 This parameter allows you to use profile file, created in an alternate location.
 
