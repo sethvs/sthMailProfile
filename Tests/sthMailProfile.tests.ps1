@@ -276,7 +276,7 @@ Describe "sthMailProfile" {
             Remove-sthMailProfile -ProfileName $ProfileName
 
             It "Should remove the profile" {
-                Get-sthMailProfile | Should -BeNullOrEmpty
+                Get-sthMailProfile -ProfileName $ProfileName | Should -BeNullOrEmpty
             }
         }
         if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
@@ -284,7 +284,7 @@ Describe "sthMailProfile" {
             Remove-sthMailProfile -ProfileFilePath $ProfileFilePath
 
             It "Should remove the profile" {
-                Get-sthMailProfile | Should -BeNullOrEmpty
+                Get-sthMailProfile -ProfileFilePath $ProfileFilePath | Should -BeNullOrEmpty
             }
         }
     }
@@ -477,7 +477,7 @@ Describe "sthMailProfile" {
                 Remove-sthMailProfile $ProfileName
 
                 It "Should remove the profile" {
-                    Get-sthMailProfile | Should -BeNullOrEmpty
+                    Get-sthMailProfile $ProfileName | Should -BeNullOrEmpty
                 }
             }
 
@@ -513,7 +513,7 @@ Describe "sthMailProfile" {
                 Remove-sthMailProfile -ProfileFilePath $ProfileFilePath
 
                 It "Should remove the profile" {
-                    Get-sthMailProfile | Should -BeNullOrEmpty
+                    Get-sthMailProfile $ProfileFilePath | Should -BeNullOrEmpty
                 }
             }
         }
