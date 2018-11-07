@@ -113,7 +113,7 @@ PrivateData = @{
         ReleaseNotes = @'
 ## 1.1
 
--  Added -ProfileFilePath parameter.
+- All module functions now support -ProfileFilePath parameter.
 
 ## 1.0.1
 
