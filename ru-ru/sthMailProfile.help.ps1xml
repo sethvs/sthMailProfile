@@ -1578,9 +1578,9 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
                         <maml:para>Этот параметр позволяет вам использовать файл профиля, расположенный в произвольной локации.
                         </maml:para>
                     </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
                     <dev:type>
-                        <maml:name>String</maml:name>
+                        <maml:name>String[]</maml:name>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
@@ -1629,9 +1629,9 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
                     <maml:para>Этот параметр позволяет вам использовать файл профиля, расположенный в произвольной локации.
                     </maml:para>
                 </maml:Description>
-                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
                 <dev:type>
-                    <maml:name>String</maml:name>
+                    <maml:name>String[]</maml:name>
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>

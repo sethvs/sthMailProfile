@@ -35,7 +35,8 @@ function Send-sthMailMessage
         {
             $MailProfile = Get-sthMailProfile -ProfileFilePath $ProfileFilePath
         }
-        if ($MailProfile)
+
+        if ($MailProfile -and $MailProfile.Count -eq 1)
         {
             if ($MailProfile.PasswordIs -eq 'PlainText')
             {
@@ -84,16 +85,14 @@ function Send-sthMailMessage
             Send-MailMessage @Parameters
         }
 
+        elseif ($MailProfile)
+        {
+            inProfileNameError -Value $($ProfileName + $ProfileFilePath) -ErrorType 'MultipleProfiles'
+        }
+
         else
         {
-            if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
-            {
-                inProfileNameError -Value $ProfileName
-            }
-            if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
-            {
-                inProfileNameError -Value $ProfileFilePath
-            }
+            inProfileNameError -Value $($ProfileName + $ProfileFilePath) -ErrorType 'ProfileNotFound'
         }
     }
 }
@@ -162,14 +161,14 @@ function New-sthMailProfile
                 }
             }
         }
-        
+
         else
         {
             $Password = Read-Host -Prompt "Type the password" -AsSecureString
         }
         
         $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $UserName, $Password
-        
+
         $MailParameters = [sthMailProfile]::new($From, $To, $Credential, $SmtpServer)
     }
 
@@ -226,7 +225,7 @@ function Get-sthMailProfile
         [Parameter(Position='0',ParameterSetName='ProfileName')]
         [string[]]$ProfileName = "*",
         [Parameter(ParameterSetName='ProfileFilePath')]
-        [string]$ProfileFilePath,
+        [string[]]$ProfileFilePath,
         [switch]$ShowPassword
         )
 
@@ -246,10 +245,13 @@ function Get-sthMailProfile
 
     if ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
     {
-        if (Test-Path -Path $ProfileFilePath)
+        foreach ($PFile in $ProfileFilePath)
         {
-            $xml = Import-Clixml -Path $ProfileFilePath
-            inComposeMailProfile -Xml $xml -ProfileFileName $(Split-Path -Path $ProfileFilePath -Leaf)
+            foreach ($ProfilePath in (Get-Item -Path $PFile -ErrorAction SilentlyContinue | Where-Object -FilterScript {$_.PSIsContainer -eq $false}))
+            {
+                $xml = Import-Clixml -Path $ProfilePath.FullName
+                inComposeMailProfile -Xml $xml -ProfileFileName $ProfilePath.Name
+            }
         }
     }
 }
@@ -280,10 +282,20 @@ function Remove-sthMailProfile
 function inProfileNameError
 {
     Param(
-        [string]$Value
+        [string]$Value,
+        [ValidateSet('ProfileNotFound','MultipleProfiles')]
+        [string]$ErrorType
     )
 
-    $Exception = [System.ArgumentException]::new("`nProfile '$Value' is not found.`n")
+    if ($ErrorType -eq 'ProfileNotFound')
+    {
+        $Exception = [System.ArgumentException]::new("`nProfile '$Value' is not found.`n")
+    }
+    if ($ErrorType -eq 'MultipleProfiles')
+    {
+        $Exception = [System.ArgumentException]::new("`n'$Value' value matches multiple profiles.`n")
+    }
+
     $ErrorId = 'ArgumentError'
     $ErrorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
 

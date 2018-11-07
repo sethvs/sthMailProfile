@@ -33,15 +33,6 @@
                                     <PropertyName>UserName</PropertyName>
                                 </ItemSelectionCondition>
                             </ListItem>
-                            <!-- <ListItem>
-                                <PropertyName>Password</PropertyName>
-                                <ItemSelectionCondition>
-                                    <PropertyName>Password</PropertyName>
-                                    <ScriptBlock>
-                                        $_.PasswordIs -ne 'NotExist'
-                                    </ScriptBlock>
-                                </ItemSelectionCondition>
-                            </ListItem> -->
                             <ListItem>
                                 <PropertyName>PasswordIs</PropertyName>
                             </ListItem>
@@ -64,7 +55,6 @@
                                 </ItemSelectionCondition>
                             </ListItem>
                             <ListItem>
-                                <!-- <PropertyName>Encoding</PropertyName> -->
                                 <Label>Encoding</Label>
                                 <ScriptBlock>
                                     $_.Encoding.EncodingName
@@ -169,7 +159,6 @@
                                 </ItemSelectionCondition>
                             </ListItem>
                             <ListItem>
-                                <!-- <PropertyName>Encoding</PropertyName> -->
                                 <Label>Encoding</Label>
                                 <ScriptBlock>
                                     $_.Encoding.EncodingName

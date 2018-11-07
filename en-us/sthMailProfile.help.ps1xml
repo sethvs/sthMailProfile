@@ -1566,10 +1566,12 @@ By default passwords are not shown.</maml:para>
                         </maml:para>
                         <maml:para>This parameter allows you to use profile file, created in an alternate location.
                         </maml:para>
+                        <maml:para>Wildcards are permitted.
+                        </maml:para>
                     </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
                     <dev:type>
-                        <maml:name>String</maml:name>
+                        <maml:name>String[]</maml:name>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
@@ -1598,7 +1600,7 @@ By default passwords are not shown.</maml:para>
                     </maml:para>
                     <maml:para>If omitted, returns all the profiles from the Profiles folder in the module's directory.
                     </maml:para>
-                        <maml:para>Wildcards are permitted.
+                    <maml:para>Wildcards are permitted.
                     </maml:para>
                 </maml:Description>
                 <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
@@ -1617,10 +1619,12 @@ By default passwords are not shown.</maml:para>
                     </maml:para>
                     <maml:para>This parameter allows you to use profile file, created in an alternate location.
                     </maml:para>
+                    <maml:para>Wildcards are permitted.
+                    </maml:para>
                 </maml:Description>
-                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
                 <dev:type>
-                    <maml:name>String</maml:name>
+                    <maml:name>String[]</maml:name>
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
