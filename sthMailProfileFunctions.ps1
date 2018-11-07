@@ -137,6 +137,10 @@ function New-sthMailProfile
         [string[]]$DeliveryNotificationOption,
         [ValidateSet('Normal','High','Low')]
         [string]$Priority,
+        [Parameter(ParameterSetName='ProfileName-Password')]
+        [Parameter(ParameterSetName='ProfileFilePath-Password')]
+        [Parameter(ParameterSetName='ProfileName-Credential')]
+        [Parameter(ParameterSetName='ProfileFilePath-Credential')]
         [switch]$StorePasswordInPlainText
     )
 
