@@ -12,7 +12,7 @@
 RootModule = 'sthMailProfile.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.1'
+ModuleVersion = '1.1'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -111,6 +111,10 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = @'
+## 1.1
+
+-  Added -ProfileFilePath parameter.
+
 ## 1.0.1
 
 - New-sthMailProfile -Encoding parameter in addition to encoding name, for example 'unicode', now also supports numerical code page value, for example '1200'.
