@@ -179,6 +179,10 @@ Accept wildcard characters: False
 ### -Credential
 Specifies a credential of the user account that has permission to perform this action.
 
+Value can be a PSCredential object, or an array of two elements, where the first element is username, and the second - is password, i.e. @('UserName','Password').
+
+If value is in the form of array, it will be converted to PSCredential.
+
 ```yaml
 Type: PSCredential
 Parameter Sets: ProfileNameCredential, ProfileFilePathCredential
@@ -443,7 +447,17 @@ The third command creates mail profile with name "MailProfile" and settings: Fro
 
 Since SecureString uses DPAPI, if you create mail profile containing credential without **-StorePasswordInPlainText** parameter, it can only be used on the computer it was created on and by the user account that created it.
 
-### Example 8: Create a new profile object and store password in plain text.
+### Example 8: Create a new profile by specifying credential as an array of two elements.
+```powershell
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential @('UserName', 'password')
+```
+
+The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer and Credential.\
+Credential parameter value is specified as an array of two elements.
+
+Since SecureString uses DPAPI, if you create mail profile containing credential without **-StorePasswordInPlainText** parameter, it can only be used on the computer it was created on and by the user account that created it.
+
+### Example 9: Create a new profile object and store password in plain text.
 ```powershell
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText
 ```

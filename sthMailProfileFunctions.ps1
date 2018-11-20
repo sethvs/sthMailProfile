@@ -126,7 +126,7 @@ function New-sthMailProfile
         [Parameter(Mandatory,ParameterSetName='ProfileName-Credential')]
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath-Credential')]
         [ValidateNotNullOrEmpty()]
-        [PSCredential]$Credential,
+        $Credential,
         [int]$Port,
         [switch]$UseSSL,
         [string]$Encoding,
@@ -178,6 +178,15 @@ function New-sthMailProfile
 
     elseif ($PSCmdlet.ParameterSetName -eq 'ProfileName-Credential' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath-Credential')
     {
+        if ($Credential.GetType().BaseType.FullName -eq 'System.Array' -and $Credential.Count -eq 2)
+        {
+            $Credential = New-Object System.Management.Automation.PSCredential -ArgumentList $Credential[0], $(ConvertTo-SecureString -String $Credential[1] -AsPlainText -Force)
+        }
+        elseif ($Credential.GetType().FullName -ne 'System.Management.Automation.PSCredential')
+        {
+            inPSCredentialError -Value $Credential
+        }
+
         $MailParameters = [sthMailProfile]::new($From, $To, $Credential, $SmtpServer)
     }
 
@@ -189,7 +198,7 @@ function New-sthMailProfile
 
     foreach ($PSBoundParameter in $PSBoundParameters.GetEnumerator())
     {
-        if ($PSBoundParameter.Key -notin 'From','To','SmtpServer','UserName','Password','ProfileName','ProfileFilePath','StorePasswordInPlainText')
+        if ($PSBoundParameter.Key -notin 'From','To','SmtpServer','UserName','Password','Credential','ProfileName','ProfileFilePath','StorePasswordInPlainText')
         {
             if ($PSBoundParameter.Key -eq 'Encoding')
             {
@@ -368,3 +377,17 @@ function inWriteProfile
 
     Export-Clixml -Path $FilePath -InputObject $Profile
 }
+
+function inPSCredentialError
+{
+    Param(
+        [string]$Value
+    )
+
+    $Exception = [System.ArgumentException]::new("Value (`"$Value`") is wrong. The value should be a PSCredential object or an array of two elements.")
+    $ErrorId = 'ArgumentTypeError'
+    $ErrorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
+
+    $ErrorRecord = [System.Management.Automation.ErrorRecord]::new($Exception, $ErrorId, $ErrorCategory, $null)
+
+    throw $ErrorRecord}
