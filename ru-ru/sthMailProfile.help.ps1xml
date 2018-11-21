@@ -42,7 +42,7 @@
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
                     <maml:name>Subject</maml:name>
                     <maml:Description>
                         <maml:para>Указывает тему сообщения электронной почты.
@@ -101,7 +101,7 @@
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
                     <maml:name>Subject</maml:name>
                     <maml:Description>
                         <maml:para>Указывает тему сообщения электронной почты.
@@ -176,7 +176,7 @@
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
-            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
                 <maml:name>Subject</maml:name>
                 <maml:Description>
                     <maml:para>Указывает тему сообщения электронной почты.
@@ -294,7 +294,7 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
         <maml:description>
             <maml:para>Функция New-sthMailProfile создает профиль электронной почты, содержащий указанные параметры.
             </maml:para>
-            <maml:para>Профиль - это файл xml, содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            <maml:para>Профиль - это файл xml, содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Subject, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
             </maml:para>
             <maml:para>Вы можете создать профиль при помощи параметров -ProfileName или -ProfileFilePath.
 Параметр -ProfileName создает .xml файл с указанным именем в папке Profiles, расположенной в каталоге модуля.
@@ -404,6 +404,21 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                     <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает тему сообщения электронной почты.
+                        </maml:para>
+                        <maml:para>Значение, указанное в профиле, может быть переопределено для сообщения при помощи параметра -Subject функции Send-sthMailMessage.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
                     <maml:Description>
                         <maml:para>Указывает порт SMTP-сервера. По умолчанию используется порт 25.
@@ -626,6 +641,21 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                     <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает тему сообщения электронной почты.
+                        </maml:para>
+                        <maml:para>Значение, указанное в профиле, может быть переопределено для сообщения при помощи параметра -Subject функции Send-sthMailMessage.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
                     <maml:Description>
                         <maml:para>Указывает порт SMTP-сервера. По умолчанию используется порт 25.
@@ -831,6 +861,21 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает тему сообщения электронной почты.
+                        </maml:para>
+                        <maml:para>Значение, указанное в профиле, может быть переопределено для сообщения при помощи параметра -Subject функции Send-sthMailMessage.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -1040,6 +1085,21 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает тему сообщения электронной почты.
+                        </maml:para>
+                        <maml:para>Значение, указанное в профиле, может быть переопределено для сообщения при помощи параметра -Subject функции Send-sthMailMessage.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -1295,6 +1355,21 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>False</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>Subject</maml:name>
+                <maml:Description>
+                    <maml:para>Указывает тему сообщения электронной почты.
+                    </maml:para>
+                    <maml:para>Значение, указанное в профиле, может быть переопределено для сообщения при помощи параметра -Subject функции Send-sthMailMessage.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
             <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                 <maml:name>Port</maml:name>

@@ -42,7 +42,7 @@ You can create profile by using the New-sthMailProfile function.
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
                     <maml:name>Subject</maml:name>
                     <maml:Description>
                         <maml:para>Specifies mail message subject.
@@ -101,7 +101,7 @@ You can create profile by using the New-sthMailProfile function.
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
-                <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
                     <maml:name>Subject</maml:name>
                     <maml:Description>
                         <maml:para>Specifies mail message subject.
@@ -176,7 +176,7 @@ You can create profile by using the New-sthMailProfile function.
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
-            <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
                 <maml:name>Subject</maml:name>
                 <maml:Description>
                     <maml:para>Specifies mail message subject.
@@ -296,7 +296,7 @@ It uses pipeline for sending message content to the function.</maml:para>
         <maml:description>
             <maml:para>The New-sthMailProfile function creates mail profile containing specified settings.
             </maml:para>
-            <maml:para>Profile is an xml file, containing settings, such as: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+            <maml:para>Profile is an xml file, containing settings, such as: From, To, Credential, SmtpServer, Subject, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
             </maml:para>
             <maml:para>You can create the profile by using the -ProfileName or -ProfileFilePath parameter.
 -ProfileName parameter creates an .xml file with the specified name under the Profiles folder in the module's directory.
@@ -406,6 +406,21 @@ It uses pipeline for sending message content to the function.</maml:para>
                     <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message subject.
+                        </maml:para>
+                        <maml:para>It can be redefined for specific message by Send-sthMailMessage -Subject parameter.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
                     <maml:Description>
                         <maml:para>Specifies an alternate port on the SMTP server. The default value is 25, which is the default SMTP port.
@@ -626,6 +641,21 @@ The acceptable values for this parameter are:
                     <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message subject.
+                        </maml:para>
+                        <maml:para>It can be redefined for specific message by Send-sthMailMessage -Subject parameter.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
                     <maml:Description>
                         <maml:para>Specifies an alternate port on the SMTP server. The default value is 25, which is the default SMTP port.
@@ -829,6 +859,21 @@ The acceptable values for this parameter are:
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message subject.
+                        </maml:para>
+                        <maml:para>It can be redefined for specific message by Send-sthMailMessage -Subject parameter.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -1036,6 +1081,21 @@ The acceptable values for this parameter are:
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>Subject</maml:name>
+                    <maml:Description>
+                        <maml:para>Specifies mail message subject.
+                        </maml:para>
+                        <maml:para>It can be redefined for specific message by Send-sthMailMessage -Subject parameter.
+                        </maml:para>
+                    </maml:Description>
+                    <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                    <dev:type>
+                        <maml:name>String</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
                 <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                     <maml:name>Port</maml:name>
@@ -1289,6 +1349,21 @@ The acceptable values for this parameter are:
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>False</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>Subject</maml:name>
+                <maml:Description>
+                    <maml:para>Specifies mail message subject.
+                    </maml:para>
+                    <maml:para>It can be redefined for specific message by Send-sthMailMessage -Subject parameter.
+                    </maml:para>
+                </maml:Description>
+                <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+                <dev:type>
+                    <maml:name>String</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>None</dev:defaultValue>
             </command:parameter>
             <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
                 <maml:name>Port</maml:name>

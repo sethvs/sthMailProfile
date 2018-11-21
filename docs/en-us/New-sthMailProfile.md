@@ -15,39 +15,39 @@ Creates mail profile.
 ### ProfileNamePassword
 ```
 New-sthMailProfile [-ProfileName] <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
- [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Port <Int32>]
- [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
+ [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Subject <string>]
+ [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
  [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
 ```
 
 ### ProfileFilePathPassword
 ```
 New-sthMailProfile -ProfileFilePath <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
- [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Port <Int32>]
- [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
+ [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Subject <string>]
+ [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
  [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
 ```
 
 ### ProfileNameCredential
 ```
 New-sthMailProfile [-ProfileName] <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
- [-Credential <PSCredential>] [-StorePasswordInPlainText] [-Port <Int32>] [-UseSSL] [-Encoding <String>]
- [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>] [-DeliveryNotificationOption <String>] [-Priority <String>]
- [<CommonParameters>]
+ [-Credential <PSCredential or two-element array>] [-StorePasswordInPlainText] [-Subject <string>]
+ [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
 ```
 
 ### ProfileFilePathCredential
 ```
 New-sthMailProfile -ProfileFilePath <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
- [-Credential <PSCredential>] [-StorePasswordInPlainText] [-Port <Int32>] [-UseSSL] [-Encoding <String>]
- [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>] [-DeliveryNotificationOption <String>] [-Priority <String>]
- [<CommonParameters>]
+ [-Credential <PSCredential or two-element array>] [-StorePasswordInPlainText] [-Subject <string>]
+ [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 The `New-sthMailProfile` function creates mail profile containing specified settings.
 
-Profile is an xml file, containing settings, such as: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+Profile is an xml file, containing settings, such as: From, To, Credential, SmtpServer, Subject, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
 
 You can create the profile by using the **-ProfileName** or **-ProfileFilePath** parameter.\
 **-ProfileName** parameter creates an .xml file with the specified name under the **Profiles** folder in the module's directory.\
@@ -184,7 +184,7 @@ Value can be a PSCredential object, or an array of two elements, where the first
 If value is in the form of array, it will be converted to PSCredential.
 
 ```yaml
-Type: PSCredential
+Type: PSCredential or two-element array
 Parameter Sets: ProfileNameCredential, ProfileFilePathCredential
 Aliases:
 
@@ -210,6 +210,23 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Subject
+Specifies mail message subject.
+
+It can be redefined for specific message by `Send-sthMailMessage` **-Subject** parameter.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
