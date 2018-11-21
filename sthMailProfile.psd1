@@ -12,7 +12,7 @@
 RootModule = 'sthMailProfile.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1'
+ModuleVersion = '1.2'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -111,6 +111,12 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = @'
+## 1.2
+
+- New-sthMailProfile -Credential parameter in addition to PSCredential object now supports two-element array value, for example @('UserName','Password').
+- Subject can now be defined in the profile by New-sthMailProfile -Subject parameter.
+- New-sthMailProfile -DoNotSendIfMessageIsEmpty parameter can be used to specify that if message body is empty, the message should not be sent.
+
 ## 1.1
 
 - All module functions now support -ProfileFilePath parameter.
