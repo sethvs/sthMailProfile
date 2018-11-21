@@ -197,7 +197,21 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Пример 8: Создание нового профиля, хранящего пароль открытым текстом
+#### Пример 8: Создание нового профиля с использованием массива в качестве значения параметра Credential.
+
+Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer и Credential.
+
+Параметр Credential задан в виде массива, состоящего из двух элементов.
+
+```
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential @('UserName', 'password')
+```
+
+Так как SecureString использует DPAPI, то, если вы создаете профиль, содержащий учетные данные (имя и пароль) без использования параметра **-StorePasswordInPlainText**, этот профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.
+
+---
+
+#### Пример 9: Создание нового профиля, хранящего пароль открытым текстом
 
 Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, UserName и Password.
 
