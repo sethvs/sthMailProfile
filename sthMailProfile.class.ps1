@@ -13,6 +13,7 @@ class sthMailProfile
     [System.Management.Automation.PSCredential]$Credential
     [PasswordIs]$PasswordIs
     [string]$SmtpServer
+    [string]$Subject
     [int]$Port
     [switch]$UseSSL
     [System.Text.Encoding]$Encoding
@@ -39,13 +40,14 @@ class sthMailProfile
         $this.PasswordIs = [PasswordIs]'Secured'
     }
 
-    sthMailProfile([string]$From,[string[]]$To,[PSCredential]$Credential,[PasswordIs]$PasswordIs,[string]$SmtpServer,[int]$Port,[switch]$UseSSL,[System.Text.Encoding]$Encoding,[switch]$BodyAsHtml,[string[]]$CC,[string[]]$BCC,[string[]]$DeliveryNotificationOption,[string]$Priority)
+    sthMailProfile([string]$From,[string[]]$To,[PSCredential]$Credential,[PasswordIs]$PasswordIs,[string]$SmtpServer,[string]$Subject,[int]$Port,[switch]$UseSSL,[System.Text.Encoding]$Encoding,[switch]$BodyAsHtml,[string[]]$CC,[string[]]$BCC,[string[]]$DeliveryNotificationOption,[string]$Priority)
     {
         $this.From = $From
         $this.To = $To
         $this.Credential = $Credential
         $this.PasswordIs = $PasswordIs
         $this.SmtpServer = $SmtpServer
+        $this.Subject = $Subject
         $this.Port = $Port
         $this.UseSSL = $UseSSL
         $this.Encoding = $Encoding
