@@ -22,6 +22,7 @@ class sthMailProfile
     [string[]]$BCC
     [string[]]$DeliveryNotificationOption
     [string]$Priority
+    [switch]$DoNotSendIfMessageIsEmpty
 
     sthMailProfile([string]$From, [string[]]$To, [string]$SmtpServer)
     {
@@ -40,7 +41,7 @@ class sthMailProfile
         $this.PasswordIs = [PasswordIs]'Secured'
     }
 
-    sthMailProfile([string]$From,[string[]]$To,[PSCredential]$Credential,[PasswordIs]$PasswordIs,[string]$SmtpServer,[string]$Subject,[int]$Port,[switch]$UseSSL,[System.Text.Encoding]$Encoding,[switch]$BodyAsHtml,[string[]]$CC,[string[]]$BCC,[string[]]$DeliveryNotificationOption,[string]$Priority)
+    sthMailProfile([string]$From,[string[]]$To,[PSCredential]$Credential,[PasswordIs]$PasswordIs,[string]$SmtpServer,[string]$Subject,[int]$Port,[switch]$UseSSL,[System.Text.Encoding]$Encoding,[switch]$BodyAsHtml,[string[]]$CC,[string[]]$BCC,[string[]]$DeliveryNotificationOption,[string]$Priority,[switch]$DoNotSendIfMessageIsEmpty)
     {
         $this.From = $From
         $this.To = $To
@@ -56,5 +57,6 @@ class sthMailProfile
         $this.BCC = $BCC
         $this.DeliveryNotificationOption = $DeliveryNotificationOption
         $this.Priority = $Priority
+        $this.DoNotSendIfMessageIsEmpty = $DoNotSendIfMessageIsEmpty
     }
 }
