@@ -203,7 +203,21 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 8: Create a new profile object and store password in plain text
+#### Example 8: Create a new profile by specifying credential as an array of two elements.
+
+The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer and Credential.
+
+Credential parameter value is specified as an array of two elements.
+
+```
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential @('UserName', 'password')
+```
+
+Since SecureString uses DPAPI, if you create mail profile containing credential without **-StorePasswordInPlainText** parameter, it can only be used on the computer it was created on and by the user account that created it.
+
+---
+
+#### Example 9: Create a new profile object and store password in plain text
 
 The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
 
