@@ -551,7 +551,7 @@ Describe "sthMailProfile" {
             Assert-MockCalled "Read-Host" -ModuleName sthMailProfile -Times 4 -Exactly -Scope Context
         }
 
-        Context "Profile with -Credentialparameter" {
+        Context "Profile with -Credential parameter" {
 
             $ContextSettings = DuplicateOrderedDictionary $Settings
             $ContextSettings.Remove('UserName')
@@ -560,7 +560,17 @@ Describe "sthMailProfile" {
             CreateAndTestProfile
         }
 
-        Context "Profile with -Credentialparameter with encoding as CodePage" {
+        Context "Profile with -Credential parameter as an array " {
+
+            $ContextSettings = DuplicateOrderedDictionary $Settings
+            $ContextSettings.Remove('UserName')
+            $ContextSettings.Remove('Password')
+            $ContextSettings.Credential = @('TheUser','ThePassword')
+
+            CreateAndTestProfile
+        }
+
+        Context "Profile with -Credential parameter with encoding as CodePage" {
 
             $ContextSettings = DuplicateOrderedDictionary $Settings
             $ContextSettings.Remove('UserName')
@@ -587,6 +597,17 @@ Describe "sthMailProfile" {
             }
             It "Should return nothing." {
                 Get-sthMailProfile -ProfileFilePath '.\NonExistentFilePath' | Should -BeNullOrEmpty
+            }
+        }
+
+        Context "New-sthMailProfile - wrong -Credential parameter value" {
+
+            It "Should return terminating error - string object" {
+                { New-sthMailProfile -ProfileName $ProfileName -From $Settings.From -To $Settings.To -SmtpServer $Settings.SmtpServer -Credential 'oneObject' } | Should -Throw -ExceptionType 'System.ArgumentException'
+            }
+
+            It "Should return terminating error - three element array" {
+                { New-sthMailProfile -ProfileName $ProfileName -From $Settings.From -To $Settings.To -SmtpServer $Settings.SmtpServer -Credential @(1,2,3) } | Should -Throw -ExceptionType 'System.ArgumentException'
             }
         }
 

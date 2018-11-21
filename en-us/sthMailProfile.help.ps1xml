@@ -805,10 +805,14 @@ The acceptable values for this parameter are:
                     <maml:Description>
                         <maml:para>Specifies a credential of the user account that has permission to perform this action.
                         </maml:para>
+                        <maml:para>Value can be a PSCredential object, or an array of two elements, where the first element is username, and the second - is password, i.e. @('UserName','Password').
+                        </maml:para>
+                        <maml:para>If value is in the form of array, it will be converted to PSCredential.
+                        </maml:para>
                     </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+                    <command:parameterValue required="true" variableLength="false">PSCredential or two-element array</command:parameterValue>
                     <dev:type>
-                        <maml:name>PSCredential</maml:name>
+                        <maml:name>PSCredential or two-element array</maml:name>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
@@ -1008,10 +1012,14 @@ The acceptable values for this parameter are:
                     <maml:Description>
                         <maml:para>Specifies a credential of the user account that has permission to perform this action.
                         </maml:para>
+                        <maml:para>Value can be a PSCredential object, or an array of two elements, where the first element is username, and the second - is password, i.e. @('UserName','Password').
+                        </maml:para>
+                        <maml:para>If value is in the form of array, it will be converted to PSCredential.
+                        </maml:para>
                     </maml:Description>
-                    <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+                    <command:parameterValue required="true" variableLength="false">PSCredential or two-element array</command:parameterValue>
                     <dev:type>
-                        <maml:name>PSCredential</maml:name>
+                        <maml:name>PSCredential or two-element array</maml:name>
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
@@ -1256,10 +1264,14 @@ The acceptable values for this parameter are:
                 <maml:Description>
                     <maml:para>Specifies a credential of the user account that has permission to perform this action.
                     </maml:para>
+                    <maml:para>Value can be a PSCredential object, or an array of two elements, where the first element is username, and the second - is password, i.e. @('UserName','Password').
+                    </maml:para>
+                    <maml:para>If value is in the form of array, it will be converted to PSCredential.
+                    </maml:para>
                 </maml:Description>
-                <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+                <command:parameterValue required="true" variableLength="false">PSCredential or two-element array</command:parameterValue>
                 <dev:type>
-                    <maml:name>PSCredential</maml:name>
+                    <maml:name>PSCredential or two-element array</maml:name>
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
@@ -1483,7 +1495,18 @@ The third command creates mail profile with name "MailProfile" and settings: Fro
                 </dev:remarks>
             </command:example>
             <command:example>
-                <maml:title>Example 8: Create a new profile object and store password in plain text.</maml:title>
+                <maml:title>Example 8: Create a new profile by specifying credential as an array of two elements.</maml:title>
+                <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential @('UserName', 'password')</dev:code>
+                <dev:remarks>
+                    <maml:para>The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer and Credential.
+Credential parameter value is specified as an array of two elements.</maml:para>
+                    <maml:para>Since SecureString uses DPAPI, if you create mail profile containing credential without -StorePasswordInPlainText parameter, it can only be used on the computer it was created on and by the user account that created it.</maml:para>
+                    <maml:para/>
+                    <maml:para/>
+                </dev:remarks>
+            </command:example>
+            <command:example>
+                <maml:title>Example 9: Create a new profile object and store password in plain text.</maml:title>
                 <dev:code>New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText</dev:code>
                 <dev:remarks>
                     <maml:para>The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.

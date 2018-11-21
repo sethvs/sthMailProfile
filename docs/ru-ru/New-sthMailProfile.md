@@ -179,7 +179,9 @@ Accept wildcard characters: False
 ### -Credential
 Указывает учетные данные пользователя, обладающего правами на отправку электронной почты.
 
-В качестве значения принимает объект **PSCredential**.
+Значением может быть как объект PSCredential, так и массив, состоящий из двух элементов, где первый элемент - это имя пользователя, а второй - пароль, к примеру - @('UserName','Password').
+
+Если значение представлено в виде массива, оно будет преобразовано в объект PSCredential.
 
 ```yaml
 Type: PSCredential
@@ -445,7 +447,17 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 Так как SecureString использует DPAPI, то, если вы создаете профиль, содержащий учетные данные (имя и пароль) без использования параметра **-StorePasswordInPlainText**, этот профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.
 
-### Пример 8: Создание нового профиля, хранящего пароль открытым текстом.
+### Пример 8: Создание нового профиля с использованием массива в качестве значения параметра Credential.
+```
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential @('UserName', 'password')
+```
+
+Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer и Credential.\
+Параметр Credential задан в виде массива, состоящего из двух элементов.
+
+Так как SecureString использует DPAPI, то, если вы создаете профиль, содержащий учетные данные (имя и пароль) без использования параметра **-StorePasswordInPlainText**, этот профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.
+
+### Пример 9: Создание нового профиля, хранящего пароль открытым текстом.
 ```
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText
 ```
