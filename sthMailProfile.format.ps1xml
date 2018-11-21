@@ -99,6 +99,12 @@
                                     <PropertyName>Priority</PropertyName>
                                 </ItemSelectionCondition>
                             </ListItem>
+                            <ListItem>
+                                <PropertyName>DoNotSendIfMessageIsEmpty</PropertyName>
+                                <ItemSelectionCondition>
+                                    <PropertyName>DoNotSendIfMessageIsEmpty</PropertyName>
+                                </ItemSelectionCondition>
+                            </ListItem>
                         </ListItems>
                     </ListEntry>
                 </ListEntries>
@@ -207,6 +213,12 @@
                                 <PropertyName>Priority</PropertyName>
                                 <ItemSelectionCondition>
                                     <PropertyName>Priority</PropertyName>
+                                </ItemSelectionCondition>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>DoNotSendIfMessageIsEmpty</PropertyName>
+                                <ItemSelectionCondition>
+                                    <PropertyName>DoNotSendIfMessageIsEmpty</PropertyName>
                                 </ItemSelectionCondition>
                             </ListItem>
                         </ListItems>

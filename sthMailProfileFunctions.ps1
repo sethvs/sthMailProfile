@@ -38,58 +38,61 @@ function Send-sthMailMessage
 
         if ($MailProfile -and $MailProfile.Count -eq 1)
         {
-            if ($MailProfile.PasswordIs -eq 'PlainText')
+            if ($Content -or -not $MailProfile.DoNotSendIfMessageIsEmpty)
             {
-                try
+                if ($MailProfile.PasswordIs -eq 'PlainText')
                 {
-                    if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
+                    try
                     {
-                        $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
+                        if ($PSCmdlet.ParameterSetName -eq 'ProfileName')
+                        {
+                            $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileName $ProfileName -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
+                        }
+                        elseif ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+                        {
+                            $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileFilePath $ProfileFilePath -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
+                        }
                     }
-                    elseif ($PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
+                    catch [System.Management.Automation.ParameterBindingException]
                     {
-                        $Password = ConvertTo-SecureString -String (Get-sthMailProfile -ProfileFilePath $ProfileFilePath -ShowPassword | Select-Object -ExpandProperty Password) -AsPlainText -Force
+                        $Password = [System.Security.SecureString]::new()
+                    }
+                    
+                    $MailProfile.Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $MailProfile.Credential.UserName, $Password
+                }
+                
+                $Parameters = @{}
+                
+                foreach ($Property in $MailProfile.PSObject.Properties.Name | Where-Object -FilterScript {$_ -notin 'ProfileName', 'PasswordIs', 'UserName', 'Password', 'DoNotSendIfMessageIsEmpty'})
+                {
+                    if ($MailProfile.$Property)
+                    {
+                        $Parameters.Add($Property, $MailProfile.$Property)
                     }
                 }
-                catch [System.Management.Automation.ParameterBindingException]
+
+                if ($Subject)
                 {
-                    $Password = [System.Security.SecureString]::new()
+                    $Parameters.Subject = $Subject
+                }
+                elseif (-not $Parameters.Subject)
+                {
+                    inNoSubjectError
                 }
 
-                $MailProfile.Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $MailProfile.Credential.UserName, $Password
-            }
-
-            $Parameters = @{}
-
-            foreach ($Property in $MailProfile.PSObject.Properties.Name | Where-Object -FilterScript {$_ -notin 'ProfileName', 'PasswordIs', 'UserName', 'Password'})
-            {
-                if ($MailProfile.$Property)
+                if ($Content)
                 {
-                    $Parameters.Add($Property, $MailProfile.$Property)
+                    $Body = $Content | Out-String -Width 1000
+                    $Parameters.Add("Body", $Body)
                 }
-            }
 
-            if ($Subject)
-            {
-                $Parameters.Subject = $Subject
-            }
-            elseif (-not $Parameters.Subject)
-            {
-                inNoSubjectError
-            }
+                if ($Attachments)
+                {
+                    $Parameters.Add("Attachments", $Attachments)
+                }
 
-            if ($Content)
-            {
-                $Body = $Content | Out-String -Width 1000
-                $Parameters.Add("Body", $Body)
+                Send-MailMessage @Parameters
             }
-
-            if ($Attachments)
-            {
-                $Parameters.Add("Attachments", $Attachments)
-            }
-
-            Send-MailMessage @Parameters
         }
 
         elseif ($MailProfile)
@@ -149,7 +152,8 @@ function New-sthMailProfile
         [Parameter(ParameterSetName='ProfileFilePath-Password')]
         [Parameter(ParameterSetName='ProfileName-Credential')]
         [Parameter(ParameterSetName='ProfileFilePath-Credential')]
-        [switch]$StorePasswordInPlainText
+        [switch]$StorePasswordInPlainText,
+        [switch]$DoNotSendIfMessageIsEmpty
     )
 
     if ($PSCmdlet.ParameterSetName -eq 'ProfileName' -or $PSCmdlet.ParameterSetName -eq 'ProfileFilePath')
@@ -298,31 +302,6 @@ function Remove-sthMailProfile
     Remove-Item -Path $Path
 }
 
-function inProfileNameError
-{
-    Param(
-        [string]$Value,
-        [ValidateSet('ProfileNotFound','MultipleProfiles')]
-        [string]$ErrorType
-    )
-
-    if ($ErrorType -eq 'ProfileNotFound')
-    {
-        $Exception = [System.ArgumentException]::new("`nProfile '$Value' is not found.`n")
-    }
-    elseif ($ErrorType -eq 'MultipleProfiles')
-    {
-        $Exception = [System.ArgumentException]::new("`n'$Value' value matches multiple profiles.`n")
-    }
-
-    $ErrorId = 'ArgumentError'
-    $ErrorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
-
-    $ErrorRecord = [System.Management.Automation.ErrorRecord]::new($Exception, $ErrorId, $ErrorCategory, $null) 
-
-    $PSCmdlet.WriteError($ErrorRecord)
-}
-
 function inComposeMailProfile
 {
     Param (
@@ -336,7 +315,7 @@ function inComposeMailProfile
         $xml.Encoding = [System.Text.Encoding]::GetEncoding($xml.Encoding.CodePage)
     }
 
-    $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Subject,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority)
+    $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Subject,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority,$xml.DoNotSendIfMessageIsEmpty)
     $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfileFile.Name.Substring(0,$ProfileFile.Name.Length - 4)
 
     $MailProfile | Add-Member -NotePropertyName UserName -NotePropertyValue $MailProfile.Credential.UserName
@@ -386,6 +365,30 @@ function inWriteProfile
     Export-Clixml -Path $FilePath -InputObject $Profile
 }
 
+function inProfileNameError
+{
+    Param(
+        [string]$Value,
+        [ValidateSet('ProfileNotFound','MultipleProfiles')]
+        [string]$ErrorType
+    )
+
+    if ($ErrorType -eq 'ProfileNotFound')
+    {
+        $Exception = [System.ArgumentException]::new("`nProfile '$Value' is not found.`n")
+    }
+    elseif ($ErrorType -eq 'MultipleProfiles')
+    {
+        $Exception = [System.ArgumentException]::new("`n'$Value' value matches multiple profiles.`n")
+    }
+
+    $ErrorId = 'ArgumentError'
+    $ErrorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
+
+    $ErrorRecord = [System.Management.Automation.ErrorRecord]::new($Exception, $ErrorId, $ErrorCategory, $null) 
+
+    $PSCmdlet.WriteError($ErrorRecord)
+}
 function inPSCredentialError
 {
     Param(

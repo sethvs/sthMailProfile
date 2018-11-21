@@ -538,6 +538,24 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>DoNotSendIfMessageIsEmpty</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что если тело сообщения отсутствует, то письмо не отправляется.
+                        </maml:para>
+                        <maml:para>По умолчанию пустые сообщения отправляются.
+                        </maml:para>
+                        <maml:para>Этот параметр может быть использован в сценариях автоматизации, когда сообщение должно отправляться, только если есть некие данные.
+                        </maml:para>
+                        <maml:para>Сообщения отправляются при помощи функции Send-sthMailMessage.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
             </command:syntaxItem>
             <command:syntaxItem>
                 <maml:name>New-sthMailProfile</maml:name>
@@ -775,6 +793,24 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
                 </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>DoNotSendIfMessageIsEmpty</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что если тело сообщения отсутствует, то письмо не отправляется.
+                        </maml:para>
+                        <maml:para>По умолчанию пустые сообщения отправляются.
+                        </maml:para>
+                        <maml:para>Этот параметр может быть использован в сценариях автоматизации, когда сообщение должно отправляться, только если есть некие данные.
+                        </maml:para>
+                        <maml:para>Сообщения отправляются при помощи функции Send-sthMailMessage.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
+                </command:parameter>
             </command:syntaxItem>
             <command:syntaxItem>
                 <maml:name>New-sthMailProfile</maml:name>
@@ -996,6 +1032,24 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>DoNotSendIfMessageIsEmpty</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что если тело сообщения отсутствует, то письмо не отправляется.
+                        </maml:para>
+                        <maml:para>По умолчанию пустые сообщения отправляются.
+                        </maml:para>
+                        <maml:para>Этот параметр может быть использован в сценариях автоматизации, когда сообщение должно отправляться, только если есть некие данные.
+                        </maml:para>
+                        <maml:para>Сообщения отправляются при помощи функции Send-sthMailMessage.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
             </command:syntaxItem>
             <command:syntaxItem>
@@ -1220,6 +1274,24 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                         <maml:uri />
                     </dev:type>
                     <dev:defaultValue>None</dev:defaultValue>
+                </command:parameter>
+                <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                    <maml:name>DoNotSendIfMessageIsEmpty</maml:name>
+                    <maml:Description>
+                        <maml:para>Указывает, что если тело сообщения отсутствует, то письмо не отправляется.
+                        </maml:para>
+                        <maml:para>По умолчанию пустые сообщения отправляются.
+                        </maml:para>
+                        <maml:para>Этот параметр может быть использован в сценариях автоматизации, когда сообщение должно отправляться, только если есть некие данные.
+                        </maml:para>
+                        <maml:para>Сообщения отправляются при помощи функции Send-sthMailMessage.
+                        </maml:para>
+                    </maml:Description>
+                    <dev:type>
+                        <maml:name>SwitchParameter</maml:name>
+                        <maml:uri />
+                    </dev:type>
+                    <dev:defaultValue>False</dev:defaultValue>
                 </command:parameter>
             </command:syntaxItem>
         </command:syntax>
@@ -1492,6 +1564,24 @@ Send-sthMailMessage -ProfileFilePath C:\Profiles\SomeProfile.xml -Subject "Proce
                     <maml:uri />
                 </dev:type>
                 <dev:defaultValue>None</dev:defaultValue>
+            </command:parameter>
+            <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+                <maml:name>DoNotSendIfMessageIsEmpty</maml:name>
+                <maml:Description>
+                    <maml:para>Указывает, что если тело сообщения отсутствует, то письмо не отправляется.
+                    </maml:para>
+                    <maml:para>По умолчанию пустые сообщения отправляются.
+                    </maml:para>
+                    <maml:para>Этот параметр может быть использован в сценариях автоматизации, когда сообщение должно отправляться, только если есть некие данные.
+                    </maml:para>
+                    <maml:para>Сообщения отправляются при помощи функции Send-sthMailMessage.
+                    </maml:para>
+                </maml:Description>
+                <dev:type>
+                    <maml:name>SwitchParameter</maml:name>
+                    <maml:uri />
+                </dev:type>
+                <dev:defaultValue>False</dev:defaultValue>
             </command:parameter>
         </command:parameters>
         <maml:AlertSet>

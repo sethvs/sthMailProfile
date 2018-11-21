@@ -17,7 +17,7 @@ Creates mail profile.
 New-sthMailProfile [-ProfileName] <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
  [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Subject <string>]
  [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
- [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [-DoNotSendIfMessageIsEmpty] [<CommonParameters>]
 ```
 
 ### ProfileFilePathPassword
@@ -25,7 +25,7 @@ New-sthMailProfile [-ProfileName] <String> [-From] <String> [-To] <String[]> [-S
 New-sthMailProfile -ProfileFilePath <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
  [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Subject <string>]
  [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
- [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [-DoNotSendIfMessageIsEmpty] [<CommonParameters>]
 ```
 
 ### ProfileNameCredential
@@ -33,7 +33,7 @@ New-sthMailProfile -ProfileFilePath <String> [-From] <String> [-To] <String[]> [
 New-sthMailProfile [-ProfileName] <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
  [-Credential <PSCredential or two-element array>] [-StorePasswordInPlainText] [-Subject <string>]
  [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
- [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [-DoNotSendIfMessageIsEmpty] [<CommonParameters>]
 ```
 
 ### ProfileFilePathCredential
@@ -41,7 +41,7 @@ New-sthMailProfile [-ProfileName] <String> [-From] <String> [-To] <String[]> [-S
 New-sthMailProfile -ProfileFilePath <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
  [-Credential <PSCredential or two-element array>] [-StorePasswordInPlainText] [-Subject <string>]
  [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
- [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [-DoNotSendIfMessageIsEmpty] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -380,6 +380,27 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DoNotSendIfMessageIsEmpty
+Specifies that if message body is empty, the message is not sent.
+
+By default empty messages are sent.
+
+This parameter can be used in automation scenarions, when message should be sent only if there is some data.
+
+Messages are send by the `Send-sthMailMessage` function.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
