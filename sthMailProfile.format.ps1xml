@@ -43,6 +43,12 @@
                                 </ItemSelectionCondition>
                             </ListItem>
                             <ListItem>
+                                <PropertyName>Subject</PropertyName>
+                                <ItemSelectionCondition>
+                                    <PropertyName>Subject</PropertyName>
+                                </ItemSelectionCondition>
+                            </ListItem>
+                            <ListItem>
                                 <PropertyName>Port</PropertyName>
                                 <ItemSelectionCondition>
                                     <PropertyName>Port</PropertyName>
@@ -144,6 +150,12 @@
                                 <PropertyName>SmtpServer</PropertyName>
                                 <ItemSelectionCondition>
                                     <PropertyName>SmtpServer</PropertyName>
+                                </ItemSelectionCondition>
+                            </ListItem>
+                            <ListItem>
+                                <PropertyName>Subject</PropertyName>
+                                <ItemSelectionCondition>
+                                    <PropertyName>Subject</PropertyName>
                                 </ItemSelectionCondition>
                             </ListItem>
                             <ListItem>

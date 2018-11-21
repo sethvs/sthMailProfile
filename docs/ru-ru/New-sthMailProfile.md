@@ -15,39 +15,39 @@ schema: 2.0.0
 ### ProfileNamePassword
 ```
 New-sthMailProfile [-ProfileName] <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
- [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Port <Int32>]
- [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
- [-DeliveryNotificationOption <String[]>] [-Priority <String>] [<CommonParameters>]
+ [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Subject <string>]
+ [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
 ```
 
 ### ProfileFilePathPassword
 ```
 New-sthMailProfile -ProfileFilePath <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
- [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Port <Int32>]
- [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
- [-DeliveryNotificationOption <String[]>] [-Priority <String>] [<CommonParameters>]
+ [-UserName <String>] [-Password <String or SecureString>] [-StorePasswordInPlainText] [-Subject <string>]
+ [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
 ```
 
 ### ProfileNameCredential
 ```
 New-sthMailProfile [-ProfileName] <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
- [-Credential <PSCredential>] [-StorePasswordInPlainText] [-Port <Int32>] [-UseSSL] [-Encoding <String>]
- [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>] [-DeliveryNotificationOption <String[]>] [-Priority <String>]
- [<CommonParameters>]
+ [-Credential <PSCredential or two-element array>] [-StorePasswordInPlainText] [-Subject <string>]
+ [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
 ```
 
 ### ProfileFilePathCredential
 ```
 New-sthMailProfile -ProfileFilePath <String> [-From] <String> [-To] <String[]> [-SmtpServer] <String>
- [-Credential <PSCredential>] [-StorePasswordInPlainText] [-Port <Int32>] [-UseSSL] [-Encoding <String>]
- [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>] [-DeliveryNotificationOption <String[]>] [-Priority <String>]
- [<CommonParameters>]
+ [-Credential <PSCredential or two-element array>] [-StorePasswordInPlainText] [-Subject <string>]
+ [-Port <Int32>] [-UseSSL] [-Encoding <String>] [-BodyAsHTML] [-CC <String[]>] [-BCC <String[]>]
+ [-DeliveryNotificationOption <String>] [-Priority <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 Функция `New-sthMailProfile` создает профиль электронной почты, содержащий указанные параметры.
 
-Профиль - это файл xml, содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+Профиль - это файл xml, содержащий параметры электронной почты, такие как: From, To, Credential, SmtpServer, Subject, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
 
 Вы можете создать профиль при помощи параметров **-ProfileName** или **-ProfileFilePath**.\
 Параметр **-ProfileName** создает .xml файл с указанным именем в папке **Profiles**, расположенной в каталоге модуля.\
@@ -184,7 +184,7 @@ Accept wildcard characters: False
 Если значение представлено в виде массива, оно будет преобразовано в объект PSCredential.
 
 ```yaml
-Type: PSCredential
+Type: PSCredential or two-element array
 Parameter Sets: ProfileNameCredential, ProfileFilePathCredential
 Aliases:
 
@@ -210,6 +210,23 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Subject
+Указывает тему сообщения электронной почты.
+
+Значение, указанное в профиле, может быть переопределено для сообщения при помощи параметра **-Subject** функции `Send-sthMailMessage`.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

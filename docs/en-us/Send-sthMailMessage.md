@@ -14,13 +14,13 @@ Sends mail message using profile specified.
 
 ### ProfileName
 ```
-Send-sthMailMessage [-ProfileName] <String> [-Subject] <String> [[-Message] <Object[]>]
+Send-sthMailMessage [-ProfileName] <String> [[-Subject] <String>] [[-Message] <Object[]>]
  [-Attachments <String[]>] [<CommonParameters>]
 ```
 
 ### ProfileFilePath
 ```
-Send-sthMailMessage -ProfileFilePath <String> [-Subject] <String> [[-Message] <Object[]>]
+Send-sthMailMessage -ProfileFilePath <String> [[-Subject] <String>] [[-Message] <Object[]>]
  [-Attachments <String[]>] [<CommonParameters>]
 ```
 
@@ -78,7 +78,7 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 1
 Default value: None
 Accept pipeline input: False

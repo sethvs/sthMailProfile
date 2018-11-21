@@ -8,7 +8,7 @@ function Send-sthMailMessage
         [string]$ProfileName,
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath')]
         [string]$ProfileFilePath,
-        [Parameter(Mandatory,Position='1')]
+        [Parameter(Position='1')]
         [string]$Subject,
         [Parameter(Position='2',ValueFromPipeline)]
         $Message,
@@ -69,7 +69,14 @@ function Send-sthMailMessage
                 }
             }
 
-            $Parameters.Add("Subject", $Subject)
+            if ($Subject)
+            {
+                $Parameters.Subject = $Subject
+            }
+            elseif (-not $Parameters.Subject)
+            {
+                inNoSubjectError
+            }
 
             if ($Content)
             {
@@ -127,6 +134,7 @@ function New-sthMailProfile
         [Parameter(Mandatory,ParameterSetName='ProfileFilePath-Credential')]
         [ValidateNotNullOrEmpty()]
         $Credential,
+        [string]$Subject,
         [int]$Port,
         [switch]$UseSSL,
         [string]$Encoding,
@@ -328,7 +336,7 @@ function inComposeMailProfile
         $xml.Encoding = [System.Text.Encoding]::GetEncoding($xml.Encoding.CodePage)
     }
 
-    $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority)
+    $MailProfile = [sthMailProfile]::new($xml.From,$xml.To,$xml.Credential,$xml.PasswordIs,$xml.SmtpServer,$xml.Subject,$xml.Port,$xml.UseSSL,$xml.Encoding,$xml.BodyAsHtml,$xml.CC,$xml.BCC,$xml.DeliveryNotificationOption,$xml.Priority)
     $MailProfile | Add-Member -NotePropertyName ProfileName -NotePropertyValue $ProfileFile.Name.Substring(0,$ProfileFile.Name.Length - 4)
 
     $MailProfile | Add-Member -NotePropertyName UserName -NotePropertyValue $MailProfile.Credential.UserName
@@ -384,10 +392,22 @@ function inPSCredentialError
         [string]$Value
     )
 
-    $Exception = [System.ArgumentException]::new("Value (`"$Value`") is wrong. The value should be a PSCredential object or an array of two elements.")
+    $Exception = [System.ArgumentException]::new("Value of the -Credential parameter (`"$Value`") is wrong. The value should be a PSCredential object or an array of two elements.")
     $ErrorId = 'ArgumentTypeError'
     $ErrorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
 
     $ErrorRecord = [System.Management.Automation.ErrorRecord]::new($Exception, $ErrorId, $ErrorCategory, $null)
 
-    throw $ErrorRecord}
+    throw $ErrorRecord
+}
+
+function inNoSubjectError
+{
+    $Exception = [System.ArgumentException]::new("The Subject can not be empty. You can define it in the profile or by using -Subject parameter of the function.")
+    $ErrorId = 'ArgumentIsNullOrEmpty'
+    $ErrorCategory = [System.Management.Automation.ErrorCategory]::InvalidArgument
+
+    $ErrorRecord = [System.Management.Automation.ErrorRecord]::new($Exception, $ErrorId, $ErrorCategory, $null)
+
+    throw $ErrorRecord
+}
