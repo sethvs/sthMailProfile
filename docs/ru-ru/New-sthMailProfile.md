@@ -432,14 +432,21 @@ New-sthMailProfile "MailProfile" source@domain.com destination@domain.com smtp.d
 
 Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To и SmtpServer с использованием позиционных параметров.
 
-### Пример 3: Создание профиля с указанием пути и имени файла.
+### Пример 3: Создание нового профиля с указанием пути и имени файла.
 ```powershell
 New-sthMailProfile -ProfileFilePath "C:\Profiles\SomeProfile.xml" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com
 ```
 
 Команда создает файл профиля с именем SomeProfile.xml, расположенный в каталоге C:\Profiles.
 
-### Пример 4: Создание нового профиля, содержащего учетные данные.
+### Пример 4: Создание нового профиля с указанием дополнительных параметров.
+```powershell
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Subject "TheSubject" -Port 587 -UseSSL -Encoding UTF-8 -BodyAsHtml -CC cc@domain.com -BCC bcc@domain.com -DeliveryNotificationOption OnSuccess -Priority High
+```
+
+Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, Subject, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption и Priority.
+
+### Пример 5: Создание нового профиля, содержащего учетные данные.
 ```powershell
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com
 Type the password:
@@ -450,7 +457,7 @@ Type the password:
 
 Так как SecureString использует DPAPI, то, если вы создаете профиль, содержащий учетные данные (имя и пароль) без использования параметра **-StorePasswordInPlainText**, этот профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.
 
-### Пример 5: Создание нового профиля с указанием пароля в качестве строки.
+### Пример 6: Создание нового профиля с указанием пароля в качестве строки.
 ```powershell
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password'
 ```
@@ -460,7 +467,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 Так как SecureString использует DPAPI, то, если вы создаете профиль, содержащий учетные данные (имя и пароль) без использования параметра **-StorePasswordInPlainText**, этот профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.
 
-### Пример 6: Создание нового профиля с указанием пароля в качестве объекта SecureString.
+### Пример 7: Создание нового профиля с указанием пароля в качестве объекта SecureString.
 ```powershell
 $Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password $Password
@@ -472,7 +479,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 Так как SecureString использует DPAPI, то, если вы создаете профиль, содержащий учетные данные (имя и пароль) без использования параметра **-StorePasswordInPlainText**, этот профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.
 
-### Пример 7: Создание нового профиля с использованием объекта PSCredential.
+### Пример 8: Создание нового профиля с использованием объекта PSCredential.
 ```
 $Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'UserName', $Password
@@ -485,7 +492,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 Так как SecureString использует DPAPI, то, если вы создаете профиль, содержащий учетные данные (имя и пароль) без использования параметра **-StorePasswordInPlainText**, этот профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.
 
-### Пример 8: Создание нового профиля с использованием массива в качестве значения параметра Credential.
+### Пример 9: Создание нового профиля с использованием массива в качестве значения параметра Credential.
 ```
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential @('UserName', 'password')
 ```
@@ -495,7 +502,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 Так как SecureString использует DPAPI, то, если вы создаете профиль, содержащий учетные данные (имя и пароль) без использования параметра **-StorePasswordInPlainText**, этот профиль может быть использован только на том компьютере, на котором он был создан и только под той пользовательской учетной записью, под которой он был создан.
 
-### Пример 9: Создание нового профиля, хранящего пароль открытым текстом.
+### Пример 10: Создание нового профиля, хранящего пароль открытым текстом.
 ```
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText
 ```
@@ -504,5 +511,31 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 Так как указан параметр -StorePasswordInPlainText, пароль будет храниться в профиле открытым текстом.\
 Это позволяет вам использовать профиль на других компьютерах, а не только на том, где он был создан, а также под иными пользовательскими учетными записями, отличными от той, под которой он был создан.
+
+### Пример 11: Создание нового профиля с указанием значения темы.
+```powershell
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Subject "TheSubject"
+Send-sthMailMessage -ProfileName "MailProfile" -Message "TheMessage"
+Send-sthMailMessage -ProfileName "MailProfile" -Subject "AnotherSubject" -Message "TheMessage"
+```
+
+Первая команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer и Subject.\
+Вторая команда отправляет сообщение с использованием темы указанной в профиле.\
+Третья команда отправляет сообщение с использованием темы, указанной в качестве значения параметра -Subject функции Send-sthMailMessage.
+
+### Пример 12: Создание нового профиля с указанием параметра -DoNotSendIfMessageIsEmpty.
+```powershell
+New-sthMailProfile -ProfileName "SendEmpty" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com
+New-sthMailProfile -ProfileName "DoNotSendEmpty" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -DoNotSendIfMessageIsEmpty
+
+'' | Send-sthMailMessage -ProfileName "SendEmpty" -Subject "TheSubject"
+'' | Send-sthMailMessage -ProfileName "DoNotSendEmpty" -Subject "TheSubject"
+```
+
+Первая команда создает профиль электронной почты с именем "SendEmpty" и параметрами From, To и SmtpServer.\
+Вторая команда создает профиль электронной почты с именем "DoNotSendEmpty" и параметрами From, To, SmtpServer и DoNotSendIfMessageIsEmpty.
+
+Третья команда пытается отправить пустое сообщение. Сообщение будет отправлено.\
+Четвертая команда пытается отправить пустое сообщение. Сообщение не будет отправлено.
 
 ## RELATED LINKS

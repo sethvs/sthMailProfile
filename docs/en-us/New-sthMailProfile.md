@@ -439,7 +439,14 @@ New-sthMailProfile -ProfileFilePath "C:\Profiles\SomeProfile.xml" -From source@d
 
 This command creates the profile file with the name SomeProfile.xml in the C:\Profiles directory.
 
-### Example 4: Create a new profile with credential.
+### Example 4: Create a new profile using additional parameters
+```powershell
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Subject "TheSubject" -Port 587 -UseSSL -Encoding UTF-8 -BodyAsHtml -CC cc@domain.com -BCC bcc@domain.com -DeliveryNotificationOption OnSuccess -Priority High
+```
+
+The command creates mail profile with name "SendEmpty" and settings: From, To, SmtpServer, Subject, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+
+### Example 5: Create a new profile with credential.
 ```powershell
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com
 Type the password:
@@ -450,7 +457,7 @@ The **-Password** parameter is not used, so the command requests for it.
 
 Since SecureString uses DPAPI, if you create mail profile containing credential without **-StorePasswordInPlainText** parameter, it can only be used on the computer it was created on and by the user account that created it.
 
-### Example 5: Create a new profile by specifying the password as string.
+### Example 6: Create a new profile by specifying the password as string.
 ```powershell
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password'
 ```
@@ -460,7 +467,7 @@ Password is specified as string.
 
 Since SecureString uses DPAPI, if you create mail profile containing credential without **-StorePasswordInPlainText** parameter, it can only be used on the computer it was created on and by the user account that created it.
 
-### Example 6: Create a new profile with credential by specifying password as secure string.
+### Example 7: Create a new profile with credential by specifying password as secure string.
 ```powershell
 $Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password $Password
@@ -472,7 +479,7 @@ Password is specified as secure string.
 
 Since SecureString uses DPAPI, if you create mail profile containing credential without **-StorePasswordInPlainText** parameter, it can only be used on the computer it was created on and by the user account that created it.
 
-### Example 7: Create a new profile by specifying credential as PSCredential object.
+### Example 8: Create a new profile by specifying credential as PSCredential object.
 ```powershell
 $Password = ConvertTo-SecureString -String 'password' -AsPlainText -Force
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList 'UserName', $Password
@@ -485,7 +492,7 @@ The third command creates mail profile with name "MailProfile" and settings: Fro
 
 Since SecureString uses DPAPI, if you create mail profile containing credential without **-StorePasswordInPlainText** parameter, it can only be used on the computer it was created on and by the user account that created it.
 
-### Example 8: Create a new profile by specifying credential as an array of two elements.
+### Example 9: Create a new profile by specifying credential as an array of two elements.
 ```powershell
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Credential @('UserName', 'password')
 ```
@@ -495,7 +502,7 @@ Credential parameter value is specified as an array of two elements.
 
 Since SecureString uses DPAPI, if you create mail profile containing credential without **-StorePasswordInPlainText** parameter, it can only be used on the computer it was created on and by the user account that created it.
 
-### Example 9: Create a new profile object and store password in plain text.
+### Example 10: Create a new profile and store password in plain text.
 ```powershell
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText
 ```
@@ -504,6 +511,32 @@ The command creates mail profile with name "MailProfile" and settings: From, To,
 
 Since the -StorePasswordInPlainText parameter is used, password will be stored in plain text.\
 It allows you to use the profile on computers other than one it was created on, and under different user accounts, other than it was created by.
+
+### Example 11: Create a new profile with subject
+```powershell
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Subject "TheSubject"
+Send-sthMailMessage -ProfileName "MailProfile" -Message "TheMessage"
+Send-sthMailMessage -ProfileName "MailProfile" -Subject "AnotherSubject" -Message "TheMessage" 
+```
+
+The first command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, and Subject.\
+The second command sends mail message using subject from the profile.\
+The third command sends mail message using subject defined by the Send-sthMailMessage -Subject parameter.
+
+### Example 12: Create a new profile with -DoNotSendIfMessageIsEmpty parameter
+```powershell
+New-sthMailProfile -ProfileName "SendEmpty" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com
+New-sthMailProfile -ProfileName "DoNotSendEmpty" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -DoNotSendIfMessageIsEmpty
+
+'' | Send-sthMailMessage -ProfileName "SendEmpty" -Subject "TheSubject"
+'' | Send-sthMailMessage -ProfileName "DoNotSendEmpty" -Subject "TheSubject"
+```
+
+The first command creates mail profile with name "SendEmpty" and settings: From, To, and SmtpServer.\
+The second command creates mail profile with name "NoNotSendEmpty" and settings: From, To, SmtpServer, and DoNotSendIfMessageIsEmpty.
+
+The third command tries to send mail message with empty body. The message will be sent.\
+The fourth command tries to send mail message with empty body. The message will not be sent.
 
 
 ## RELATED LINKS
