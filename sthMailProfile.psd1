@@ -114,7 +114,7 @@ PrivateData = @{
 ## 1.2
 
 - New-sthMailProfile -Credential parameter in addition to PSCredential object now supports two-element array value, for example @('UserName','Password').
-- Subject can now be defined in the profile by New-sthMailProfile -Subject parameter.
+- New-sthMailProfile -Subject parameter can be used to define subject in the profile.
 - New-sthMailProfile -DoNotSendIfMessageIsEmpty parameter can be used to specify that if message body is empty, the message should not be sent.
 
 ## 1.1
