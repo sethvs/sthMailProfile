@@ -135,7 +135,17 @@ New-sthMailProfile -ProfileFilePath "C:\Profiles\SomeProfile.xml" -From source@d
 
 ---
 
-#### Example 4: Create a new profile with credential
+#### Example 4: Create a new profile using additional parameters
+
+The command creates mail profile with name "SendEmpty" and settings: From, To, SmtpServer, Subject, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption, and Priority.
+
+```
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Subject "TheSubject" -Port 587 -UseSSL -Encoding UTF-8 -BodyAsHtml -CC cc@domain.com -BCC bcc@domain.com -DeliveryNotificationOption OnSuccess -Priority High
+```
+
+---
+
+#### Example 5: Create a new profile with credential
 
 The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
 
@@ -150,7 +160,7 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 5: Create a new profile by specifying the password as string
+#### Example 6: Create a new profile by specifying the password as string
 
 The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
 
@@ -164,7 +174,7 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 6: Create a new profile with credential by specifying password as secure string
+#### Example 7: Create a new profile with credential by specifying password as secure string
 
 The commands create a new profile with credential by specifying password as secure string.
 
@@ -183,7 +193,7 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 7: Create a new profile by specifying credential as PSCredential object
+#### Example 8: Create a new profile by specifying credential as PSCredential object
 
 The commands create a new profile by specifying credential as PSCredential object.
 
@@ -203,7 +213,7 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 8: Create a new profile by specifying credential as an array of two elements.
+#### Example 9: Create a new profile by specifying credential as an array of two elements.
 
 The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer and Credential.
 
@@ -217,7 +227,7 @@ Since SecureString uses DPAPI, if you create mail profile containing credential 
 
 ---
 
-#### Example 9: Create a new profile object and store password in plain text
+#### Example 10: Create a new profile object and store password in plain text
 
 The command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, UserName and Password.
 
@@ -227,6 +237,42 @@ It allows you to use the profile on computers other than one it was created on, 
 
 ```
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText
+```
+
+---
+
+#### Example 11: Create a new profile with subject
+
+The first command creates mail profile with name "MailProfile" and settings: From, To, SmtpServer, and Subject.
+
+The second command sends mail message using subject from the profile.
+
+The third command sends mail message using subject defined by the Send-sthMailMessage -Subject parameter.
+
+```
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Subject "TheSubject"
+Send-sthMailMessage -ProfileName "MailProfile" -Message "TheMessage"
+Send-sthMailMessage -ProfileName "MailProfile" -Subject "AnotherSubject" -Message "TheMessage" 
+```
+
+---
+
+#### Example 12: Create a new profile with -DoNotSendIfMessageIsEmpty parameter
+
+The first command creates mail profile with name "SendEmpty" and settings: From, To, and SmtpServer.
+
+The second command creates mail profile with name "NoNotSendEmpty" and settings: From, To, SmtpServer, and DoNotSendIfMessageIsEmpty.
+
+The third command tries to send mail message with empty body. The message will be sent.
+
+The fourth command tries to send mail message with empty body. The message will not be sent.
+
+```
+New-sthMailProfile -ProfileName "SendEmpty" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com
+New-sthMailProfile -ProfileName "DoNotSendEmpty" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -DoNotSendIfMessageIsEmpty
+
+'' | Send-sthMailMessage -ProfileName "SendEmpty" -Subject "TheSubject"
+'' | Send-sthMailMessage -ProfileName "DoNotSendEmpty" -Subject "TheSubject"
 ```
 
 ### Get-sthMailProfile

@@ -129,7 +129,17 @@ New-sthMailProfile -ProfileFilePath "C:\Profiles\SomeProfile.xml" -From source@d
 
 ---
 
-#### Пример 4: Создание нового профиля, содержащего учетные данные
+#### Пример 4: Создание нового профиля с указанием дополнительных параметров.
+
+Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, Subject, Port, UseSSL, Encoding, BodyAsHtml, CC, BCC, DeliveryNotificationOption и Priority.
+
+```
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Subject "TheSubject" -Port 587 -UseSSL -Encoding UTF-8 -BodyAsHtml -CC cc@domain.com -BCC bcc@domain.com -DeliveryNotificationOption OnSuccess -Priority High
+```
+
+---
+
+#### Пример 5: Создание нового профиля, содержащего учетные данные
 
 Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, UserName и Password.
 
@@ -144,7 +154,7 @@ Type the password:
 
 ---
 
-#### Пример 5: Создание нового профиля с указанием пароля в качестве строки
+#### Пример 6: Создание нового профиля с указанием пароля в качестве строки
 
 Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, UserName и Password.
 
@@ -158,7 +168,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Пример 6: Создание нового профиля с указанием пароля в качестве объекта SecureString
+#### Пример 7: Создание нового профиля с указанием пароля в качестве объекта SecureString
 
 Команды создают новый профиль с указанием пароля в качестве объекта SecureString.
 
@@ -177,7 +187,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Пример 7: Создание нового профиля с использованием объекта PSCredential
+#### Пример 8: Создание нового профиля с использованием объекта PSCredential
 
 Команды создают новый профиль с использованием объекта PSCredential.
 
@@ -197,7 +207,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Пример 8: Создание нового профиля с использованием массива в качестве значения параметра Credential.
+#### Пример 9: Создание нового профиля с использованием массива в качестве значения параметра Credential.
 
 Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer и Credential.
 
@@ -211,7 +221,7 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ---
 
-#### Пример 9: Создание нового профиля, хранящего пароль открытым текстом
+#### Пример 10: Создание нового профиля, хранящего пароль открытым текстом
 
 Команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer, UserName и Password.
 
@@ -221,6 +231,42 @@ New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destin
 
 ```
 New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -UserName user@domain.com -Password 'password' -StorePasswordInPlainText
+```
+
+---
+
+#### Пример 11: Создание нового профиля с указанием значения темы.
+
+Первая команда создает профиль электронной почты с именем "MailProfile" и параметрами From, To, SmtpServer и Subject.
+
+Вторая команда отправляет сообщение с использованием темы указанной в профиле.
+
+Третья команда отправляет сообщение с использованием темы, указанной в качестве значения параметра -Subject функции Send-sthMailMessage.
+
+```
+New-sthMailProfile -ProfileName "MailProfile" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -Subject "TheSubject"
+Send-sthMailMessage -ProfileName "MailProfile" -Message "TheMessage"
+Send-sthMailMessage -ProfileName "MailProfile" -Subject "AnotherSubject" -Message "TheMessage"
+```
+
+---
+
+#### Пример 12: Создание нового профиля с указанием параметра -DoNotSendIfMessageIsEmpty.
+
+Первая команда создает профиль электронной почты с именем "SendEmpty" и параметрами From, To и SmtpServer.
+
+Вторая команда создает профиль электронной почты с именем "DoNotSendEmpty" и параметрами From, To, SmtpServer и DoNotSendIfMessageIsEmpty.
+
+Третья команда пытается отправить пустое сообщение. Сообщение будет отправлено.
+
+Четвертая команда пытается отправить пустое сообщение. Сообщение не будет отправлено.
+
+```
+New-sthMailProfile -ProfileName "SendEmpty" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com
+New-sthMailProfile -ProfileName "DoNotSendEmpty" -From source@domain.com -To destination@domain.com -SmtpServer smtp.domain.com -DoNotSendIfMessageIsEmpty
+
+'' | Send-sthMailMessage -ProfileName "SendEmpty" -Subject "TheSubject"
+'' | Send-sthMailMessage -ProfileName "DoNotSendEmpty" -Subject "TheSubject"
 ```
 
 ### Get-sthMailProfile
